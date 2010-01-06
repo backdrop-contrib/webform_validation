@@ -77,6 +77,15 @@ function webform_validation_webform_validation_validators() {
       'min_components' => 2,
       'max_components' => 2,
     ),
+    'oneofseveral' => array(
+      'name' => "Require at least one of several fields",
+      'component_types' => array(
+        'textfield',
+        'textarea',
+        'email',
+      ),
+      'min_components' => 2,
+    ),
     'regex' => array(
       'name' => "Regular expression",
       'component_types' => array(

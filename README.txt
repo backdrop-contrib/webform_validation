@@ -2,9 +2,18 @@ $Id
 
 Description
 -----------
-This module adds an extra tab to each webform node, allowing you to specify custom validation rules for your webform components.
+This module adds an extra tab to each webform node, allowing you to specify validation rules for your webform components.
 You can create one or more of the predefined validation rules, and select which webform component(s) should be validated against those.
 By using the hooks provided by this module, you can also define your own validation rules in your own modules.
+
+The following validation rules are currently included:
+- Numeric values
+- Minimum length
+- Maximum length
+- Equal values on multiple fields
+- Unique values on multiple fields
+- Require at least one of two fields
+- Regular expression
 
 Installation
 ------------
@@ -12,8 +21,8 @@ Installation
 2) Make sure you have the webform module enabled
 3) Activate the module via admin/build/modules
 
-Adding custom validators
-------------------------
+Adding custom validation rules
+-------------------------------
 The following steps will let you add custom validators through your module:
 
 1/ Implement hook hook_webform_validation_validators().
