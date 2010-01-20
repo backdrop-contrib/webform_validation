@@ -156,13 +156,24 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "oneoftwo":
-          // $components should have 2 items
+        // $components should have 2 items
+        $keys = array_keys($items);
+        $item1 = array_shift($keys);
+        $item2 = array_shift($keys);
+        if (empty($items[$item1]) && empty($items[$item2])) {
+          return array($item1 => t('You have to specify %item1 or %item2 (or both)', array('%item1' => $components[$item1]['name'], '%item2' => $components[$item2]['name'])));
+        }
+        break;
+      case "oneofseveral":
+        // $components should have at least one of several items
+        if (count(array_filter($items)) < 1) {
           $keys = array_keys($items);
-          $item1 = array_shift($keys);
-          $item2 = array_shift($keys);
-          if (empty($items[$item1]) && empty($items[$item2])) {
-            return array($item1 => t('You have to specify %item1 or %item2 (or both)', array('%item1' => $components[$item1]['name'], '%item2' => $components[$item2]['name'])));
+          $names = array();
+          foreach($keys as $value) {
+            $names[] = $components[$value]['name'];
           }
+          return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', $names));
+        }
         break;
       case "regex":
         $regex = $rule['data'];
