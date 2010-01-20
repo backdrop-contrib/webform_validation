@@ -110,7 +110,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
     switch ($validator_name) {
       case 'numeric':
         foreach ($items as $key => $val) {
-          if (!is_numeric($val)) {
+          if ($val && (!is_numeric($val))) {
             $errors[$key] = t('%item is not numeric', array('%item' => $components[$key]['name']));
           }
         }
@@ -119,7 +119,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'min_length':
         $min_length = $rule['data'];
         foreach ($items as $key => $val) {
-          if (drupal_strlen($val) < $min_length) {
+          if ($val && (drupal_strlen($val) < $min_length)) {
             $errors[$key] = t('%item needs to be at least %num characters long', array('%item' => $components[$key]['name'], '%num' => $min_length));
           }
         }
@@ -128,7 +128,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'max_length':
         $max_length = $rule['data'];
         foreach ($items as $key => $val) {
-          if (drupal_strlen($val) > $max_length) {
+          if ($val && (drupal_strlen($val) > $max_length)) {
             $errors[$key] = t('%item can be maximum %num characters long', array('%item' => $components[$key]['name'], '%num' => $max_length));
           }
         }
@@ -167,7 +167,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "regex":
         $regex = $rule['data'];
         foreach ($items as $key => $val) {
-          if (!preg_match("/$regex/", $val)) {
+          if ($val && (!preg_match("/$regex/", $val))) {
             $errors[$key] = $rule['error_message'];
           }
         }
