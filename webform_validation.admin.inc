@@ -110,7 +110,7 @@ function webform_validation_manage_rule($form_state, $node, $action = 'add', $va
     '#default_value' => (isset($rule['rulename'])) ? $rule['rulename'] : '',
     '#required' => TRUE,
     '#size' => 60,
-    '#maxlength' => 128,
+    '#maxlength' => 255,
     '#weight' => 1,
   );
 
@@ -130,7 +130,7 @@ function webform_validation_manage_rule($form_state, $node, $action = 'add', $va
       '#description' => $rule_validator['custom_data']['description'],
       '#required' => TRUE,
       '#size' => 60,
-      '#maxlength' => 128,
+      '#maxlength' => 255,
       '#default_value' => $rule['data'],
       '#weight' => 4,
     );
@@ -143,7 +143,7 @@ function webform_validation_manage_rule($form_state, $node, $action = 'add', $va
       '#description' => t("Specify an error message that should be displayed when user input doesn't pass validation"),
       '#required' => TRUE,
       '#size' => 60,
-      '#maxlength' => 128,
+      '#maxlength' => 255,
       '#default_value' => $rule['error_message'],
       '#weight' => 5,
     );
