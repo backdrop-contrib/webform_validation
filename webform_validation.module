@@ -14,8 +14,10 @@ include_once('webform_validation.rules.inc');
  */
 function webform_validation_menu() {
   $items = array();
+  $vars = webform_validation_get_vars();
+  $suffix = $vars['path_suffix'];
 
-  $items['node/%webform_menu/edit/validation'] = array(
+  $items['node/%webform_menu/' . $suffix . '/validation'] = array(
     'title' => 'Form validation',
     'page callback' => 'webform_validation_manage',
     'page arguments' => array(1),
@@ -26,7 +28,7 @@ function webform_validation_menu() {
     'type' => MENU_LOCAL_TASK,
   );
 
-  $items['node/%webform_menu/edit/validation/add/%'] = array(
+  $items['node/%webform_menu/' . $suffix . '/validation/add/%'] = array(
     'title' => 'Add validation',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webform_validation_manage_rule', 1, 'add', 5),
@@ -36,7 +38,7 @@ function webform_validation_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['node/%webform_menu/edit/validation/edit/%/%webform_validation_rule'] = array(
+  $items['node/%webform_menu/' . $suffix . '/validation/edit/%/%webform_validation_rule'] = array(
     'title' => 'Edit rule',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webform_validation_manage_rule', 1, 'edit', 5, 6),
@@ -46,7 +48,7 @@ function webform_validation_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['node/%webform_menu/edit/validation/delete/%webform_validation_rule'] = array(
+  $items['node/%webform_menu/' . $suffix . '/validation/delete/%webform_validation_rule'] = array(
     'title' => 'Delete rule',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webform_validation_delete_rule', 5),
@@ -167,11 +169,45 @@ function webform_validation_unprefix_keys($arr) {
  * Theme the 'add rule' list
  */
 function theme_webform_validation_manage_add_rule($nid) {
+  $vars = webform_validation_get_vars();
+  $suffix = $vars['path_suffix'];
   $validators = webform_validation_get_validators_selection();
   if ($validators) {
     foreach ($validators as $validator_key => $validator_name) {
-      $items[] = l($validator_name, 'node/'. $nid .'/edit/validation/add/'. $validator_key, array("query" => drupal_get_destination()));
+      $items[] = l($validator_name, 'node/'. $nid .'/' . $suffix . '/validation/add/'. $validator_key, array("query" => drupal_get_destination()));
     }
   }
   return '<p>'. theme('item_list', $items, t('Add a validation rule')) .'</p>';
+}
+
+/**
+ * Check if we are operating with Webforms 6.x-2.x or 6.x-3.x
+ */
+function webform_validation_check_version() {
+  if (file_exists(drupal_get_path('module', 'webform') . '/webform_components.inc')) {
+    $version = 2;
+  }
+  else {
+    $version = 3;
+  }
+  return $version;
+}
+
+/**
+ * Get variables based on the installed version of Webform module
+ */
+function webform_validation_get_vars() {
+  $version = webform_validation_check_version();
+  switch ($version) {
+    case 2:
+      return array(
+        'path_suffix' => 'edit',
+      );
+      break;
+    case 3:
+      return array(
+        'path_suffix' => 'webform',
+      );
+      break;
+  }
 }

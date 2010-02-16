@@ -31,6 +31,9 @@ function webform_validation_get_webform_rules($node) {
  * Themable function to list the rules assigned to a webform
  */
 function theme_webform_validation_manage_overview($rules = array(), $node = NULL) {
+  $vars = webform_validation_get_vars();
+  $suffix = $vars['path_suffix'];
+
   $header = array(t('Rule name'), t('Validator'), t('Components'), array('data' => t('Operations'), 'colspan' => 2));
   $validators = webform_validation_get_validators_selection();
   if (!empty($rules)) {
@@ -47,10 +50,10 @@ function theme_webform_validation_manage_overview($rules = array(), $node = NULL
         'data' => theme('item_list', $component_info),
       );
       $row[] = array(
-        'data' => l(t('Edit'), 'node/'. $node->nid .'/edit/validation/edit/'. $rule['validator'] .'/'. $rule['ruleid'], array("query" => drupal_get_destination())),
+        'data' => l(t('Edit'), 'node/'. $node->nid .'/' . $suffix . '/validation/edit/'. $rule['validator'] .'/'. $rule['ruleid'], array("query" => drupal_get_destination())),
       );
       $row[] = array(
-        'data' => l(t('Delete'), 'node/'. $node->nid .'/edit/validation/delete/'. $rule['ruleid'], array("query" => drupal_get_destination())),
+        'data' => l(t('Delete'), 'node/'. $node->nid .'/' . $suffix . '/validation/delete/'. $rule['ruleid'], array("query" => drupal_get_destination())),
       );
       $rows[] = $row;
     }
