@@ -169,7 +169,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         if (count(array_filter($items)) < 1) {
           $keys = array_keys($items);
           $names = array();
-          foreach($keys as $value) {
+          foreach ($keys as $value) {
             $names[] = $components[$value]['name'];
           }
           return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', $names));

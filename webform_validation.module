@@ -112,13 +112,13 @@ function webform_validation_validate($form, &$form_state) {
   if ($version == 2) {
     $page_count = isset($form_state['values']['details']['page_count']) ? $form_state['values']['details']['page_count'] : NULL;
   }
-  else if ($version == 3) {
+  elseif ($version == 3) {
     $page_count = isset($form_state['webform']['page_count']) ? $form_state['webform']['page_count'] : NULL;
   }
   if ($page_count && $page_count > 1) {
     $current_page_components = array_keys($form_state['values']['submitted']);
     if ($rules) {
-      // leave out rules from previous steps
+      // filter out rules that don't belong in the current step
       foreach ($rules as $ruleid => $rule) {
         $element_id = $rule['components'][key($rule['components'])]['form_key'];
         if (!in_array($element_id, $current_page_components)) {
