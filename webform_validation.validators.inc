@@ -86,6 +86,36 @@ function webform_validation_webform_validation_validators() {
       ),
       'min_components' => 2,
     ),
+    'select_min' => array(
+      'name' => "Minimum number of selections required",
+      'component_types' => array(
+        'select',
+      ),
+      'custom_data' => array(
+        'label' => t('Minimum number of selections'),
+        'description' => t('Specify the minimum number of options a user should select.')
+      ),
+    ),
+    'select_max' => array(
+      'name' => "Maximum number of selections allowed",
+      'component_types' => array(
+        'select',
+      ),
+      'custom_data' => array(
+        'label' => t('Maximum number of selections'),
+        'description' => t('Specify the maximum number of options a user can select.')
+      ),
+    ),
+    'select_exact' => array(
+      'name' => "Exact number of selections required",
+      'component_types' => array(
+        'select',
+      ),
+      'custom_data' => array(
+        'label' => t('Number of selections'),
+        'description' => t('Specify how many options a user can select.')
+      ),
+    ),
     'regex' => array(
       'name' => "Regular expression",
       'component_types' => array(
@@ -174,6 +204,33 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
           return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', $names));
         }
+        break;
+      case "select_min":
+        $min_selections = $rule['data'];
+        foreach ($items as $key => $val) {
+          if ($val && (count(array_filter($val)) < $min_selections)) {
+            $errors[$key] = t('Please select at least %num options for %item', array('%num' => $min_selections, '%item' => $components[$key]['name']));
+          }
+        }
+        return $errors;
+        break;
+      case "select_max":
+        $max_selections = $rule['data'];
+        foreach ($items as $key => $val) {
+          if ($val && (count(array_filter($val)) > $max_selections)) {
+            $errors[$key] = t('Please select maximum %num options for %item', array('%num' => $max_selections, '%item' => $components[$key]['name']));
+          }
+        }
+        return $errors;
+        break;
+      case "select_exact":
+        $allowed_selections = $rule['data'];
+        foreach ($items as $key => $val) {
+          if ($val && (count(array_filter($val)) != $allowed_selections)) {
+            $errors[$key] = t('Please select %num options for %item', array('%num' => $allowed_selections, '%item' => $components[$key]['name']));
+          }
+        }
+        return $errors;
         break;
       case "regex":
         $regex = $rule['data'];
