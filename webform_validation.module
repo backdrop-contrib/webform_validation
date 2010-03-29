@@ -106,6 +106,28 @@ function webform_validation_validate($form, &$form_state) {
   $values = $form_state['values']['submitted'];
   $flat_values = _webform_client_form_submit_flatten($node, $form_state['values']['submitted']);
   $rules = webform_validation_get_node_rules($nid);
+
+  // multistep: keep track of values submitted in previous steps.
+  $version = webform_validation_check_version();
+  if ($version == 2) {
+    $page_count = isset($form_state['values']['details']['page_count']) ? $form_state['values']['details']['page_count'] : NULL;
+  }
+  else if ($version == 3) {
+    $page_count = isset($form_state['webform']['page_count']) ? $form_state['webform']['page_count'] : NULL;
+  }
+  if ($page_count && $page_count > 1) {
+    $current_page_components = array_keys($form_state['values']['submitted']);
+    if ($rules) {
+      // leave out rules from previous steps
+      foreach ($rules as $ruleid => $rule) {
+        $element_id = $rule['components'][key($rule['components'])]['form_key'];
+        if (!in_array($element_id, $current_page_components)) {
+          unset($rules[$ruleid]);
+        }
+      }
+    }
+  }
+
   if ($rules) {
     foreach ($rules as $rule) {
       // create a list of components that need validation against this rule (component id => user submitted value)
@@ -184,12 +206,17 @@ function theme_webform_validation_manage_add_rule($nid) {
  * Check if we are operating with Webforms 6.x-2.x or 6.x-3.x
  */
 function webform_validation_check_version() {
-  if (file_exists(drupal_get_path('module', 'webform') . '/webform_components.inc')) {
-    $version = 2;
+  static $version;
+
+  if (!$version) {
+    if (file_exists(drupal_get_path('module', 'webform') . '/webform_components.inc')) {
+      $version = 2;
+    }
+    else {
+      $version = 3;
+    }
   }
-  else {
-    $version = 3;
-  }
+
   return $version;
 }
 
