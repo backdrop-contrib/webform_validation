@@ -31,6 +31,7 @@ function webform_validation_schema() {
         'type' => 'serial',
         'description' => 'Unique identifier for a rule',
         'unsigned' => TRUE,
+        'not null' => TRUE,
       ),
       'rulename' => array(
         'type' => 'varchar',
