@@ -176,7 +176,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "unique":
-        $items_count = array_count_values($items);
+        $items_count = array_count_values(array_map('strtolower', array_map('trim', $items)));
         $doubles = array_filter($items_count, create_function('$x', 'return $x > 1;'));
         foreach ($items as $key => $val) {
           if (in_array($val, array_keys($doubles))) {
