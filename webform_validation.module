@@ -115,7 +115,7 @@ function webform_validation_validate($form, &$form_state) {
   elseif ($version == 3) {
     $page_count = isset($form_state['webform']['page_count']) ? $form_state['webform']['page_count'] : NULL;
   }
-  if ($page_count && $page_count > 1) {
+  if ($values && $page_count && $page_count > 1) {
     $current_page_components = array_keys($form_state['values']['submitted']);
     if ($rules) {
       // filter out rules that don't belong in the current step
