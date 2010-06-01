@@ -229,11 +229,13 @@ function webform_validation_get_vars() {
     case 2:
       return array(
         'path_suffix' => 'edit',
+        'webform_contenttypes' => array('webform'),
       );
       break;
     case 3:
       return array(
         'path_suffix' => 'webform',
+        'webform_contenttypes' => webform_variable_get('webform_node_types'),
       );
       break;
   }
