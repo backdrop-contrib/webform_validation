@@ -262,5 +262,7 @@ function webform_validation_delete_rule(&$form_state, $rule) {
  * Submit handler to delete a rule
  */
 function webform_validation_delete_rule_submit($form, &$form_state) {
-  webform_dynamic_delete_rule($form_state['values']['ruleid']);
+  $ruleid = $form_state['values']['ruleid'];
+  webform_dynamic_delete_rule($ruleid);
+  module_invoke_all('webform_validation', 'rule', 'delete', $ruleid);
 }

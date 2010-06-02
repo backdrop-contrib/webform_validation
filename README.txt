@@ -1,4 +1,4 @@
-$Id 
+$Id
 
 Description
 -----------
@@ -34,9 +34,9 @@ The following steps will let you add custom validators through your module:
    * custom_data (optional): define whether custom data can be added to the validation rule
    * min_components (optional): define the minimum number of components to be selected for creating a validation rule
    * max_components (optional): define the maximum number of components to be selected for creating a validation rule
-   
+
    See function webform_validation_webform_validation_validators() in webform_validation.validators.inc for a live example
-   
+
  2/ Implement hook hook_webform_validation_validate($validator_name, $items, $components, $rule).
     This hook gets passed 4 parameters, which will allow you to react to your custom validator (or any other validator for that matter).
     Explanation about these parameters:
@@ -44,12 +44,17 @@ The following steps will let you add custom validators through your module:
     * $items: array containing user submitted entries to be validated.
     * $components: this array contains the definitions of the webform components in your form
     * $rule: this array contains the details of your validation rule
-    
+
     See function webform_validation_webform_validation_validate() in webform_validation.validators.inc for a live example
+
+Additional hooks
+-----------------
+The hook hook_webform_validation($type, $op, $data) can be used to react on various webform_validation based actions.
+* $type - possible values: 'rule'
+* $op - possible values: 'add', 'edit', 'delete'
+* $data - array with rule data in case of $op add/edit, rule id in case of $op delete.
 
 Author
 ------
 Sven Decabooter (http://drupal.org/user/35369)
 The author can be contacted for paid customizations of this module as well as Drupal consulting and development.
-    
-    
