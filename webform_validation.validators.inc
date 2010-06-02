@@ -120,6 +120,14 @@ function webform_validation_webform_validation_validators() {
         'description' => t('Specify how many options a user can select.')
       ),
     ),
+    'plain_text' => array(
+      'name' => "Plain text (disallow tags)",
+      'component_types' => array(
+        'textfield',
+        'textarea',
+        'email',
+      ),
+    ),
     'regex' => array(
       'name' => "Regular expression",
       'component_types' => array(
@@ -253,6 +261,14 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           if (is_array($val) && (count(array_filter($val)) != $allowed_selections)) {
             $errors[$key] = t('Please select %num options for %item', array('%num' => $allowed_selections, '%item' => $components[$key]['name']));
+          }
+        }
+        return $errors;
+        break;
+      case "plain_text":
+        foreach ($items as $key => $val) {
+          if ($val && (strcmp($val, strip_tags($val)))) {
+            $errors[$key] = t('%item only allows the use of plain text', array('%item' => $components[$key]['name']));
           }
         }
         return $errors;
