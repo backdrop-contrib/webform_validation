@@ -75,6 +75,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'email',
+        'select',
       ),
       'min_components' => 2,
       'max_components' => 2,
@@ -85,6 +86,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'email',
+        'select',
       ),
       'min_components' => 2,
     ),
@@ -205,11 +207,19 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $keys = array_keys($items);
         $item1 = array_shift($keys);
         $item2 = array_shift($keys);
-        if (empty($items[$item1]) && empty($items[$item2])) {
+        $entry1 = _webform_validation_flatten_array($items[$item1]);
+        $entry2 = _webform_validation_flatten_array($items[$item2]);
+        if (empty($entry1) && empty($entry2)) {
           return array($item1 => t('You have to specify %item1 or %item2 (or both)', array('%item1' => $components[$item1]['name'], '%item2' => $components[$item2]['name'])));
         }
         break;
       case "oneofseveral":
+        foreach ($items as $key => $val) {
+          if (is_array($val)) {
+            // make sure to flatten arrays first
+            $items[$key] = _webform_validation_flatten_array($val);
+          }
+        }
         // $components should have at least one of several items
         if (count(array_filter($items)) < 1) {
           $keys = array_keys($items);
