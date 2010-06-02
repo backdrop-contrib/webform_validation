@@ -193,10 +193,13 @@ function webform_validation_unprefix_keys($arr) {
 function theme_webform_validation_manage_add_rule($nid) {
   $vars = webform_validation_get_vars();
   $suffix = $vars['path_suffix'];
-  $validators = webform_validation_get_validators_selection();
+  $validators = webform_validation_get_validators();
   if ($validators) {
-    foreach ($validators as $validator_key => $validator_name) {
-      $items[] = l($validator_name, 'node/'. $nid .'/' . $suffix . '/validation/add/'. $validator_key, array("query" => drupal_get_destination()));
+    foreach ($validators as $validator_key => $validator_info) {
+      $label = $validator_info['name'];
+      $url = 'node/'. $nid .'/' . $suffix . '/validation/add/'. $validator_key;
+      $components = ' (' . implode(', ', $validator_info['component_types']) . ')';
+      $items[] = l($label, $url, array("query" => drupal_get_destination())) . $components;
     }
   }
   return '<p>'. theme('item_list', $items, t('Add a validation rule')) .'</p>';
