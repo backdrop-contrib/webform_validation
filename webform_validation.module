@@ -243,3 +243,14 @@ function webform_validation_get_vars() {
       break;
   }
 }
+
+/**
+ * Implementation of hook_webform_validation
+ */
+function webform_validation_webform_validation($type, $op, $data) {
+  if ($type == 'rule' && in_array($op, array('add', 'edit'))) {
+    if (module_exists('i18nstrings')) {
+      i18nstrings_update('webform_validation:error_message:' . $data['ruleid'] . ':message', $data['error_message']);
+    }
+  }
+}

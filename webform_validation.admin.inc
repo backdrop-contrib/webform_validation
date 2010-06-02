@@ -201,6 +201,7 @@ function webform_validation_manage_rule_submit($form, &$form_state) {
     $ruleid = $values['ruleid'];
     if ($ruleid && array_filter($values['rule_components'])) {
       webform_validation_save_rule_components($ruleid, array_filter($values['rule_components']));
+      module_invoke_all('webform_validation', 'rule', 'add', $values);
     }
   }
 
@@ -211,6 +212,7 @@ function webform_validation_manage_rule_submit($form, &$form_state) {
       db_query("DELETE FROM {webform_validation_rule_components} WHERE ruleid = %d", $ruleid);
     if ($components = array_filter($values['rule_components'])) {
       webform_validation_save_rule_components($ruleid, $components);
+      module_invoke_all('webform_validation', 'rule', 'edit', $values);
     }
   }
 }

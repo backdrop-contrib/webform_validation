@@ -296,7 +296,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $regex = $rule['data'];
         foreach ($items as $key => $val) {
           if ($val && (!preg_match("/$regex/", $val))) {
-            $errors[$key] = $rule['error_message'];
+            $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
         return $errors;
@@ -315,7 +315,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           $blacklist_regex = implode('|', $blacklist);
           foreach ($items as $key => $val) {
             if ($val && (preg_match("/$blacklist_regex/i", $val))) {
-              $errors[$key] = $rule['error_message'];
+              $errors[$key] = _webform_validation_i18n_error_message($rule);
             }
           }
         return $errors;
@@ -389,4 +389,14 @@ function _webform_validation_all_allowed($allowed) {
 function webform_validation_get_validator_info($validator_key) {
   $validators = webform_validation_get_validators();
   return $validators[$validator_key];
+}
+
+/**
+ * Handle translatable error messages, if available
+ */
+function _webform_validation_i18n_error_message($rule) {
+  if (module_exists('i18nstrings')) {
+    return i18nstrings('webform_validation:error_message:' . $rule['ruleid'] . ':message', $rule['error_message']);
+  }
+  return $rule['error_message'];
 }
