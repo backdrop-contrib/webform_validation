@@ -56,6 +56,7 @@ function webform_validation_webform_validation_validators() {
       'component_types' => array(
         'textfield',
         'email',
+        'select',
       ),
       'min_components' => 2,
     ),
@@ -64,6 +65,7 @@ function webform_validation_webform_validation_validators() {
       'component_types' => array(
         'textfield',
         'email',
+        'select',
       ),
       'min_components' => 2,
     ),
@@ -167,8 +169,10 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "equal":
         $first_entry_key = key($items);
         $first_entry = array_shift($items);
+        $first_entry = _webform_validation_flatten_array($first_entry); // flatten in case of array
         // now check if following components equal the first one
         foreach ($items as $key => $val) {
+          $val = _webform_validation_flatten_array($val); // flatten in case of array
           if ($val !== $first_entry) {
             $errors[$key] = t('%item_checked does not match %item_first', array('%item_checked' => $components[$key]['name'], '%item_first' => $components[$first_entry_key]['name']));
           }
@@ -176,6 +180,17 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "unique":
+        foreach ($items as $key => $val) {
+          if (is_array($val)) {
+            // make sure to flatten arrays first
+            $items[$key] = _webform_validation_flatten_array($val);
+          }
+          if (empty($items[$key])) {
+            // items without a value selected shouldn't be validated
+            unset($items[$key]);
+          }
+        }
+        // now we count how many times each value appears, and find out which values appear more than once
         $items_count = array_count_values(array_map('strtolower', array_map('trim', $items)));
         $doubles = array_filter($items_count, create_function('$x', 'return $x > 1;'));
         foreach ($items as $key => $val) {
@@ -243,6 +258,18 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         break;
     }
   }
+}
+
+/**
+ * Helper function to deal with submitted values that are arrays (e.g. multiple select component)
+ * We flatten the array as a comma-separated list to do the comparison.
+ */
+function _webform_validation_flatten_array($val) {
+  if (is_array($val)) {
+    $arr = array_filter($val);
+    return implode(',', $arr);
+  }
+  return $val;
 }
 
 /**
