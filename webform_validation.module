@@ -245,7 +245,7 @@ function webform_validation_get_vars() {
 }
 
 /**
- * Implementation of hook_webform_validation
+ * Implementation of hook_webform_validation().
  */
 function webform_validation_webform_validation($type, $op, $data) {
   if ($type == 'rule' && in_array($op, array('add', 'edit'))) {
