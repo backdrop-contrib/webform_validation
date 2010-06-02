@@ -141,6 +141,25 @@ function webform_validation_webform_validation_validators() {
         'description' => t('Specify regex code to validate the user input against.')
       ),
     ),
+    'must_be_empty' => array(
+      'name' => "Must be empty (Anti-Spam: Hide with CSS)",
+      'component_types' => array(
+        'textfield',
+      ),
+    ),
+    'blacklist' => array(
+      'name' => "Words blacklist",
+      'component_types' => array(
+        'textfield',
+        'textarea',
+        'email',
+      ),
+      'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Blacklisted words'),
+        'description' => t('Specify illegal words, seperated by commas')
+      ),
+    ),
   );
 }
 
@@ -280,6 +299,25 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             $errors[$key] = $rule['error_message'];
           }
         }
+        return $errors;
+        break;
+      case 'must_be_empty':
+        foreach ($items as $key => $val) {
+          if ($val) {
+            $errors[$key] = t('%item does not contain the correct data', array('%item' => $components[$key]['name']));
+          }
+        }
+        return $errors;
+        break;
+      case "blacklist":
+          $blacklist = explode(',', $rule['data']);
+          $blacklist = array_map('trim', $blacklist);
+          $blacklist_regex = implode('|', $blacklist);
+          foreach ($items as $key => $val) {
+            if ($val && (preg_match("/$blacklist_regex/i", $val))) {
+              $errors[$key] = $rule['error_message'];
+            }
+          }
         return $errors;
         break;
     }
