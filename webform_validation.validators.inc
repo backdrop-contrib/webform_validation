@@ -366,7 +366,14 @@ function webform_validation_valid_component_types($validator) {
   if ($info = $validators[$validator]) {
     $allowed_types = $info['component_types'];
     if (_webform_validation_all_allowed($allowed_types)) {
-      return webform_load_components();
+      $version = webform_validation_check_version();
+      if ($version == 2) {
+        return webform_load_components();
+      }
+      else {
+        return array_keys(webform_components());
+      }
+      return $componentslist_function();
     }
     return $info['component_types'];
   }
