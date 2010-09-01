@@ -212,7 +212,8 @@ function webform_validation_check_version() {
   static $version;
 
   if (!$version) {
-    if (file_exists(drupal_get_path('module', 'webform') . '/webform_components.inc')) {
+    $webform_info = unserialize(db_result(db_query("SELECT info FROM {system} WHERE name = 'webform'")));
+    if (substr($webform_info['version'], 0, 5) == '6.x-2') {
       $version = 2;
     }
     else {
