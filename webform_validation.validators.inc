@@ -284,7 +284,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "select_min":
         $min_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          if (is_array($val) && (count(array_filter($val)) < $min_selections)) {
+          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) < $min_selections)) {
             $errors[$key] = t('Please select at least %num options for %item', array('%num' => $min_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -293,7 +293,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "select_max":
         $max_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          if (is_array($val) && (count(array_filter($val)) > $max_selections)) {
+          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) > $max_selections)) {
             $errors[$key] = t('Please select maximum %num options for %item', array('%num' => $max_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -302,7 +302,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "select_exact":
         $allowed_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          if (is_array($val) && (count(array_filter($val)) != $allowed_selections)) {
+          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) != $allowed_selections)) {
             $errors[$key] = t('Please select %num options for %item', array('%num' => $allowed_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -354,7 +354,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
  */
 function _webform_validation_flatten_array($val) {
   if (is_array($val)) {
-    $arr = array_filter($val);
+    $arr = array_filter($val, '_webform_validation_check_false');
     return implode(',', $arr);
   }
   return $val;
@@ -430,4 +430,11 @@ function _webform_validation_i18n_error_message($rule) {
     return i18nstrings('webform_validation:error_message:' . $rule['ruleid'] . ':message', $rule['error_message']);
   }
   return $rule['error_message'];
+}
+
+/**
+ * Helper function used by array_filter to determine if a value was selected or not
+ */
+function _webform_validation_check_false($var) {
+  return $var !== FALSE;
 }
