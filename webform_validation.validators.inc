@@ -69,6 +69,21 @@ function webform_validation_webform_validation_validators() {
       ),
       'min_components' => 2,
     ),
+    'specific_value' => array(
+      'name' => "Specific value",
+      'component_types' => array(
+        'select',
+        'textfield',
+        'textarea',
+        'email',
+      ),
+      'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('(Key) value'),
+        'description' => t('Specify the value you want the component to contain. For components that have keys, use the key value instead.')
+      ),
+      'max_components' => 1,
+    ),
     'oneoftwo' => array(
       'name' => "Require at least one of two fields",
       'component_types' => array(
@@ -225,6 +240,15 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           if (in_array($val, array_keys($doubles))) {
             $errors[$key] = t('The value of %item is not unique', array('%item' => $components[$key]['name']));
+          }
+        }
+        return $errors;
+        break;
+      case "specific_value":
+        $specific_value = $rule['data'];
+        foreach ($items as $key => $val) {
+          if ($val !== $specific_value) {
+            $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
         return $errors;
