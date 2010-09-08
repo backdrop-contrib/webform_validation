@@ -202,7 +202,7 @@ function theme_webform_validation_manage_add_rule($nid) {
       $items[] = l($label, $url, array("query" => drupal_get_destination())) . $components;
     }
   }
-  return '<p>'. theme('item_list', $items, t('Add a validation rule')) .'</p>';
+  return theme('item_list', $items, t('Add a validation rule'));
 }
 
 /**
