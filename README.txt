@@ -34,7 +34,8 @@ The following steps will let you add custom validators through your module:
    * custom_data (optional): define whether custom data can be added to the validation rule
    * min_components (optional): define the minimum number of components to be selected for creating a validation rule
    * max_components (optional): define the maximum number of components to be selected for creating a validation rule
-
+   * description (optional): provide a descriptive explanation about the validator
+   
    See function webform_validation_webform_validation_validators() in webform_validation.validators.inc for a live example
 
  2/ Implement hook hook_webform_validation_validate($validator_name, $items, $components, $rule).

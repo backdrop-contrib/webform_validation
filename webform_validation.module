@@ -191,18 +191,29 @@ function webform_validation_unprefix_keys($arr) {
  * Theme the 'add rule' list
  */
 function theme_webform_validation_manage_add_rule($nid) {
+  $output = '';
   $vars = webform_validation_get_vars();
   $suffix = $vars['path_suffix'];
   $validators = webform_validation_get_validators();
+
   if ($validators) {
+    $output = '<h3>' . t('Add a validation rule') . '</h3>';
+    $output .= '<dl>';
     foreach ($validators as $validator_key => $validator_info) {
-      $label = $validator_info['name'];
+      $item = '';
       $url = 'node/'. $nid .'/' . $suffix . '/validation/add/'. $validator_key;
       $components = ' (' . implode(', ', $validator_info['component_types']) . ')';
-      $items[] = l($label, $url, array("query" => drupal_get_destination())) . $components;
+      $item = '<dt>' . l($validator_info['name'], $url, array("query" => drupal_get_destination())) . '</dt>';
+      $item .= '<dd>';
+      if ($validator_info['description']) {
+        $item .= $validator_info['description'] . ' ';
+      }
+      $item .= $components . '</dd>';
+      $output .= $item;
     }
+    $output .= '</dl>';
   }
-  return theme('item_list', $items, t('Add a validation rule'));
+  return $output;
 }
 
 /**

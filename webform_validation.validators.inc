@@ -17,7 +17,7 @@
  * - custom_data (optional): define whether custom data can be added to the validation rule
  * - min_components (optional): define the minimum number of components to be selected for creating a validation rule
  * - max_components (optional): define the maximum number of components to be selected for creating a validation rule
- *
+ * - description (optional): provide a descriptive explanation about the validator
  */
 function webform_validation_webform_validation_validators() {
   return array(
@@ -26,6 +26,7 @@ function webform_validation_webform_validation_validators() {
       'component_types' => array(
         'textfield',
       ),
+      'description' => t('Verifies that user-entered values are numeric.'),
     ),
     'min_length' => array(
       'name' => "Minimum length",
@@ -38,6 +39,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Minimum number of characters'),
         'description' => t('Specify the minimum number of characters that have to be entered to pass validation.')
       ),
+      'description' => t('Verifies that a user-entered value contains at least the specified number of characters'),
     ),
     'max_length' => array(
       'name' => "Maximum length",
@@ -50,6 +52,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Maximum number of characters'),
         'description' => t('Specify the maximum number of characters that can be entered to pass validation.')
       ),
+      'description' => t('Verifies that a user-entered value contains at most the specified number of characters'),
     ),
     'equal' => array(
       'name' => "Equal values",
@@ -59,6 +62,7 @@ function webform_validation_webform_validation_validators() {
         'select',
       ),
       'min_components' => 2,
+      'description' => t('Verifies that all specified components contain equal values'),
     ),
     'unique' => array(
       'name' => "Unique values",
@@ -68,6 +72,7 @@ function webform_validation_webform_validation_validators() {
         'select',
       ),
       'min_components' => 2,
+      'description' => t('Verifies that all specified components contain unique values'),
     ),
     'specific_value' => array(
       'name' => "Specific value",
@@ -83,6 +88,7 @@ function webform_validation_webform_validation_validators() {
         'description' => t('Specify the value you want the component to contain. For components that have keys, use the key value instead.')
       ),
       'max_components' => 1,
+      'description' => t('Verifies that the specified component contains a defined value'),
     ),
     'oneoftwo' => array(
       'name' => "Require at least one of two fields",
@@ -94,6 +100,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'min_components' => 2,
       'max_components' => 2,
+      'description' => t('Forces the user to specify / select at least one of two selected webform components'),
     ),
     'oneofseveral' => array(
       'name' => "Require at least one of several fields",
@@ -104,6 +111,7 @@ function webform_validation_webform_validation_validators() {
         'select',
       ),
       'min_components' => 2,
+      'description' => t('Forces the user to specify / select at least one of several selected webform components'),
     ),
     'select_min' => array(
       'name' => "Minimum number of selections required",
@@ -114,6 +122,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Minimum number of selections'),
         'description' => t('Specify the minimum number of options a user should select.')
       ),
+      'description' => t('Forces the user to select at least a defined number of options from the specified webform components'),
     ),
     'select_max' => array(
       'name' => "Maximum number of selections allowed",
@@ -124,6 +133,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Maximum number of selections'),
         'description' => t('Specify the maximum number of options a user can select.')
       ),
+      'description' => t('Forces the user to select at most a defined number of options from the specified webform components'),
     ),
     'select_exact' => array(
       'name' => "Exact number of selections required",
@@ -134,6 +144,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Number of selections'),
         'description' => t('Specify how many options a user can select.')
       ),
+      'description' => t('Forces the user to select exactly the defined number of options from the specified webform components'),
     ),
     'plain_text' => array(
       'name' => "Plain text (disallow tags)",
@@ -142,6 +153,7 @@ function webform_validation_webform_validation_validators() {
         'textarea',
         'email',
       ),
+      'description' => t("Verifies that user-entered data doesn't contain HTML tags"),
     ),
     'regex' => array(
       'name' => "Regular expression",
@@ -155,12 +167,14 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Regex code'),
         'description' => t('Specify regex code to validate the user input against.')
       ),
+      'description' => t('Validates user-entered text against a specified regular expression'),
     ),
     'must_be_empty' => array(
       'name' => "Must be empty (Anti-Spam: Hide with CSS)",
       'component_types' => array(
         'textfield',
       ),
+      'description' => t('Verifies that a specified textfield remains empty - Recommended use case: used as an anti-spam measure by hiding the element with CSS'),
     ),
     'blacklist' => array(
       'name' => "Words blacklist",
@@ -174,6 +188,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Blacklisted words'),
         'description' => t('Specify illegal words, seperated by commas')
       ),
+      'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words"),
     ),
   );
 }
