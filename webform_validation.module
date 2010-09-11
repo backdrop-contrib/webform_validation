@@ -116,7 +116,7 @@ function webform_validation_validate($form, &$form_state) {
     $page_count = isset($form_state['webform']['page_count']) ? $form_state['webform']['page_count'] : NULL;
   }
   if ($values && $page_count && $page_count > 1) {
-    $current_page_components = array_keys($form_state['values']['submitted']);
+    $current_page_components = webform_validation_get_field_keys($form_state['values']['submitted']);
     if ($rules) {
       // filter out rules that don't belong in the current step
       foreach ($rules as $ruleid => $rule) {
@@ -151,6 +151,24 @@ function webform_validation_validate($form, &$form_state) {
       }
     }
   }
+}
+
+/**
+ * Recursive helper function to get all field keys (including fields in fieldsets)
+ */
+function webform_validation_get_field_keys($submitted) {
+  static $fields = array();
+  $count = 0;
+  foreach (element_children($submitted) as $child) {
+    if (is_array($submitted[$child]) && element_children($submitted[$child])) {
+      webform_validation_get_field_keys($submitted[$child]);
+    }
+    else {
+      $fields[$child] = $child;
+    }
+    $count++;
+  }
+  return $fields;
 }
 
 /**
