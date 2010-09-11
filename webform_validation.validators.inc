@@ -220,7 +220,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             if ($val < $num_range['min'] || $val > $num_range['max']) {
               $errors[$key] = t('%item is not within the allowed range %range', array('%item' => $components[$key]['name'], '%range' => $rule['data']));
             }
-          } else {
+          }
+          else {
             // b. validate min
             if ($num_range['min'] > 0) {
               if ($val < $num_range['min']) {
