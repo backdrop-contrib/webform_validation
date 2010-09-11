@@ -296,7 +296,12 @@ function webform_validation_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
     }
   }
   if ($op == 'delete') {
-    // @TODO
+    $rules = webform_validation_get_node_rules($node->nid);
+    if ($rules) {
+      foreach (array_keys($rules) as $ruleid) {
+        webform_dynamic_delete_rule($ruleid);
+      }
+    }
   }
 }
 
@@ -307,11 +312,13 @@ function webform_validation_node_clone($node) {
   if ($original_nid = $node->clone_from_original_nid) {
     // Get existing rules for original node
     $rules = webform_validation_get_node_rules($original_nid);
-    foreach ($rules as $orig_ruleid => $rule) {
-      $rule['action'] = 'add';
-      $rule['nid'] = $node->nid; // attach existing rules to new node
-      $rule['rule_components'] = $rule['components'];
-      webform_validation_rule_save($rule);
+    if ($rules) {
+      foreach ($rules as $orig_ruleid => $rule) {
+        $rule['action'] = 'add';
+        $rule['nid'] = $node->nid; // attach existing rules to new node
+        $rule['rule_components'] = $rule['components'];
+        webform_validation_rule_save($rule);
+      }
     }
   }
 }
