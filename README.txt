@@ -7,13 +7,21 @@ You can create one or more of the predefined validation rules, and select which 
 By using the hooks provided by this module, you can also define your own validation rules in your own modules.
 
 The following validation rules are currently included:
-- Numeric values
+- Numeric values (optionally specify min and / or max value)
 - Minimum length
 - Maximum length
 - Equal values on multiple fields
 - Unique values on multiple fields
+- Specific value
 - Require at least one of two fields
+- Require at least one of several fields
+- Minimum number of selections required
+- Maximum number of selections allowed
+- Exact number of selections required
+- Plain text (disallow tags)
 - Regular expression
+- Must be empty (Anti-Spam: Hide with CSS)
+- Words blacklist
 
 Installation
 ------------
