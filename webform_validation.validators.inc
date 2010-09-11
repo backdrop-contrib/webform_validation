@@ -191,7 +191,7 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Blacklisted words'),
-        'description' => t('Specify illegal words, seperated by commas')
+        'description' => t('Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character.')
       ),
       'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words"),
     ),
