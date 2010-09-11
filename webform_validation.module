@@ -284,3 +284,70 @@ function webform_validation_webform_validation($type, $op, $data) {
     }
   }
 }
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function webform_validation_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  if ($op == 'insert') {
+    $vars = webform_validation_get_vars();
+    if (in_array($node->type, $vars['webform_contenttypes'])) {
+      webform_validation_node_clone($node);
+    }
+  }
+  if ($op == 'delete') {
+    // @TODO
+  }
+}
+
+/**
+ * Adds support for node_clone module
+ */
+function webform_validation_node_clone($node) {
+  if ($original_nid = $node->clone_from_original_nid) {
+    // Get existing rules for original node
+    $rules = webform_validation_get_node_rules($original_nid);
+    foreach ($rules as $orig_ruleid => $rule) {
+      $rule['action'] = 'add';
+      $rule['nid'] = $node->nid; // attach existing rules to new node
+      $rule['rule_components'] = $rule['components'];
+      webform_validation_rule_save($rule);
+    }
+  }
+}
+
+/**
+ * Save a validation rule. Data comes from the admin form
+ * or nodeapi function in case of node clone
+ */
+function webform_validation_rule_save($values) {
+  // save rules data
+  if ($values['action'] == 'add') {
+    drupal_write_record('webform_validation_rule', $values);
+    $ruleid = $values['ruleid'];
+    if ($ruleid && array_filter($values['rule_components'])) {
+      webform_validation_save_rule_components($ruleid, array_filter($values['rule_components']));
+      module_invoke_all('webform_validation', 'rule', 'add', $values);
+    }
+  }
+
+  if ($values['action'] == 'edit') {
+    drupal_write_record('webform_validation_rule', $values, 'ruleid');
+    $ruleid = $values['ruleid'];
+      // delete earlier component records for this rule id
+      db_query("DELETE FROM {webform_validation_rule_components} WHERE ruleid = %d", $ruleid);
+    if ($components = array_filter($values['rule_components'])) {
+      webform_validation_save_rule_components($ruleid, $components);
+      module_invoke_all('webform_validation', 'rule', 'edit', $values);
+    }
+  }
+}
+
+/**
+ * Save components attached to a specific rule
+ */
+function webform_validation_save_rule_components($ruleid, $components) {
+  foreach ($components as $cid => $component) {
+    db_query("INSERT INTO {webform_validation_rule_components} (ruleid, cid) VALUES (%d, %d)", $ruleid, $cid);
+  }
+}

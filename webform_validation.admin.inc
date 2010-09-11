@@ -195,32 +195,7 @@ function webform_validation_manage_rule_validate($form, &$form_state) {
  */
 function webform_validation_manage_rule_submit($form, &$form_state) {
   $values = $form_state['values'];
-  // save rules data
-  if ($values['action'] == 'add') {
-    drupal_write_record('webform_validation_rule', $values);
-    $ruleid = $values['ruleid'];
-    if ($ruleid && array_filter($values['rule_components'])) {
-      webform_validation_save_rule_components($ruleid, array_filter($values['rule_components']));
-      module_invoke_all('webform_validation', 'rule', 'add', $values);
-    }
-  }
-
-  if ($values['action'] == 'edit') {
-    drupal_write_record('webform_validation_rule', $values, 'ruleid');
-    $ruleid = $values['ruleid'];
-      // delete earlier component records for this rule id
-      db_query("DELETE FROM {webform_validation_rule_components} WHERE ruleid = %d", $ruleid);
-    if ($components = array_filter($values['rule_components'])) {
-      webform_validation_save_rule_components($ruleid, $components);
-      module_invoke_all('webform_validation', 'rule', 'edit', $values);
-    }
-  }
-}
-
-function webform_validation_save_rule_components($ruleid, $components) {
-  foreach ($components as $cid => $component) {
-    db_query("INSERT INTO {webform_validation_rule_components} (ruleid, cid) VALUES (%d, %d)", $ruleid, $cid);
-  }
+  webform_validation_rule_save($values);
 }
 
 /**
