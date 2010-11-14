@@ -202,6 +202,16 @@ function webform_validation_webform_validation_validators() {
  * Implementation of hook_webform_validation_validate().
  */
 function webform_validation_webform_validation_validate($validator_name, $items, $components, $rule) {
+  /**
+   * Preparation for select_* validation rules and the handling of key 0 for select components
+   * 
+   * Only webform 3 handles a select list with key 0 properly.
+   * The array_filter callback function is only loaded for webform 3 to make sure
+   * it works perfectly for webform 3, and works in all cases except with key 0 for webform 2
+   */
+  $version = $version = webform_validation_check_version();
+  $check_false_callback = ($version == 3) ? '_webform_validation_check_false' : NULL;
+
   if ($items) {
     switch ($validator_name) {
       case 'numeric':
@@ -331,7 +341,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "select_min":
         $min_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) < $min_selections)) {
+          $selected_values = isset($check_false_callback) ? array_filter($val, $check_false_callback): array_filter($val);
+          if (is_array($val) && (count($selected_values) < $min_selections)) {
             $errors[$key] = t('Please select at least %num options for %item', array('%num' => $min_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -340,7 +351,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "select_max":
         $max_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) > $max_selections)) {
+          $selected_values = isset($check_false_callback) ? array_filter($val, $check_false_callback): array_filter($val);
+          if (is_array($val) && (count($selected_values) > $max_selections)) {
             $errors[$key] = t('Please select maximum %num options for %item', array('%num' => $max_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -349,7 +361,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "select_exact":
         $allowed_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) != $allowed_selections)) {
+          $selected_values = isset($check_false_callback) ? array_filter($val, $check_false_callback): array_filter($val);
+          if (is_array($val) && (count($selected_values) != $allowed_selections)) {
             $errors[$key] = t('Please select %num options for %item', array('%num' => $allowed_selections, '%item' => $components[$key]['name']));
           }
         }
