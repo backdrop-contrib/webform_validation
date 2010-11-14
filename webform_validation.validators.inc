@@ -80,7 +80,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that all specified components contain unique values'),
     ),
     'specific_value' => array(
-      'name' => "Specific value",
+      'name' => "Specific value(s)",
       'component_types' => array(
         'select',
         'textfield',
@@ -90,7 +90,7 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('(Key) value'),
-        'description' => t('Specify the value you want the component to contain. For components that have keys, use the key value instead.')
+        'description' => t('Specify the specific value(s) you want the component to contain. Separate multiple options by a comma. For components that have keys, use the key value instead.')
       ),
       'max_components' => 1,
       'description' => t('Verifies that the specified component contains a defined value'),
@@ -291,9 +291,10 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "specific_value":
-        $specific_value = $rule['data'];
+        $specific_values = explode(',', $rule['data']);
+        $specific_values = array_map('trim', $specific_values);
         foreach ($items as $key => $val) {
-          if ($val !== $specific_value) {
+          if (!in_array($val, $specific_values)) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
