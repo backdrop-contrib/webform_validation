@@ -1,5 +1,5 @@
 name = Webform Validation
 description = "Add validation rules to webforms"
-core = 6.x
+core = 7.x
 dependencies[] = webform
 package = Webform
