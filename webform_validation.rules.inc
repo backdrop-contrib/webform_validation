@@ -10,8 +10,9 @@
  * Get a rule entry
  */
 function webform_validation_get_rule($ruleid) {
-  $result = db_query("SELECT ruleid, rulename, nid, validator, data, error_message FROM {webform_validation_rule} WHERE ruleid = %d", $ruleid);
-  if ($rule = db_fetch_array($result)) {
+  $result = db_query("SELECT ruleid, rulename, nid, validator, data, error_message FROM {webform_validation_rule} WHERE ruleid = :ruleid", array(':ruleid' => $ruleid), array('fetch' => PDO::FETCH_ASSOC));
+  // TODO: I'm not sure that the line below is the correct syntax for evaluating a single result  
+  foreach ($result as $rule) {
     $rule['components'] = webform_validation_get_rule_components($ruleid, $rule['nid']);
   }
   return $rule;
@@ -22,8 +23,8 @@ function webform_validation_get_rule($ruleid) {
  */
 function webform_validation_get_node_rules($nid) {
   $rules = array();
-  $result = db_query("SELECT ruleid, rulename, nid, validator, data, error_message FROM {webform_validation_rule} WHERE nid = %d ORDER BY ruleid DESC", $nid);
-  while ($rule = db_fetch_array($result)) {
+  $result = db_query("SELECT ruleid, rulename, nid, validator, data, error_message FROM {webform_validation_rule} WHERE nid = :nid ORDER BY ruleid DESC", array(':nid' => $nid), array('fetch' => PDO::FETCH_ASSOC));  
+  foreach ($result as $rule) {
     $rule['components'] = webform_validation_get_rule_components($rule['ruleid'], $rule['nid']);
     $rules[$rule['ruleid']] = $rule;
   }
@@ -36,9 +37,8 @@ function webform_validation_get_node_rules($nid) {
 function webform_validation_get_rule_components($ruleid, $nid) {
   $cids = array();
   $components = array();
-  //$result = db_query("SELECT v.cid, c.name FROM {webform_validation_rule_components} v INNER JOIN {webform_component} c ON v.cid = c.cid AND c.nid = %d WHERE v.ruleid = %d", $ruleid);
-  $result = db_query("SELECT cid FROM {webform_validation_rule_components} WHERE ruleid = %d", $ruleid);
-  while ($row = db_fetch_array($result)) {
+  $result = db_query("SELECT cid FROM {webform_validation_rule_components} WHERE ruleid = :ruleid", array(':ruleid' => $ruleid), array('fetch' => PDO::FETCH_ASSOC));  
+  foreach ($result as $row) {
     $cids[] = $row['cid'];
   }
 
@@ -59,8 +59,8 @@ function webform_validation_get_rule_components($ruleid, $nid) {
  */
 function webform_validation_get_all_components($nid) {
   $components = array();
-  $result = db_query("SELECT * FROM {webform_component} WHERE nid = %d", $nid);
-  while ($row = db_fetch_array($result)) {
+  $result = db_query("SELECT * FROM {webform_component} WHERE nid = :nid", array(':nid' => $nid), array('fetch' => PDO::FETCH_ASSOC));  
+  foreach ($result as $row) {
     $components[$row['cid']] = $row;
   }
   return $components;
@@ -83,6 +83,10 @@ function webform_validation_rule_components_basic($components) {
  * Delete a rule and dependencies
  */
 function webform_dynamic_delete_rule($ruleid) {
-  db_query("DELETE FROM {webform_validation_rule} WHERE ruleid = %d" , $ruleid);
-  db_query("DELETE FROM {webform_validation_rule_components} WHERE ruleid = %d", $ruleid);
+  db_delete('webform_validation_rule')
+  ->condition('ruleid', $ruleid)
+  ->execute();
+  db_delete('webform_validation_rule_components')
+  ->condition('ruleid', $ruleid)
+  ->execute();
 }

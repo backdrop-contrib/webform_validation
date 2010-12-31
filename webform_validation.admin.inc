@@ -11,8 +11,8 @@
  */
 function webform_validation_manage($node) {
   $rules = webform_validation_get_webform_rules($node);
-  $output .= theme('webform_validation_manage_overview', $rules, $node);
-  $output .= theme('webform_validation_manage_add_rule', $node->nid);
+  $output .= theme('webform_validation_manage_overview', array('rules' => $rules, 'node' => $node));
+  $output .= theme('webform_validation_manage_add_rule', array('nid' => $node->nid));
   return $output;
 }
 
@@ -31,11 +31,16 @@ function webform_validation_get_webform_rules($node) {
 /**
  * Themable function to list the rules assigned to a webform
  */
-function theme_webform_validation_manage_overview($rules = array(), $node = NULL) {
+function theme_webform_validation_manage_overview($variables) {
+  $rules = $variables['rules'];
+  $node = $variables['node'];
   $vars = webform_validation_get_vars();
   $suffix = $vars['path_suffix'];
 
-  $header = array(t('Rule name'), t('Validator'), t('Components'), array('data' => t('Operations'), 'colspan' => 2));
+  $header = array(t('Rule name'), t('Validator'), t('Components'), array(
+      'data' => t('Operations'),
+      'colspan' => 2,
+    ));
   $validators = webform_validation_get_validators_selection();
   if (!empty($rules)) {
     foreach ($rules as $rule) {
@@ -48,28 +53,31 @@ function theme_webform_validation_manage_overview($rules = array(), $node = NULL
         'data' => $validators[$rule['validator']],
       );
       $row[] = array(
-        'data' => theme('item_list', $component_info),
+        'data' => theme('item_list', array('items' => $component_info)),
       );
       $row[] = array(
-        'data' => l(t('Edit'), 'node/'. $node->nid .'/' . $suffix . '/validation/edit/'. $rule['validator'] .'/'. $rule['ruleid'], array("query" => drupal_get_destination())),
+        'data' => l(t('Edit'), 'node/' . $node->nid . '/' . $suffix . '/validation/edit/' . $rule['validator'] . '/' . $rule['ruleid'], array("query" => drupal_get_destination())),
       );
       $row[] = array(
-        'data' => l(t('Delete'), 'node/'. $node->nid .'/' . $suffix . '/validation/delete/'. $rule['ruleid'], array("query" => drupal_get_destination())),
+        'data' => l(t('Delete'), 'node/' . $node->nid . '/' . $suffix . '/validation/delete/' . $rule['ruleid'], array("query" => drupal_get_destination())),
       );
       $rows[] = $row;
     }
   }
   else {
-      $rows[][] = array(
-        'data' => t('No validation rules available.'),
-        'colspan' => 5,
-      );
+    $rows[][] = array(
+      'data' => t('No validation rules available.'),
+      'colspan' => 5,
+    );
   }
 
-  return theme('table', $header, $rows);
+  return theme('table', array('header' => $header, 'rows' => $rows));
 }
 
-function webform_validation_manage_rule($form_state, $node, $action = 'add', $validator, $rule = NULL) {
+/**
+ * Callback function to add or edit a validation rule
+ */
+function webform_validation_manage_rule($form, $form_state, $node, $action = 'add', $validator, $rule = NULL) {
   $form = array();
   $rule_validator = webform_validation_get_validator_info($validator);
 
@@ -218,7 +226,7 @@ function webform_validation_get_webform_components($node, $validator) {
 /**
  * Confirmation form to delete a rule
  */
-function webform_validation_delete_rule(&$form_state, $rule) {
+function webform_validation_delete_rule($form, &$form_state, $rule) {
   $form['ruleid'] = array(
     '#type' => 'value',
     '#value' => $rule['ruleid'],

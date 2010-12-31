@@ -7,7 +7,7 @@
  */
 
 /**
- * Implementation of hook_webform_validation_validators().
+ * Implements hook_webform_validation_validators().
  *
  * This function returns an array of validators, in the validator key => options array form.
  * Possible options:
@@ -29,7 +29,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Specify numeric validation range'),
         'description' => t('Optionally specify the minimum-maximum range to validate the user-entered numeric value against.') . ' ' . t('Usage') . ':'
-        . theme('item_list', array(t('empty or "0": no value validation'), t('"100": greater than or equal to 100'), t('"0-100": less than or equal to 100'), t('"10-100": greater than or equal to 10 &amp; less than or equal to 100')))
+        . theme('item_list', array('items' => array(t('empty or "0": no value validation'), t('"100": greater than or equal to 100'), t('"0-100": less than or equal to 100'), t('"10-100": greater than or equal to 10 &amp; less than or equal to 100')))),
       ),
       'description' => t('Verifies that user-entered values are numeric, with the option to specify min and / or max values.'),
     ),
@@ -42,7 +42,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Minimum number of characters'),
-        'description' => t('Specify the minimum number of characters that have to be entered to pass validation.')
+        'description' => t('Specify the minimum number of characters that have to be entered to pass validation.'),
       ),
       'description' => t('Verifies that a user-entered value contains at least the specified number of characters'),
     ),
@@ -55,7 +55,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Maximum number of characters'),
-        'description' => t('Specify the maximum number of characters that can be entered to pass validation.')
+        'description' => t('Specify the maximum number of characters that can be entered to pass validation.'),
       ),
       'description' => t('Verifies that a user-entered value contains at most the specified number of characters'),
     ),
@@ -80,7 +80,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that all specified components contain unique values'),
     ),
     'specific_value' => array(
-      'name' => "Specific value(s)",
+      'name' => "Specific value",
       'component_types' => array(
         'select',
         'textfield',
@@ -90,7 +90,7 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('(Key) value'),
-        'description' => t('Specify the specific value(s) you want the component to contain. Separate multiple options by a comma. For components that have keys, use the key value instead.')
+        'description' => t('Specify the value you want the component to contain. For components that have keys, use the key value instead.'),
       ),
       'max_components' => 1,
       'description' => t('Verifies that the specified component contains a defined value'),
@@ -125,7 +125,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Minimum number of selections'),
-        'description' => t('Specify the minimum number of options a user should select.')
+        'description' => t('Specify the minimum number of options a user should select.'),
       ),
       'description' => t('Forces the user to select at least a defined number of options from the specified webform components'),
     ),
@@ -136,7 +136,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Maximum number of selections'),
-        'description' => t('Specify the maximum number of options a user can select.')
+        'description' => t('Specify the maximum number of options a user can select.'),
       ),
       'description' => t('Forces the user to select at most a defined number of options from the specified webform components'),
     ),
@@ -147,7 +147,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Number of selections'),
-        'description' => t('Specify how many options a user can select.')
+        'description' => t('Specify how many options a user can select.'),
       ),
       'description' => t('Forces the user to select exactly the defined number of options from the specified webform components'),
     ),
@@ -170,7 +170,7 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Regex code'),
-        'description' => t('Specify regex code to validate the user input against.')
+        'description' => t('Specify regex code to validate the user input against.'),
       ),
       'description' => t('Validates user-entered text against a specified regular expression'),
     ),
@@ -191,7 +191,7 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Blacklisted words'),
-        'description' => t('Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character.')
+        'description' => t('Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character.'),
       ),
       'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words"),
     ),
@@ -199,19 +199,9 @@ function webform_validation_webform_validation_validators() {
 }
 
 /**
- * Implementation of hook_webform_validation_validate().
+ * Implements hook_webform_validation_validate().
  */
 function webform_validation_webform_validation_validate($validator_name, $items, $components, $rule) {
-  /**
-   * Preparation for select_* validation rules and the handling of key 0 for select components
-   * 
-   * Only webform 3 handles a select list with key 0 properly.
-   * The array_filter callback function is only loaded for webform 3 to make sure
-   * it works perfectly for webform 3, and works in all cases except with key 0 for webform 2
-   */
-  $version = $version = webform_validation_check_version();
-  $check_false_callback = ($version == 3) ? '_webform_validation_check_false' : NULL;
-
   if ($items) {
     switch ($validator_name) {
       case 'numeric':
@@ -301,10 +291,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "specific_value":
-        $specific_values = explode(',', $rule['data']);
-        $specific_values = array_map('trim', $specific_values);
+        $specific_value = $rule['data'];
         foreach ($items as $key => $val) {
-          if (!in_array($val, $specific_values)) {
+          if ($val !== $specific_value) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
@@ -335,14 +324,13 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           foreach ($keys as $value) {
             $names[] = $components[$value]['name'];
           }
-          return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', $names));
+          return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', array('items' => $names)));
         }
         break;
       case "select_min":
         $min_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          $selected_values = isset($check_false_callback) ? array_filter($val, $check_false_callback): array_filter($val);
-          if (is_array($val) && (count($selected_values) < $min_selections)) {
+          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) < $min_selections)) {
             $errors[$key] = t('Please select at least %num options for %item', array('%num' => $min_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -351,8 +339,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "select_max":
         $max_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          $selected_values = isset($check_false_callback) ? array_filter($val, $check_false_callback): array_filter($val);
-          if (is_array($val) && (count($selected_values) > $max_selections)) {
+          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) > $max_selections)) {
             $errors[$key] = t('Please select maximum %num options for %item', array('%num' => $max_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -361,8 +348,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "select_exact":
         $allowed_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          $selected_values = isset($check_false_callback) ? array_filter($val, $check_false_callback): array_filter($val);
-          if (is_array($val) && (count($selected_values) != $allowed_selections)) {
+          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) != $allowed_selections)) {
             $errors[$key] = t('Please select %num options for %item', array('%num' => $allowed_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -377,10 +363,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "regex":
-        mb_regex_encoding('UTF-8');
         $regex = $rule['data'];
         foreach ($items as $key => $val) {
-          if ($val && (!mb_ereg("$regex", $val))) {
+          if ($val && (!preg_match("/$regex/", $val))) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
@@ -395,14 +380,14 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "blacklist":
-          $blacklist = explode(',', $rule['data']);
-          $blacklist = array_map('trim', $blacklist);
-          $blacklist_regex = implode('|', $blacklist);
-          foreach ($items as $key => $val) {
-            if ($val && (preg_match("/$blacklist_regex/i", $val))) {
-              $errors[$key] = _webform_validation_i18n_error_message($rule);
-            }
+        $blacklist = explode(',', $rule['data']);
+        $blacklist = array_map('trim', $blacklist);
+        $blacklist_regex = implode('|', $blacklist);
+        foreach ($items as $key => $val) {
+          if ($val && (preg_match("/$blacklist_regex/i", $val))) {
+            $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
+        }
         return $errors;
         break;
     }
@@ -431,6 +416,10 @@ function webform_validation_get_validators() {
   return $validators;
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function webform_validation_get_validators_selection() {
   $selection = array();
   $validators = webform_validation_get_validators();
@@ -478,6 +467,10 @@ function _webform_validation_all_allowed($allowed) {
   return FALSE;
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function webform_validation_get_validator_info($validator_key) {
   $validators = webform_validation_get_validators();
   return $validators[$validator_key];
@@ -504,7 +497,10 @@ function _webform_validation_check_false($var) {
  * Process the numeric value validation range that was provided in the numeric validator options
  */
 function _webform_numeric_check_data($data) {
-  $range = array('min' => NULL, 'max' => NULL);
+  $range = array(
+    'min' => NULL,
+    'max' => NULL,
+  );
   // if no numeric value or range was specified, don't validate
   if (empty($data)) {
     return $range;

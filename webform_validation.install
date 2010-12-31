@@ -7,21 +7,7 @@
  */
 
 /**
- * Implementation of hook_install().
- */
-function webform_validation_install() {
-  drupal_install_schema('webform_validation');
-}
-
-/**
- * Implementation of hook_uninstall().
- */
-function webform_validation_uninstall() {
-  drupal_uninstall_schema('webform_validation');
-}
-
-/**
- * Implementation of hook_schema().
+ * Implements hook_schema().
  */
 function webform_validation_schema() {
   $schema['webform_validation_rule'] = array(
@@ -67,7 +53,7 @@ function webform_validation_schema() {
         'length' => 255,
       ),
     ),
-   'primary key' => array('ruleid'),
+    'primary key' => array('ruleid'),
     'indexes' => array(
       'nid' => array('nid'),
     ),
@@ -91,7 +77,7 @@ function webform_validation_schema() {
         'unsigned' => TRUE,
       ),
     ),
-   'primary key' => array('ruleid', 'cid'),
+    'primary key' => array('ruleid', 'cid'),
   );
   return $schema;
 }
