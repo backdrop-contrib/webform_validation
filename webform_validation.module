@@ -302,12 +302,10 @@ function webform_validation_rule_save($values) {
   if ($values['action'] == 'edit') {
     drupal_write_record('webform_validation_rule', $values, 'ruleid');
     $ruleid = $values['ruleid'];
-    // delete earlier component records for this rule id
-    // TODO Please review the conversion of this statement to the D7 database API syntax.
-    /* db_query("DELETE FROM {webform_validation_rule_components} WHERE ruleid = %d", $ruleid) */
+    // delete earlier component records for this rule id*/
     db_delete('webform_validation_rule_components')
-  ->condition('ruleid', $ruleid)
-  ->execute();
+    ->condition('ruleid', $ruleid)
+    ->execute();
     if ($components = array_filter($values['rule_components'])) {
       webform_validation_save_rule_components($ruleid, $components);
       module_invoke_all('webform_validation', 'rule', 'edit', $values);
@@ -320,10 +318,8 @@ function webform_validation_rule_save($values) {
  */
 function webform_validation_save_rule_components($ruleid, $components) {
   foreach ($components as $cid => $component) {
-    // TODO Please review the conversion of this statement to the D7 database API syntax.
-    /* db_query("INSERT INTO {webform_validation_rule_components} (ruleid, cid) VALUES (%d, %d)", $ruleid, $cid) */
     $id = db_insert('webform_validation_rule_components')
-  ->fields(array(
+    ->fields(array(
       'ruleid' => $ruleid,
       'cid' => $cid,
     ))
