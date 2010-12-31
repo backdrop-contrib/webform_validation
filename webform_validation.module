@@ -14,10 +14,8 @@ include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'webform_validation')
  */
 function webform_validation_menu() {
   $items = array();
-  $vars = webform_validation_get_vars();
-  $suffix = $vars['path_suffix'];
 
-  $items['node/%webform_menu/' . $suffix . '/validation'] = array(
+  $items['node/%webform_menu/webform/validation'] = array(
     'title' => 'Form validation',
     'page callback' => 'webform_validation_manage',
     'page arguments' => array(1),
@@ -28,7 +26,7 @@ function webform_validation_menu() {
     'type' => MENU_LOCAL_TASK,
   );
 
-  $items['node/%webform_menu/' . $suffix . '/validation/add/%'] = array(
+  $items['node/%webform_menu/webform/validation/add/%'] = array(
     'title' => 'Add validation',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webform_validation_manage_rule', 1, 'add', 5),
@@ -38,7 +36,7 @@ function webform_validation_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['node/%webform_menu/' . $suffix . '/validation/edit/%/%webform_validation_rule'] = array(
+  $items['node/%webform_menu/webform/validation/edit/%/%webform_validation_rule'] = array(
     'title' => 'Edit rule',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webform_validation_manage_rule', 1, 'edit', 5, 6),
@@ -48,7 +46,7 @@ function webform_validation_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['node/%webform_menu/' . $suffix . '/validation/delete/%webform_validation_rule'] = array(
+  $items['node/%webform_menu/webform/validation/delete/%webform_validation_rule'] = array(
     'title' => 'Delete rule',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('webform_validation_delete_rule', 5),
@@ -211,8 +209,6 @@ function webform_validation_unprefix_keys($arr) {
 function theme_webform_validation_manage_add_rule($variables) {
   $nid = $variables['nid'];
   $output = '';
-  $vars = webform_validation_get_vars();
-  $suffix = $vars['path_suffix'];
   $validators = webform_validation_get_validators();
 
   if ($validators) {
@@ -220,7 +216,7 @@ function theme_webform_validation_manage_add_rule($variables) {
     $output .= '<dl>';
     foreach ($validators as $validator_key => $validator_info) {
       $item = '';
-      $url = 'node/' . $nid . '/' . $suffix . '/validation/add/' . $validator_key;
+      $url = 'node/' . $nid . '/webform/validation/add/' . $validator_key;
       $components = ' (' . implode(', ', $validator_info['component_types']) . ')';
       $item = '<dt>' . l($validator_info['name'], $url, array("query" => drupal_get_destination())) . '</dt>';
       $item .= '<dd>';
@@ -255,27 +251,6 @@ function webform_validation_check_version() {
 }
 
 /**
- * Get variables based on the installed version of Webform module
- */
-function webform_validation_get_vars() {
-  $version = webform_validation_check_version();
-  switch ($version) {
-    case 2:
-      return array(
-        'path_suffix' => 'edit',
-        'webform_contenttypes' => array('webform'),
-      );
-      break;
-    case 3:
-      return array(
-        'path_suffix' => 'webform',
-        'webform_contenttypes' => webform_variable_get('webform_node_types'),
-      );
-      break;
-  }
-}
-
-/**
  * Implements hook_webform_validation().
  */
 function webform_validation_webform_validation($type, $op, $data) {
@@ -291,8 +266,7 @@ function webform_validation_webform_validation($type, $op, $data) {
  */
 function webform_validation_node_insert($node) {
   if (TRUE) {
-    $vars = webform_validation_get_vars();
-    if (in_array($node->type, $vars['webform_contenttypes'])) {
+    if (in_array($node->type, webform_variable_get('webform_node_types'))) {
       webform_validation_node_clone($node);
     }
   }

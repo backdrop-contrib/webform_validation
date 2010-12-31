@@ -20,8 +20,7 @@ function webform_validation_manage($node) {
  * Get the list of rules associated with the webform
  */
 function webform_validation_get_webform_rules($node) {
-  $vars = webform_validation_get_vars();
-  if (in_array($node->type, $vars['webform_contenttypes'])) {
+  if (in_array($node->type, webform_variable_get('webform_node_types'))) {
     $webform_nid = $node->nid;
     $rules = webform_validation_get_node_rules($node->nid);
   }
@@ -34,8 +33,6 @@ function webform_validation_get_webform_rules($node) {
 function theme_webform_validation_manage_overview($variables) {
   $rules = $variables['rules'];
   $node = $variables['node'];
-  $vars = webform_validation_get_vars();
-  $suffix = $vars['path_suffix'];
 
   $header = array(t('Rule name'), t('Validator'), t('Components'), array(
       'data' => t('Operations'),
@@ -56,10 +53,10 @@ function theme_webform_validation_manage_overview($variables) {
         'data' => theme('item_list', array('items' => $component_info)),
       );
       $row[] = array(
-        'data' => l(t('Edit'), 'node/' . $node->nid . '/' . $suffix . '/validation/edit/' . $rule['validator'] . '/' . $rule['ruleid'], array("query" => drupal_get_destination())),
+        'data' => l(t('Edit'), 'node/' . $node->nid . '/webform/validation/edit/' . $rule['validator'] . '/' . $rule['ruleid'], array("query" => drupal_get_destination())),
       );
       $row[] = array(
-        'data' => l(t('Delete'), 'node/' . $node->nid . '/' . $suffix . '/validation/delete/' . $rule['ruleid'], array("query" => drupal_get_destination())),
+        'data' => l(t('Delete'), 'node/' . $node->nid . '/webform/validation/delete/' . $rule['ruleid'], array("query" => drupal_get_destination())),
       );
       $rows[] = $row;
     }
