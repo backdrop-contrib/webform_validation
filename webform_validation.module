@@ -106,13 +106,7 @@ function webform_validation_validate($form, &$form_state) {
   $rules = webform_validation_get_node_rules($nid);
 
   // multistep: keep track of values submitted in previous steps.
-  $version = webform_validation_check_version();
-  if ($version == 2) {
-    $page_count = isset($form_state['values']['details']['page_count']) ? $form_state['values']['details']['page_count'] : NULL;
-  }
-  elseif ($version == 3) {
-    $page_count = isset($form_state['webform']['page_count']) ? $form_state['webform']['page_count'] : NULL;
-  }
+  $page_count = isset($form_state['webform']['page_count']) ? $form_state['webform']['page_count'] : NULL;
   if ($values && $page_count && $page_count > 1) {
     $current_page_components = webform_validation_get_field_keys($form_state['values']['submitted']);
     if ($rules) {
@@ -229,25 +223,6 @@ function theme_webform_validation_manage_add_rule($variables) {
     $output .= '</dl>';
   }
   return $output;
-}
-
-/**
- * Check if we are operating with Webforms 6.x-2.x or 6.x-3.x
- */
-function webform_validation_check_version() {
-  static $version;
-
-  if (!$version) {
-    $webform_info = unserialize(db_query("SELECT info FROM {system} WHERE name = :name", array(':name' => 'webform'))->fetchField());
-    if (substr($webform_info['version'], 0, 5) == '6.x-2') {
-      $version = 2;
-    }
-    else {
-      $version = 3;
-    }
-  }
-
-  return $version;
 }
 
 /**
