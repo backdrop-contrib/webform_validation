@@ -203,6 +203,7 @@ function webform_validation_webform_validation_validators() {
  */
 function webform_validation_webform_validation_validate($validator_name, $items, $components, $rule) {
   if ($items) {
+    $errors = array();
     switch ($validator_name) {
       case 'numeric':
         $num_range = _webform_numeric_check_data($rule['data']);
@@ -329,6 +330,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         break;
       case "select_min":
         $min_selections = $rule['data'];
+        dsm($items);
         foreach ($items as $key => $val) {
           if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) < $min_selections)) {
             $errors[$key] = t('Please select at least %num options for %item', array('%num' => $min_selections, '%item' => $components[$key]['name']));
@@ -483,7 +485,7 @@ function _webform_validation_i18n_error_message($rule) {
  * Helper function used by array_filter to determine if a value was selected or not
  */
 function _webform_validation_check_false($var) {
-  return $var !== FALSE;
+  return $var !== FALSE && $var !== 0;
 }
 
 /**

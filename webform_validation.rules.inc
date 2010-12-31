@@ -10,9 +10,9 @@
  * Get a rule entry
  */
 function webform_validation_get_rule($ruleid) {
-  $result = db_query("SELECT ruleid, rulename, nid, validator, data, error_message FROM {webform_validation_rule} WHERE ruleid = :ruleid", array(':ruleid' => $ruleid));
-  $record = $result->fetchObject();
-  $rule['components'] = webform_validation_get_rule_components($ruleid, $record->nid);
+  $result = db_query("SELECT ruleid, rulename, nid, validator, data, error_message FROM {webform_validation_rule} WHERE ruleid = :ruleid", array(':ruleid' => $ruleid), array('fetch' => PDO::FETCH_ASSOC));
+  $rule = $result->fetchAssoc();
+  $rule['components'] = webform_validation_get_rule_components($ruleid, $rule['nid']);
   return $rule;
 }
 

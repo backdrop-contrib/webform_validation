@@ -11,6 +11,7 @@
  */
 function webform_validation_manage($node) {
   $rules = webform_validation_get_webform_rules($node);
+  $output = '';
   $output .= theme('webform_validation_manage_overview', array('rules' => $rules, 'node' => $node));
   $output .= theme('webform_validation_manage_add_rule', array('nid' => $node->nid));
   return $output;
@@ -145,7 +146,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action = 'ad
     );
   }
 
-  if ($rule_validator['custom_error']) {
+  if (isset($rule_validator['custom_error']) && $rule_validator['custom_error']) {
     $form['rule']['error_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Custom error message'),
@@ -224,10 +225,12 @@ function webform_validation_get_webform_components($node, $validator) {
  * Confirmation form to delete a rule
  */
 function webform_validation_delete_rule($form, &$form_state, $rule) {
-  $form['ruleid'] = array(
-    '#type' => 'value',
-    '#value' => $rule['ruleid'],
-  );
+  if (isset($rule['ruleid'])) {
+    $form['ruleid'] = array(
+      '#type' => 'value',
+      '#value' => $rule['ruleid'],
+    );
+  }
 
   return confirm_form($form,
     t('Are you sure you want to delete the rule %name?', array('%name' => $rule['rulename'])),
