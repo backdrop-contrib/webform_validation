@@ -240,10 +240,8 @@ function webform_validation_webform_validation($type, $op, $data) {
  * Implements hook_node_insert().
  */
 function webform_validation_node_insert($node) {
-  if (TRUE) {
-    if (in_array($node->type, webform_variable_get('webform_node_types'))) {
-      webform_validation_node_clone($node);
-    }
+  if (in_array($node->type, webform_variable_get('webform_node_types'))) {
+    webform_validation_node_clone($node);
   }
 }
 
@@ -251,26 +249,20 @@ function webform_validation_node_insert($node) {
  * Implements hook_node_delete().
  */
 function webform_validation_node_delete($node) {
-  if (TRUE) {
-    $rules = webform_validation_get_node_rules($node->nid);
-    if ($rules) {
-      foreach (array_keys($rules) as $ruleid) {
-        webform_dynamic_delete_rule($ruleid);
-      }
+  $rules = webform_validation_get_node_rules($node->nid);
+  if ($rules) {
+    foreach (array_keys($rules) as $ruleid) {
+      webform_dynamic_delete_rule($ruleid);
     }
   }
 }
 
 /**
- * Implements hook_nodeapi().
- */
-//function webform_validation_nodeapi_OLD(&$node, $op, $a3 = NULL, $a4 = NULL) { }
-
-/**
  * Adds support for node_clone module
  */
 function webform_validation_node_clone($node) {
-  if ($original_nid = $node->clone_from_original_nid) {
+  if (isset($node->clone_from_original_nid)) {
+    $original_nid = $node->clone_from_original_nid;
     // Get existing rules for original node
     $rules = webform_validation_get_node_rules($original_nid);
     if ($rules) {
