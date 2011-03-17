@@ -194,6 +194,13 @@ function webform_validation_webform_validation_validators() {
       ),
       'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words"),
     ),
+   'username' => array(
+      'name' => "Must match a username",
+      'component_types' => array(
+        'textfield',
+      ),
+      'description' => t("Validates that user-entered data matches a username"),
+    ),
   );
 }
 
@@ -387,6 +394,18 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           if ($val && (preg_match("/$blacklist_regex/i", $val))) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
+          }
+        }
+        return $errors;
+        break;
+      case "username":
+        foreach ($items as $key => $val) {
+          // load user - if username does not match or status 0 throw error
+          if ($val) {
+            if (!db_query("SELECT COUNT(*) FROM {users} WHERE name = :username AND status = 1", array(':username' => $val))->fetchField()) {
+              // Username doesn't exist
+              $errors[$key] = t('The %item field does not match an active username.', array('%item' => $components[$key]['name']));
+            }
           }
         }
         return $errors;
