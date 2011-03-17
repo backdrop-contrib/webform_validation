@@ -336,7 +336,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         break;
       case "select_min":
         $min_selections = $rule['data'];
-        dsm($items);
         foreach ($items as $key => $val) {
           if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) < $min_selections)) {
             $errors[$key] = t('Please select at least %num options for %item', array('%num' => $min_selections, '%item' => $components[$key]['name']));
