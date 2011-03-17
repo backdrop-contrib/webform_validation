@@ -525,7 +525,7 @@ function _webform_numeric_check_data($data) {
   }
 
   if (strpos($data, '-') !== FALSE) {
-    list($min, $max) = split('-', $data);
+    list($min, $max) = explode('-', $data);
     if (is_numeric($min) && is_numeric($max) && $min < $max) {
       if ($min > 0) {
         $range['min'] = (int) $min;
