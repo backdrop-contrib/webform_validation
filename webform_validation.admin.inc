@@ -145,7 +145,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action = 'ad
     );
   }
 
-  if (isset($rule_validator['custom_error']) && $rule_validator['custom_error']) {
+  if (isset($rule_validator['custom_error'])) {
     $form['rule']['error_message'] = array(
       '#type' => 'textfield',
       '#title' => t('Custom error message'),
