@@ -24,6 +24,7 @@ function webform_validation_webform_validation_validators() {
       'name' => "Numeric values",
       'component_types' => array(
         'textfield',
+        'hidden',
       ),
       'custom_data' => array(
         'label' => t('Specify numeric validation range'),
@@ -38,6 +39,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'email',
+        'hidden',
       ),
       'custom_data' => array(
         'label' => t('Minimum number of characters'),
@@ -51,6 +53,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'email',
+        'hidden',
       ),
       'custom_data' => array(
         'label' => t('Maximum number of characters'),
@@ -64,6 +67,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'email',
         'select',
+        'hidden',
       ),
       'min_components' => 2,
       'description' => t('Verifies that all specified components contain equal values'),
@@ -74,6 +78,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'email',
         'select',
+        'hidden',
       ),
       'min_components' => 2,
       'description' => t('Verifies that all specified components contain unique values'),
@@ -85,6 +90,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'email',
+        'hidden',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
@@ -156,6 +162,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'email',
+        'hidden',
       ),
       'description' => t("Verifies that user-entered data doesn't contain HTML tags"),
     ),
@@ -165,6 +172,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'email',
+        'hidden',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
@@ -187,6 +195,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'email',
+        'hidden',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
@@ -199,6 +208,7 @@ function webform_validation_webform_validation_validators() {
       'name' => "Must match a username",
       'component_types' => array(
         'textfield',
+        'hidden',
       ),
       'description' => t("Validates that user-entered data matches a username"),
     ),
