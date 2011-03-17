@@ -177,6 +177,7 @@ function webform_validation_webform_validation_validators() {
       'name' => "Must be empty",
       'component_types' => array(
         'textfield',
+        'hidden',
       ),
       'description' => t('Verifies that a specified textfield remains empty - Recommended use case: used as an anti-spam measure by hiding the element with CSS'),
     ),
