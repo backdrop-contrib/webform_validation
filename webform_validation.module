@@ -104,15 +104,27 @@ function webform_validation_validate($form, &$form_state) {
   $flat_values = _webform_client_form_submit_flatten($node, $form_state['values']['submitted']);
   $rules = webform_validation_get_node_rules($nid);
 
-  // multistep: keep track of values submitted in previous steps.
+  // Filter out rules that don't apply to this step in the multistep form
   $page_count = isset($form_state['webform']['page_count']) ? $form_state['webform']['page_count'] : NULL;
   if ($values && $page_count && $page_count > 1) {
     $current_page_components = webform_validation_get_field_keys($form_state['values']['submitted']);
     if ($rules) {
-      // filter out rules that don't belong in the current step
+       // filter out rules that don't belong in the current step
       foreach ($rules as $ruleid => $rule) {
-        $element_id = $rule['components'][key($rule['components'])]['form_key'];
-        if (!in_array($element_id, $current_page_components)) {
+        // get all the component formkeys for this specific validation rule
+        $rule_formkeys = webform_validation_rule_get_formkeys($rule);
+        $rule_applies_to_current_page = FALSE;
+        if (!empty($rule_formkeys)) {
+          foreach ($rule_formkeys as $formkey) {
+            if (in_array($formkey, $current_page_components)) {
+              // this rule applies to the current page,
+              // because one of the rule components is on the page
+              $rule_applies_to_current_page = TRUE;
+            }
+          }
+        }
+
+        if (!$rule_applies_to_current_page) {
           unset($rules[$ruleid]);
         }
       }
@@ -172,6 +184,19 @@ function webform_validation_parent_tree($cid, $components) {
     $output .= $components[$pid]['form_key'] . '][';
   }
   return $output;
+}
+
+/**
+ * Get an array of formkeys for all components that have been assigned to a rule
+ */
+function webform_validation_rule_get_formkeys($rule) {
+  $formkeys = array();
+  if (isset($rule['components'])) {
+    foreach ($rule['components'] as $cid => $component) {
+      $formkeys[] = $component['form_key'];
+    }
+  }
+  return $formkeys;
 }
 
 /**
