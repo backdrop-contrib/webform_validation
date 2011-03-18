@@ -103,7 +103,6 @@ function webform_validation_validate($form, &$form_state) {
   $values = $form_state['values']['submitted'];
   $flat_values = _webform_client_form_submit_flatten($node, $form_state['values']['submitted']);
   $rules = webform_validation_get_node_rules($nid);
-
   // Filter out rules that don't apply to this step in the multistep form
   $page_count = isset($form_state['webform']['page_count']) ? $form_state['webform']['page_count'] : NULL;
   if ($values && $page_count && $page_count > 1) {
@@ -136,7 +135,9 @@ function webform_validation_validate($form, &$form_state) {
       // create a list of components that need validation against this rule (component id => user submitted value)
       $items = array();
       foreach ($rule['components'] as $cid => $component) {
-        $items[$cid] = $flat_values[$cid];
+        if (isset($flat_values[$cid])) {
+          $items[$cid] = $flat_values[$cid];
+        }
       }
       // prefix array keys to avoid reindexing by the module_invoke_all function call
       $items = webform_validation_prefix_keys($items);
