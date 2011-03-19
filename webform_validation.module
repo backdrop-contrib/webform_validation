@@ -274,7 +274,7 @@ function webform_validation_webform_validation($type, $op, $data) {
  * Implements hook_node_insert().
  */
 function webform_validation_node_insert($node) {
-  if (module_exists('node_clone')) {
+  if (module_exists('clone')) {
     if (in_array($node->type, webform_variable_get('webform_node_types'))) {
       webform_validation_node_clone($node);
     }
@@ -303,6 +303,7 @@ function webform_validation_node_clone($node) {
     $rules = webform_validation_get_node_rules($original_nid);
     if ($rules) {
       foreach ($rules as $orig_ruleid => $rule) {
+        unset($rule['ruleid']);
         $rule['action'] = 'add';
         $rule['nid'] = $node->nid; // attach existing rules to new node
         $rule['rule_components'] = $rule['components'];
