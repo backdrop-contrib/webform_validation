@@ -30,6 +30,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Specify numeric validation range'),
         'description' => t('Optionally specify the minimum-maximum range to validate the user-entered numeric value against.') . ' ' . t('Usage') . ':'
         . theme('item_list', array('items' => array(t('empty or "0": no value validation'), t('"100": greater than or equal to 100'), t('"0-100": less than or equal to 100'), t('"10-100": greater than or equal to 10 &amp; less than or equal to 100')))),
+        'required' => FALSE,
       ),
       'description' => t('Verifies that user-entered values are numeric, with the option to specify min and / or max values.'),
     ),

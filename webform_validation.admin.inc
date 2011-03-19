@@ -137,7 +137,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action = 'ad
       '#type' => 'textfield',
       '#title' => $rule_validator['custom_data']['label'],
       '#description' => $rule_validator['custom_data']['description'],
-      '#required' => TRUE,
+      '#required' => ($rule_validator['custom_data']['required'] !== FALSE) ? TRUE : FALSE,
       '#size' => 60,
       '#maxlength' => 255,
       '#default_value' => $rule['data'],
