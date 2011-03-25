@@ -226,31 +226,32 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'numeric':
         $num_range = _webform_numeric_check_data($rule['data']);
         foreach ($items as $key => $val) {
-
-          // first check if the value is numeric
-          if ($val && (!is_numeric($val))) {
-            $errors[$key] = t('%item is not numeric', array('%item' => $components[$key]['name']));
-          }
-
-          // now validate the entered numeric value against the validator range settings, if appropriate
-          // a. validate min & max
-          if ($num_range['min'] > 0 && $num_range['max'] > 0) {
-            // validate the min - max range
-            if ($val < $num_range['min'] || $val > $num_range['max']) {
-              $errors[$key] = t('%item is not within the allowed range %range', array('%item' => $components[$key]['name'], '%range' => $rule['data']));
+          if ($val) {
+            // first check if the value is numeric
+            if (!is_numeric($val)) {
+              $errors[$key] = t('%item is not numeric', array('%item' => $components[$key]['name']));
             }
-          }
-          else {
-            // b. validate min
-            if ($num_range['min'] > 0) {
-              if ($val < $num_range['min']) {
-                $errors[$key] = t('%item should be greater than or equal to %val', array('%item' => $components[$key]['name'], '%val' => $num_range['min']));
+
+            // now validate the entered numeric value against the validator range settings, if appropriate
+            // a. validate min & max
+            if ($num_range['min'] > 0 && $num_range['max'] > 0) {
+              // validate the min - max range
+              if ($val < $num_range['min'] || $val > $num_range['max']) {
+                $errors[$key] = t('%item is not within the allowed range %range', array('%item' => $components[$key]['name'], '%range' => $rule['data']));
               }
             }
-            // c. validate max
-            if ($num_range['max'] > 0) {
-              if ($val > $num_range['max']) {
-                $errors[$key] = t('%item should be less than or equal to %val', array('%item' => $components[$key]['name'], '%val' => $num_range['max']));
+            else {
+              // b. validate min
+              if ($num_range['min'] > 0) {
+                if ($val < $num_range['min']) {
+                  $errors[$key] = t('%item should be greater than or equal to %val', array('%item' => $components[$key]['name'], '%val' => $num_range['min']));
+                }
+              }
+              // c. validate max
+              if ($num_range['max'] > 0) {
+                if ($val > $num_range['max']) {
+                  $errors[$key] = t('%item should be less than or equal to %val', array('%item' => $components[$key]['name'], '%val' => $num_range['max']));
+                }
               }
             }
           }
