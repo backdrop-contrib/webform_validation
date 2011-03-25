@@ -101,8 +101,8 @@ function webform_validation_validate($form, &$form_state) {
   $page_count = 1;
   $nid = $form_state['values']['details']['nid'];
   $node = node_load($nid);
-  $values = $form_state['values']['submitted'];
-  $flat_values = _webform_client_form_submit_flatten($node, $form_state['values']['submitted']);
+  $values = isset($form_state['values']['submitted']) ? $form_state['values']['submitted'] : NULL;
+  $flat_values = _webform_client_form_submit_flatten($node, $values);
   $rules = webform_validation_get_node_rules($nid);
 
   // Get number of pages for this webform
