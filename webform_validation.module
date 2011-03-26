@@ -115,7 +115,7 @@ function webform_validation_validate($form, &$form_state) {
 
   // Filter out rules that don't apply to this step in the multistep form
   if ($values && $page_count && $page_count > 1) {
-    $current_page_components = webform_validation_get_field_keys($form_state['values']['submitted']);
+    $current_page_components = webform_validation_get_field_keys($form_state['values']['submitted'], $node);
     if ($rules) {
        // filter out rules that don't belong in the current step
       foreach ($rules as $ruleid => $rule) {
@@ -169,17 +169,22 @@ function webform_validation_validate($form, &$form_state) {
 /**
  * Recursive helper function to get all field keys (including fields in fieldsets)
  */
-function webform_validation_get_field_keys($submitted) {
+function webform_validation_get_field_keys($submitted, $node) {
   static $fields = array();
-  $count = 0;
   foreach (element_children($submitted) as $child) {
     if (is_array($submitted[$child]) && element_children($submitted[$child])) {
-      webform_validation_get_field_keys($submitted[$child]);
+      // only keep searching recursively if it's a fieldset
+      if (_webform_validation_get_component_type($node, $child) == 'fieldset') {
+        webform_validation_get_field_keys($submitted[$child], $node);
+      }
+      else {
+        $fields[$child] = $child;
+      }
+
     }
     else {
       $fields[$child] = $child;
     }
-    $count++;
   }
   return $fields;
 }
@@ -356,6 +361,19 @@ function webform_validation_save_rule_components($ruleid, $components) {
   }
 }
 
+/**
+ * Given a webform node, get the component type based on a given component key
+ */
+function _webform_validation_get_component_type($node, $component_key) {
+  if ($node->webform['components']) {
+    foreach ($node->webform['components'] as $component) {
+      if ($component['form_key'] == $component_key) {
+        return $component['type'];
+      }
+    }
+  }
+  return FALSE;
+}
 
 /**
  * Implementation of hook_webform_validator_alter().
