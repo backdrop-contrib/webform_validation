@@ -384,9 +384,10 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "regex":
+        mb_regex_encoding('UTF-8');
         $regex = $rule['data'];
         foreach ($items as $key => $val) {
-          if ($val && (!preg_match("/$regex/", $val))) {
+          if ($val && (!mb_ereg("$regex", $val))) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
