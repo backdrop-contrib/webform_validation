@@ -62,6 +62,32 @@ function webform_validation_webform_validation_validators() {
       ),
       'description' => t('Verifies that a user-entered value contains at most the specified number of characters'),
     ),
+    'min_words' => array(
+      'name' => "Minimum number of words",
+      'component_types' => array(
+        'textfield',
+        'textarea',
+        'hidden',
+      ),
+      'custom_data' => array(
+        'label' => t('Minimum number of words'),
+        'description' => t('Specify the minimum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
+      ),
+      'description' => t('Verifies that a user-entered value contains at least the specified number of words'),
+    ),
+    'max_words' => array(
+      'name' => "Maximum number of words",
+      'component_types' => array(
+        'textfield',
+        'textarea',
+        'hidden',
+      ),
+      'custom_data' => array(
+        'label' => t('Maximum number of words'),
+        'description' => t('Specify the maximum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
+      ),
+      'description' => t('Verifies that a user-entered value contains at most the specified number of words'),
+    ),
     'equal' => array(
       'name' => "Equal values",
       'component_types' => array(
@@ -276,6 +302,26 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         }
         return $errors;
         break;
+      case 'min_words':
+ 		    $min_words = $rule['data'];
+ 		    foreach ($items as $key => $val) {
+ 		      if ($val && (count(preg_split("/[\s]+/", trim($val))) < $min_words)) {
+            $error = format_plural($min_words, '%item needs to be at least 1 word long', '%item needs to be at least @count words long', array('%item' => $components[$key]['name']));
+ 			      $errors[$key] = $error;
+ 		      }
+ 		    }
+ 		    return $errors;
+ 		    break;
+ 	    case 'max_words':
+ 		    $max_words = $rule['data'];
+ 		    foreach ($items as $key => $val) {
+ 		      if ($val && (count(preg_split("/[\s]+/", trim($val))) > $max_words)) {
+            $error = format_plural($max_words, '%item can be maximum 1 word long', '%item can be maximum @count words long', array('%item' => $components[$key]['name']));
+ 			      $errors[$key] = $error;
+ 		      }
+ 		    }
+ 		    return $errors;
+ 		    break;
       case "equal":
         $first_entry_key = key($items);
         $first_entry = array_shift($items);
