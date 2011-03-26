@@ -314,6 +314,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $specific_values = explode(',', $rule['data']);
         $specific_values = array_map('trim', $specific_values);
         foreach ($items as $key => $val) {
+          if (is_array($val)) {
+            $val = _webform_validation_flatten_array($val);
+          }
           if (!in_array($val, $specific_values)) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
