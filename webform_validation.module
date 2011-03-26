@@ -355,3 +355,22 @@ function webform_validation_save_rule_components($ruleid, $components) {
   ->execute();
   }
 }
+
+
+/**
+ * Implementation of hook_webform_validator_alter().
+ */
+function webform_validation_webform_validator_alter(&$validators) {
+  // Add support for the Select (or Other) module
+  if (module_exists('select_or_other')) {
+    // if this module exists, all select components can now except user input.
+    // Thus we provide those components the same rules as a textfield
+    if ($validators) {
+      foreach ($validators as $validator_name => $validator_info) {
+        if (in_array('textfield', $validator_info['component_types'])) {
+          $validators[$validator_name]['component_types'][] = 'select';
+        }
+      }
+    }
+  }
+}
