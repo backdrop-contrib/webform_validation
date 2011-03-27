@@ -252,7 +252,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'numeric':
         $num_range = _webform_numeric_check_data($rule['data']);
         foreach ($items as $key => $val) {
-          if ($val) {
+          if ($val != '') {
             // first check if the value is numeric
             if (!is_numeric($val)) {
               $errors[$key] = t('%item is not numeric', array('%item' => $components[$key]['name']));
@@ -287,7 +287,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'min_length':
         $min_length = $rule['data'];
         foreach ($items as $key => $val) {
-          if ($val && (drupal_strlen($val) < $min_length)) {
+          if ($val != '' && (drupal_strlen($val) < $min_length)) {
             $errors[$key] = t('%item needs to be at least %num characters long', array('%item' => $components[$key]['name'], '%num' => $min_length));
           }
         }
@@ -296,7 +296,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'max_length':
         $max_length = $rule['data'];
         foreach ($items as $key => $val) {
-          if ($val && (drupal_strlen($val) > $max_length)) {
+          if ($val != '' && (drupal_strlen($val) > $max_length)) {
             $errors[$key] = t('%item can be maximum %num characters long', array('%item' => $components[$key]['name'], '%num' => $max_length));
           }
         }
@@ -305,7 +305,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'min_words':
  		    $min_words = $rule['data'];
  		    foreach ($items as $key => $val) {
- 		      if ($val && (count(preg_split("/[\s]+/", trim($val))) < $min_words)) {
+ 		      if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) < $min_words)) {
             $error = format_plural($min_words, '%item needs to be at least 1 word long', '%item needs to be at least @count words long', array('%item' => $components[$key]['name']));
  			      $errors[$key] = $error;
  		      }
@@ -315,7 +315,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
  	    case 'max_words':
  		    $max_words = $rule['data'];
  		    foreach ($items as $key => $val) {
- 		      if ($val && (count(preg_split("/[\s]+/", trim($val))) > $max_words)) {
+ 		      if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) > $max_words)) {
             $error = format_plural($max_words, '%item can be maximum 1 word long', '%item can be maximum @count words long', array('%item' => $components[$key]['name']));
  			      $errors[$key] = $error;
  		      }
@@ -426,7 +426,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         break;
       case "plain_text":
         foreach ($items as $key => $val) {
-          if ($val && (strcmp($val, strip_tags($val)))) {
+          if ($val != '' && (strcmp($val, strip_tags($val)))) {
             $errors[$key] = t('%item only allows the use of plain text', array('%item' => $components[$key]['name']));
           }
         }
@@ -436,7 +436,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         mb_regex_encoding('UTF-8');
         $regex = $rule['data'];
         foreach ($items as $key => $val) {
-          if ($val && (!mb_ereg("$regex", $val))) {
+          if ($val != '' && (!mb_ereg("$regex", $val))) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
@@ -455,7 +455,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $blacklist = array_map('trim', $blacklist);
         $blacklist_regex = implode('|', $blacklist);
         foreach ($items as $key => $val) {
-          if ($val && (preg_match("/$blacklist_regex/i", $val))) {
+          if ($val != '' && (preg_match("/$blacklist_regex/i", $val))) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
@@ -464,7 +464,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "username":
         foreach ($items as $key => $val) {
           // load user - if username does not match or status 0 throw error
-          if ($val) {
+          if ($val != '') {
             if (!db_query("SELECT COUNT(*) FROM {users} WHERE name = :username AND status = 1", array(':username' => $val))->fetchField()) {
               // Username doesn't exist
               $errors[$key] = t('The %item field does not match an active username.', array('%item' => $components[$key]['name']));
