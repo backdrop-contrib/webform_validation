@@ -206,7 +206,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Regex code'),
         'description' => t('Specify regex code to validate the user input against.'),
       ),
-      'description' => t('Validates user-entered text against a specified regular expression'),
+      'description' => t("Validates user-entered text against a specified regular expression. Note: don't include delimiters such as /."),
     ),
     'must_be_empty' => array(
       'name' => "Must be empty",
