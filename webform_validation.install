@@ -80,3 +80,49 @@ function webform_validation_schema() {
   );
   return $schema;
 }
+
+/**
+ * Implementation of hook_update_X().
+ */
+function webform_validation_update_1() {
+  $ret = array();
+  $has_numeric_validator = FALSE;
+  $result = db_query("SELECT ruleid, data FROM {webform_validation_rule} WHERE validator = 'numeric'");
+  foreach ($result as $row) {
+    $has_numeric_validator = TRUE;
+    $range = $row->data;
+    $range = _webform_validation_update_range_syntax($range);
+    db_update('webform_validation_rule')
+    ->fields(array(
+      'data' => $range,
+    ))
+    ->condition('ruleid', $row->ruleid, '=')
+    ->execute();
+  }
+  if ($has_numeric_validator) {
+    $warning_message = t('IMPORTANT: the numeric validation rule range syntax has changed with this release. Existing numeric validation rules were found and updated. Please verify that they still work as expected!');
+    drupal_set_message($warning_message, 'warning');
+  }
+  return $ret;
+}
+
+/**
+ * Helper function: update numeric validator range to new syntax
+ */
+function _webform_validation_update_range_syntax($range) {
+  // no longer use "0" as indicator for no validation. This should be an empty string
+  if ($range === "0") {
+    return "";
+  }
+
+  // replace "0-VAL" with "|VAL" as indicator for less than or equal to
+  if (substr($range, 0, 2) == "0-" || (substr($range, 0, 3) == "0 -")) {
+    $range_arr = explode('-', $range);
+    $range_end = $range_arr[1];
+    return "|" . trim($range_end);
+  }
+
+  // replace "-" as separator between range values in favor of "|"
+  $range = str_replace("-", "|", $range);
+  return $range;
+}

@@ -29,7 +29,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Specify numeric validation range'),
         'description' => t('Optionally specify the minimum-maximum range to validate the user-entered numeric value against.') . ' ' . t('Usage') . ':'
-        . theme('item_list', array('items' => array(t('empty or "0": no value validation'), t('"100": greater than or equal to 100'), t('"0-100": less than or equal to 100'), t('"10-100": greater than or equal to 10 &amp; less than or equal to 100')))),
+        . theme('item_list', array('items' => array(t('empty: no value validation'), t('"100": greater than or equal to 100'), t('"|100": less than or equal to 100 (including negative numbers)'), t('"0|100": greater than or equal to 0 &amp; less than or equal to 100'), t('"10|100": greater than or equal to 10 &amp; less than or equal to 100'), t('"-100|-10": greater than or equal to -100 &amp; less than or equal to -10')))),
         'required' => FALSE,
       ),
       'description' => t('Verifies that user-entered values are numeric, with the option to specify min and / or max values.'),
@@ -260,21 +260,21 @@ function webform_validation_webform_validation_validate($validator_name, $items,
 
             // now validate the entered numeric value against the validator range settings, if appropriate
             // a. validate min & max
-            if ($num_range['min'] > 0 && $num_range['max'] > 0) {
+            if (isset($num_range['min']) && isset($num_range['max'])) {
               // validate the min - max range
               if ($val < $num_range['min'] || $val > $num_range['max']) {
-                $errors[$key] = t('%item is not within the allowed range %range', array('%item' => $components[$key]['name'], '%range' => $rule['data']));
+                $errors[$key] = t('%item is not within the allowed range %range', array('%item' => $components[$key]['name'], '%range' => str_replace('|' , ' - ', $rule['data'])));
               }
             }
             else {
               // b. validate min
-              if ($num_range['min'] > 0) {
+              if (isset($num_range['min'])) {
                 if ($val < $num_range['min']) {
                   $errors[$key] = t('%item should be greater than or equal to %val', array('%item' => $components[$key]['name'], '%val' => $num_range['min']));
                 }
               }
               // c. validate max
-              if ($num_range['max'] > 0) {
+              if (isset($num_range['max'])) {
                 if ($val > $num_range['max']) {
                   $errors[$key] = t('%item should be less than or equal to %val', array('%item' => $components[$key]['name'], '%val' => $num_range['max']));
                 }
@@ -573,30 +573,25 @@ function _webform_validation_check_false($var) {
  * Process the numeric value validation range that was provided in the numeric validator options
  */
 function _webform_numeric_check_data($data) {
-  $range = array(
-    'min' => NULL,
-    'max' => NULL,
-  );
-  // if no numeric value or range was specified, don't validate
-  if (empty($data)) {
+  $range = array('min' => NULL, 'max' => NULL);
+  // if no value was specified, don't validate
+  if ($data == '') {
     return $range;
   }
 
   // If only one numeric value was specified, this is the min value
   if (is_numeric($data)) {
     $range['min'] = (int) $data;
-    return $range;
   }
 
-  if (strpos($data, '-') !== FALSE) {
-    list($min, $max) = explode('-', $data);
-    if (is_numeric($min) && is_numeric($max) && $min < $max) {
-      if ($min > 0) {
-        $range['min'] = (int) $min;
-      }
+  if (strpos($data, '|') !== FALSE) {
+    list($min, $max) = explode('|', $data);
+    if ($min != '' && is_numeric($min)) {
+      $range['min'] = (int) $min;
+    }
+    if ($max != '' && is_numeric($max)) {
       $range['max'] = (int) $max;
     }
-    return $range;
   }
   return $range;
 }
