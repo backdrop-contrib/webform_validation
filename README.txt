@@ -1,5 +1,3 @@
-$Id
-
 Description
 -----------
 This module adds an extra tab to each webform node, allowing you to specify validation rules for your webform components.
