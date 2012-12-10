@@ -21,7 +21,7 @@
 function webform_validation_webform_validation_validators() {
   return array(
     'numeric' => array(
-      'name' => "Numeric values",
+      'name' => t('Numeric values'),
       'component_types' => array(
         'number',
         'textfield',
@@ -36,7 +36,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that user-entered values are numeric, with the option to specify min and / or max values.'),
     ),
     'min_length' => array(
-      'name' => "Minimum length",
+      'name' => t('Minimum length'),
       'component_types' => array(
         'number',
         'textfield',
@@ -51,7 +51,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that a user-entered value contains at least the specified number of characters'),
     ),
     'max_length' => array(
-      'name' => "Maximum length",
+      'name' => t('Maximum length'),
       'component_types' => array(
         'number',
         'textfield',
@@ -66,7 +66,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that a user-entered value contains at most the specified number of characters'),
     ),
     'min_words' => array(
-      'name' => "Minimum number of words",
+      'name' => t('Minimum number of words'),
       'component_types' => array(
         'textfield',
         'textarea',
@@ -79,7 +79,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that a user-entered value contains at least the specified number of words'),
     ),
     'max_words' => array(
-      'name' => "Maximum number of words",
+      'name' => t('Maximum number of words'),
       'component_types' => array(
         'textfield',
         'textarea',
@@ -92,7 +92,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that a user-entered value contains at most the specified number of words'),
     ),
     'equal' => array(
-      'name' => "Equal values",
+      'name' => t('Equal values'),
       'component_types' => array(
         'number',
         'textfield',
@@ -104,7 +104,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that all specified components contain equal values'),
     ),
     'unique' => array(
-      'name' => "Unique values",
+      'name' => t('Unique values'),
       'component_types' => array(
         'number',
         'textfield',
@@ -116,7 +116,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that all specified components contain unique values'),
     ),
     'specific_value' => array(
-      'name' => "Specific value(s)",
+      'name' => t('Specific value(s)'),
       'component_types' => array(
         'number',
         'select',
@@ -134,7 +134,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that the specified component contains a defined value'),
     ),
     'not_default_value' => array(
-      'name' => "Not default value",
+      'name' => t('Not default value'),
       'component_types' => array(
         'select',
         'number',
@@ -147,7 +147,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that the user-entered value is not the default value for that component.'),
     ),
     'oneoftwo' => array(
-      'name' => "Require at least one of two fields",
+      'name' => t('Require at least one of two fields'),
       'component_types' => array(
         'number',
         'textfield',
@@ -160,7 +160,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Forces the user to specify / select at least one of two selected webform components'),
     ),
     'oneofseveral' => array(
-      'name' => "Require at least one of several fields",
+      'name' => t('Require at least one of several fields'),
       'component_types' => array(
         'number',
         'textfield',
@@ -172,7 +172,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Forces the user to specify / select at least one of several selected webform components'),
     ),
     'select_min' => array(
-      'name' => "Minimum number of selections required",
+      'name' => t('Minimum number of selections required'),
       'component_types' => array(
         'select',
       ),
@@ -183,7 +183,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Forces the user to select at least a defined number of options from the specified webform components'),
     ),
     'select_max' => array(
-      'name' => "Maximum number of selections allowed",
+      'name' => t('Maximum number of selections allowed'),
       'component_types' => array(
         'select',
       ),
@@ -194,7 +194,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Forces the user to select at most a defined number of options from the specified webform components'),
     ),
     'select_exact' => array(
-      'name' => "Exact number of selections required",
+      'name' => t('Exact number of selections required'),
       'component_types' => array(
         'select',
       ),
@@ -205,7 +205,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Forces the user to select exactly the defined number of options from the specified webform components'),
     ),
     'plain_text' => array(
-      'name' => "Plain text (disallow tags)",
+      'name' => t('Plain text (disallow tags)'),
       'component_types' => array(
         'textfield',
         'textarea',
@@ -215,7 +215,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t("Verifies that user-entered data doesn't contain HTML tags"),
     ),
     'regex' => array(
-      'name' => "Regular expression",
+      'name' => t('Regular expression'),
       'component_types' => array(
         'number',
         'textfield',
@@ -231,7 +231,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t("Validates user-entered text against a specified regular expression. Note: don't include delimiters such as /."),
     ),
     'must_be_empty' => array(
-      'name' => "Must be empty",
+      'name' => t('Must be empty'),
       'component_types' => array(
         'number',
         'textfield',
@@ -240,7 +240,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that a specified textfield remains empty - Recommended use case: used as an anti-spam measure by hiding the element with CSS'),
     ),
     'blacklist' => array(
-      'name' => "Words blacklist",
+      'name' => t('Words blacklist'),
       'component_types' => array(
         'textfield',
         'textarea',
@@ -255,7 +255,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words"),
     ),
    'username' => array(
-      'name' => "Must match a username",
+      'name' => t('Must match a username'),
       'component_types' => array(
         'textfield',
         'hidden',
