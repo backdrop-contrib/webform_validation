@@ -127,6 +127,18 @@ function webform_validation_webform_validation_validators() {
       'max_components' => 1,
       'description' => t('Verifies that the specified component contains a defined value'),
     ),
+    'not_default_value' => array(
+      'name' => "Not default value",
+      'component_types' => array(
+        'select',
+        'textfield',
+        'textarea',
+        'email',
+        'hidden',
+      ),
+      'custom_error' => TRUE,
+      'description' => t('Verifies that the user-entered value is not the default value for that component.'),
+    ),
     'oneoftwo' => array(
       'name' => "Require at least one of two fields",
       'component_types' => array(
@@ -364,6 +376,17 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             $val = _webform_validation_flatten_array($val);
           }
           if (!in_array($val, $specific_values)) {
+            $errors[$key] = _webform_validation_i18n_error_message($rule);
+          }
+        }
+        return $errors;
+        break;
+      case "not_default_value":
+        foreach ($items as $key => $val) {
+          if (is_array($val)) {
+            $val = _webform_validation_flatten_array($val);
+          }
+          if ($val == $components[$key]['value']) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
