@@ -76,7 +76,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Minimum number of words'),
         'description' => t('Specify the minimum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
       ),
-      'description' => t('Verifies that a user-entered value contains at least the specified number of words'),
+      'description' => t('Verifies that a user-entered value contains at least the specified number of words.'),
     ),
     'max_words' => array(
       'name' => t('Maximum number of words'),
@@ -89,7 +89,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Maximum number of words'),
         'description' => t('Specify the maximum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
       ),
-      'description' => t('Verifies that a user-entered value contains at most the specified number of words'),
+      'description' => t('Verifies that a user-entered value contains at most the specified number of words.'),
     ),
     'equal' => array(
       'name' => t('Equal values'),
@@ -101,7 +101,7 @@ function webform_validation_webform_validation_validators() {
         'hidden',
       ),
       'min_components' => 2,
-      'description' => t('Verifies that all specified components contain equal values'),
+      'description' => t('Verifies that all specified components contain equal values.'),
     ),
     'unique' => array(
       'name' => t('Unique values'),
@@ -113,7 +113,7 @@ function webform_validation_webform_validation_validators() {
         'hidden',
       ),
       'min_components' => 2,
-      'description' => t('Verifies that all specified components contain unique values'),
+      'description' => t('Verifies that all specified components contain unique values.'),
     ),
     'specific_value' => array(
       'name' => t('Specific value(s)'),
@@ -169,7 +169,7 @@ function webform_validation_webform_validation_validators() {
         'select',
       ),
       'min_components' => 2,
-      'description' => t('Forces the user to specify / select at least one of several selected webform components'),
+      'description' => t('Forces the user to specify / select at least one of several selected webform components.'),
     ),
     'select_min' => array(
       'name' => t('Minimum number of selections required'),
@@ -180,7 +180,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Minimum number of selections'),
         'description' => t('Specify the minimum number of options a user should select.'),
       ),
-      'description' => t('Forces the user to select at least a defined number of options from the specified webform components'),
+      'description' => t('Forces the user to select at least a defined number of options from the specified webform components.'),
     ),
     'select_max' => array(
       'name' => t('Maximum number of selections allowed'),
@@ -191,7 +191,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Maximum number of selections'),
         'description' => t('Specify the maximum number of options a user can select.'),
       ),
-      'description' => t('Forces the user to select at most a defined number of options from the specified webform components'),
+      'description' => t('Forces the user to select at most a defined number of options from the specified webform components.'),
     ),
     'select_exact' => array(
       'name' => t('Exact number of selections required'),
@@ -202,7 +202,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Number of selections'),
         'description' => t('Specify how many options a user can select.'),
       ),
-      'description' => t('Forces the user to select exactly the defined number of options from the specified webform components'),
+      'description' => t('Forces the user to select exactly the defined number of options from the specified webform components.'),
     ),
     'plain_text' => array(
       'name' => t('Plain text (disallow tags)'),
@@ -212,7 +212,7 @@ function webform_validation_webform_validation_validators() {
         'email',
         'hidden',
       ),
-      'description' => t("Verifies that user-entered data doesn't contain HTML tags"),
+      'description' => t("Verifies that user-entered data doesn't contain HTML tags."),
     ),
     'regex' => array(
       'name' => t('Regular expression'),
@@ -237,7 +237,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'hidden',
       ),
-      'description' => t('Verifies that a specified textfield remains empty - Recommended use case: used as an anti-spam measure by hiding the element with CSS'),
+      'description' => t('Verifies that a specified textfield remains empty. Recommended use case: used as an anti-spam measure by hiding the element with CSS.'),
     ),
     'blacklist' => array(
       'name' => t('Words blacklist'),
@@ -252,7 +252,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Blacklisted words'),
         'description' => t('Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character.'),
       ),
-      'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words"),
+      'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words."),
     ),
    'username' => array(
       'name' => t('Must match a username'),
@@ -260,7 +260,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'hidden',
       ),
-      'description' => t("Validates that user-entered data matches a username"),
+      'description' => t("Validates that user-entered data matches a username."),
     ),
   );
 }
