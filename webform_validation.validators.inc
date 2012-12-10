@@ -23,6 +23,7 @@ function webform_validation_webform_validation_validators() {
     'numeric' => array(
       'name' => "Numeric values",
       'component_types' => array(
+        'number',
         'textfield',
         'hidden',
       ),
@@ -37,6 +38,7 @@ function webform_validation_webform_validation_validators() {
     'min_length' => array(
       'name' => "Minimum length",
       'component_types' => array(
+        'number',
         'textfield',
         'textarea',
         'email',
@@ -51,6 +53,7 @@ function webform_validation_webform_validation_validators() {
     'max_length' => array(
       'name' => "Maximum length",
       'component_types' => array(
+        'number',
         'textfield',
         'textarea',
         'email',
@@ -91,6 +94,7 @@ function webform_validation_webform_validation_validators() {
     'equal' => array(
       'name' => "Equal values",
       'component_types' => array(
+        'number',
         'textfield',
         'email',
         'select',
@@ -102,6 +106,7 @@ function webform_validation_webform_validation_validators() {
     'unique' => array(
       'name' => "Unique values",
       'component_types' => array(
+        'number',
         'textfield',
         'email',
         'select',
@@ -113,6 +118,7 @@ function webform_validation_webform_validation_validators() {
     'specific_value' => array(
       'name' => "Specific value(s)",
       'component_types' => array(
+        'number',
         'select',
         'textfield',
         'textarea',
@@ -131,6 +137,7 @@ function webform_validation_webform_validation_validators() {
       'name' => "Not default value",
       'component_types' => array(
         'select',
+        'number',
         'textfield',
         'textarea',
         'email',
@@ -142,6 +149,7 @@ function webform_validation_webform_validation_validators() {
     'oneoftwo' => array(
       'name' => "Require at least one of two fields",
       'component_types' => array(
+        'number',
         'textfield',
         'textarea',
         'email',
@@ -154,6 +162,7 @@ function webform_validation_webform_validation_validators() {
     'oneofseveral' => array(
       'name' => "Require at least one of several fields",
       'component_types' => array(
+        'number',
         'textfield',
         'textarea',
         'email',
@@ -208,6 +217,7 @@ function webform_validation_webform_validation_validators() {
     'regex' => array(
       'name' => "Regular expression",
       'component_types' => array(
+        'number',
         'textfield',
         'textarea',
         'email',
@@ -223,6 +233,7 @@ function webform_validation_webform_validation_validators() {
     'must_be_empty' => array(
       'name' => "Must be empty",
       'component_types' => array(
+        'number',
         'textfield',
         'hidden',
       ),
