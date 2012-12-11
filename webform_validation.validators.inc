@@ -103,6 +103,26 @@ function webform_validation_webform_validation_validators() {
       'min_components' => 2,
       'description' => t('Verifies that all specified components contain equal values.'),
     ),
+    'comparison' => array(
+      'name' => t('Compare two values'),
+      'component_types' => array(
+        'date',
+        'email',
+        'hidden',
+        'number',
+        'textfield',
+        'select',
+        'time',
+      ),
+      'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Comparison operator'),
+        'description' => t('Specify the comparison operator you want to use. Must be one of: >, >=, <, <=. The validator will compare the first component with the second using this operator.'),
+      ),
+      'min_components' => 2,
+      'max_components' => 2,
+      'description' => t('Compare two values for greater than or less than, or equal to.'),
+    ),
     'unique' => array(
       'name' => t('Unique values'),
       'component_types' => array(
@@ -355,6 +375,70 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           if ($val !== $first_entry) {
             $errors[$key] = t('%item_checked does not match %item_first', array('%item_checked' => $components[$key]['name'], '%item_first' => $components[$first_entry_key]['name']));
           }
+        }
+        return $errors;
+        break;
+      case 'comparison':
+        foreach (array(1, 2) as $count) {
+          $entry[$count]['key'] = key($items);
+          $value = array_shift($items);
+          if ($components[$entry[$count]['key']]['type'] === 'date') {
+            if (checkdate((int) $value['month'], (int) $value['day'], (int) $value['year'])) {
+              $entry[$count]['value'] = date('Y-m-d', mktime(0, 0, 0, (int) $value['month'], (int) $value['day'], (int) $value['year']));
+            }
+            else {
+              $entry[$count]['value'] = NULL;
+            }
+          }
+          elseif ($components[$entry[$count]['key']]['type'] === 'time') {
+            $time = $value['hour'] . ':' . $value['minute'];
+            if (!empty($value['ampm'])) {
+              $time .= ' ' . $value['ampm'];
+            }
+            $time = strtotime($time);
+            if ($time) {
+              $entry[$count]['value'] = date('H:i', $time);
+            }
+            else {
+              $entry[$count]['value'] = NULL;
+            }
+          }
+          else {
+            $entry[$count]['value'] = _webform_validation_flatten_array($value);
+          }
+        }
+
+        // Don't validate if either are empty.
+        if (empty($entry[1]['value']) || empty($entry[2]['value'])) {
+          return;
+        }
+
+        $error = FALSE;
+        switch ($rule['data']) {
+          case '>':
+            if (!($entry[1]['value'] > $entry[2]['value'])) {
+              $error = TRUE;
+            }
+            break;
+          case '>=':
+            if (!($entry[1]['value'] >= $entry[2]['value'])) {
+              $error = TRUE;
+            }
+            break;
+          case '<':
+            if (!($entry[1]['value'] < $entry[2]['value'])) {
+              $error = TRUE;
+            }
+            break;
+          case '<=':
+            if (!($entry[1]['value'] <= $entry[2]['value'])) {
+              $error = TRUE;
+            }
+            break;
+        }
+
+        if ($error) {
+          $errors[$entry[2]['key']] = _webform_validation_i18n_error_message($rule);
         }
         return $errors;
         break;
