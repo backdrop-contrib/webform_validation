@@ -466,10 +466,10 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         // now we count how many times each value appears, and find out which values appear more than once
-        $items_count = array_count_values(array_map('strtolower', array_map('trim', $items)));
+        $items_count = array_count_values(array_map('drupal_strtolower', array_map('trim', $items)));
         $doubles = array_filter($items_count, create_function('$x', 'return $x > 1;'));
         foreach ($items as $key => $val) {
-          if (in_array(strtolower($val), array_keys($doubles))) {
+          if (in_array(drupal_strtolower($val), array_keys($doubles))) {
             $errors[$key] = t('The value of %item is not unique', array('%item' => $components[$key]['name']));
           }
         }
