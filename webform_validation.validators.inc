@@ -235,7 +235,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t("Verifies that user-entered data doesn't contain HTML tags."),
     ),
     'regex' => array(
-      'name' => t('Regular expression'),
+      'name' => t('Regular expression, case-sensitive'),
       'component_types' => array(
         'number',
         'textfield',
@@ -248,7 +248,23 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Regex code'),
         'description' => t('Specify regex code to validate the user input against.'),
       ),
-      'description' => t("Validates user-entered text against a specified regular expression. Note: don't include delimiters such as /."),
+      'description' => t("Validates user-entered text against a specified case-sensitive regular expression. Note: don't include delimiters such as /."),
+    ),
+    'regexi' => array(
+      'name' => t('Regular expression, case-insensitive'),
+      'component_types' => array(
+        'number',
+        'textfield',
+        'textarea',
+        'email',
+        'hidden',
+      ),
+      'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Regex code'),
+        'description' => t('Specify regex code to validate the user input against.'),
+      ),
+      'description' => t("Validates user-entered text against a specified case-insensitive regular expression. Note: don't include delimiters such as /."),
     ),
     'must_be_empty' => array(
       'name' => t('Must be empty'),
@@ -562,12 +578,22 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         }
         return $errors;
         break;
-      case "regex":
+      case 'regex':
+      case 'regexi':
         mb_regex_encoding('UTF-8');
         $regex = $rule['data'];
         foreach ($items as $key => $val) {
-          if ($val != '' && (!mb_ereg("$regex", $val))) {
-            $errors[$key] = _webform_validation_i18n_error_message($rule);
+          $val = (string) $val;
+          if ($val) {
+            if ($validator_name === 'regexi') {
+              $match = (bool) mb_eregi($regex, $val);
+            }
+            else {
+              $match = (bool) mb_ereg($regex, $val);
+            }
+            if (!$match) {
+              $errors[$key] = _webform_validation_i18n_error_message($rule);
+            }
           }
         }
         return $errors;
