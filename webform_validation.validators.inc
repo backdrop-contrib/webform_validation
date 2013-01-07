@@ -747,16 +747,16 @@ function _webform_numeric_check_data($data) {
 
   // If only one numeric value was specified, this is the min value
   if (is_numeric($data)) {
-    $range['min'] = (int) $data;
+    $range['min'] = (float) $data;
   }
 
   if (strpos($data, '|') !== FALSE) {
     list($min, $max) = explode('|', $data);
     if ($min != '' && is_numeric($min)) {
-      $range['min'] = (int) $min;
+      $range['min'] = (float) $min;
     }
     if ($max != '' && is_numeric($max)) {
-      $range['max'] = (int) $max;
+      $range['max'] = (float) $max;
     }
   }
   return $range;
