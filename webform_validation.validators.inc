@@ -325,8 +325,12 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           if ($val != '') {
             // first check if the value is numeric
-            if (!is_numeric($val)) {
+            if (is_numeric($val)) {
+              $val = (float) $val;
+            }
+            else {
               $errors[$key] = t('%item is not numeric', array('%item' => $components[$key]['name']));
+              continue;
             }
 
             // now validate the entered numeric value against the validator range settings, if appropriate
