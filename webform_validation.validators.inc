@@ -594,11 +594,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "username":
         foreach ($items as $key => $val) {
           // load user - if username does not match or status 0 throw error
-          if ($val != '') {
-            if (!db_query("SELECT COUNT(*) FROM {users} WHERE name = :username AND status = 1", array(':username' => $val))->fetchField()) {
-              // Username doesn't exist
-              $errors[$key] = t('The %item field does not match an active username.', array('%item' => $components[$key]['name']));
-            }
+          if ($val != '' && !db_query_range('SELECT 1 FROM {users} WHERE name = :username AND status = 1', 0, 1, array(':username' => $val))->fetchField()) {
+            // Username doesn't exist
+            $errors[$key] = t('The %item field does not match an active username.', array('%item' => $components[$key]['name']));
           }
         }
         return $errors;
