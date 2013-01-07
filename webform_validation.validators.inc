@@ -358,25 +358,25 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case 'min_words':
- 		    $min_words = $rule['data'];
- 		    foreach ($items as $key => $val) {
- 		      if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) < $min_words)) {
+        $min_words = $rule['data'];
+        foreach ($items as $key => $val) {
+          if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) < $min_words)) {
             $error = format_plural($min_words, '%item needs to be at least 1 word long', '%item needs to be at least @count words long', array('%item' => $components[$key]['name']));
- 			      $errors[$key] = $error;
- 		      }
- 		    }
- 		    return $errors;
- 		    break;
- 	    case 'max_words':
- 		    $max_words = $rule['data'];
- 		    foreach ($items as $key => $val) {
- 		      if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) > $max_words)) {
+            $errors[$key] = $error;
+          }
+        }
+        return $errors;
+        break;
+      case 'max_words':
+        $max_words = $rule['data'];
+        foreach ($items as $key => $val) {
+          if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) > $max_words)) {
             $error = format_plural($max_words, '%item can be maximum 1 word long', '%item can be maximum @count words long', array('%item' => $components[$key]['name']));
- 			      $errors[$key] = $error;
- 		      }
- 		    }
- 		    return $errors;
- 		    break;
+            $errors[$key] = $error;
+          }
+        }
+        return $errors;
+        break;
       case "equal":
         $first_entry_key = key($items);
         $first_entry = array_shift($items);

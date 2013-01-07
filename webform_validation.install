@@ -82,7 +82,7 @@ function webform_validation_schema() {
 }
 
 /**
- * Implementation of hook_update_X().
+ * Implements hook_update_X().
  */
 function webform_validation_update_1() {
   $ret = array();
@@ -100,7 +100,7 @@ function webform_validation_update_1() {
     ->execute();
   }
   if ($has_numeric_validator) {
-    $warning_message = t('IMPORTANT: the numeric validation rule range syntax has changed with this release. Existing numeric validation rules were found and updated. Please verify that they still work as expected!');
+    $warning_message = t('The numeric validation rule range syntax has changed with this release. Existing numeric validation rules were found and updated. Please verify that they still work as expected!');
     drupal_set_message($warning_message, 'warning');
   }
   return $ret;
