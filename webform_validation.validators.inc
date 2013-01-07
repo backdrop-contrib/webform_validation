@@ -19,7 +19,7 @@
  * - description (optional): provide a descriptive explanation about the validator
  */
 function webform_validation_webform_validation_validators() {
-  return array(
+  $validators = array(
     'numeric' => array(
       'name' => t('Numeric values'),
       'component_types' => array(
@@ -283,6 +283,8 @@ function webform_validation_webform_validation_validators() {
       'description' => t("Validates that user-entered data matches a username."),
     ),
   );
+
+  return $validators;
 }
 
 /**
