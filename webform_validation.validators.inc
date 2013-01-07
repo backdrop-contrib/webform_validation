@@ -284,6 +284,16 @@ function webform_validation_webform_validation_validators() {
     ),
   );
 
+  if (module_exists('email_verify')) {
+    $validators['email_verify'] = array(
+      'name' => 'Email Verify',
+      'component_types' => array(
+        'email',
+      ),
+      'description' => t('Verifies that an email address actually exists using the <a href="https://drupal.org/project/email_verify">Email Verification module</a>.'),
+    );
+  }
+
   return $validators;
 }
 
@@ -588,6 +598,17 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             if (!db_query("SELECT COUNT(*) FROM {users} WHERE name = :username AND status = 1", array(':username' => $val))->fetchField()) {
               // Username doesn't exist
               $errors[$key] = t('The %item field does not match an active username.', array('%item' => $components[$key]['name']));
+            }
+          }
+        }
+        return $errors;
+        break;
+      case 'email_verify':
+        if (module_exists('email_verify')) {
+          foreach ($items as $key => $val) {
+            $error = email_verify_check($val);
+            if ($error) {
+              $errors[$key] = $error;
             }
           }
         }
