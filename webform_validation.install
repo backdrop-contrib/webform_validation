@@ -116,7 +116,7 @@ function _webform_validation_update_range_syntax($range) {
   }
 
   // replace "0-VAL" with "|VAL" as indicator for less than or equal to
-  if (substr($range, 0, 2) == "0-" || (substr($range, 0, 3) == "0 -")) {
+  if (preg_match('/^0 ?-/', $range)) {
     $range_arr = explode('-', $range);
     $range_end = $range_arr[1];
     return "|" . trim($range_end);
