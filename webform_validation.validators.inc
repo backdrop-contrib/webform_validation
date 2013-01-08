@@ -234,6 +234,36 @@ function webform_validation_webform_validation_validators() {
       ),
       'description' => t("Verifies that user-entered data doesn't contain HTML tags."),
     ),
+    'starts_with' => array(
+      'name' => t('Starts with'),
+      'component_types' => array(
+        'number',
+        'textfield',
+        'textarea',
+        'email',
+        'hidden',
+      ),
+      'custom_data' => array(
+        'label' => t('Starts with'),
+        'description' => t('Enter the text that this field must start with.'),
+      ),
+      'description' => t('Verifies that user-entered data starts with a given string.'),
+    ),
+    'ends_with' => array(
+      'name' => t('Ends with'),
+      'component_types' => array(
+        'number',
+        'textfield',
+        'textarea',
+        'email',
+        'hidden',
+      ),
+      'custom_data' => array(
+        'label' => t('Ends with'),
+        'description' => t('Enter the text that this field must end with.'),
+      ),
+      'description' => t('Verifies that user-entered data ends with a given string.'),
+    ),
     'regex' => array(
       'name' => t('Regular expression, case-sensitive'),
       'component_types' => array(
@@ -578,6 +608,30 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           if ($val != '' && (strcmp($val, strip_tags($val)))) {
             $errors[$key] = t('%item only allows the use of plain text', array('%item' => $components[$key]['name']));
+          }
+        }
+        return $errors;
+        break;
+      case 'starts_with':
+      case 'ends_with':
+        $pattern = preg_quote($rule['data'], '/');
+        If (PHP_VERSION < 5.3) {
+          $pattern = str_replace('-', '\-', $pattern); // PHP bug #47229
+        }
+        if ($validator_name === 'starts_with') {
+          $pattern = '^' . $pattern;
+          $verb = t('start');
+        }
+        else {
+          $pattern .= '$';
+          $verb = t('end');
+        }
+        $pattern = '/' . $pattern . '/';
+
+        foreach ($items as $key => $val) {
+          $val = (string) $val;
+          if ($val && !preg_match($pattern, $val)) {
+            $errors[$key] = t('%item must %verb with "%string".', array('%item' => $components[$key]['name'], '%verb' => $verb, '%string' => $rule['data']));
           }
         }
         return $errors;
