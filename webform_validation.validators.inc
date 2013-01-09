@@ -675,7 +675,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $blacklist = array_map('trim', $blacklist);
         $blacklist_regex = implode('|', $blacklist);
         foreach ($items as $key => $val) {
-          if ($val != '' && (preg_match("/$blacklist_regex/i", $val))) {
+          if ($val != '' && (preg_match("/$\b(blacklist_regex)\b/i", $val))) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
