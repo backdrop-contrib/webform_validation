@@ -328,6 +328,14 @@ function webform_validation_webform_validation_validators() {
       ),
       'description' => t("Validates that user-entered data matches a username."),
     ),
+    'valid_url' => array(
+      'name' => 'Valid URL',
+      'component_types' => array(
+        'textfield',
+        'hidden',
+      ),
+      'description' => t('Validates that the user-entered data is a valid URL using Drupal\'s built in !link.', array('!link' => l(t('valid_url()'), 'http://api.drupal.org/api/drupal/includes!common.inc/function/valid_url/7'))),
+    ),
   );
 
   if (module_exists('email_verify')) {
@@ -679,6 +687,15 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           if ($val != '' && !db_query_range('SELECT 1 FROM {users} WHERE name = :username AND status = 1', 0, 1, array(':username' => $val))->fetchField()) {
             // Username doesn't exist
             $errors[$key] = t('The %item field does not match an active username.', array('%item' => $components[$key]['name']));
+          }
+        }
+        return $errors;
+        break;
+      case 'valid_url':
+        foreach ($items as $key => $val) {
+          $val = (string) $val;
+          if ($val && !valid_url($val, TRUE)) {
+            $errors[$key] = t('%item does not appear to be a valid URL.', array('%item' => $components[$key]['name']));
           }
         }
         return $errors;
