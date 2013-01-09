@@ -316,7 +316,7 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Blacklisted words'),
-        'description' => t('Specify illegal words, seperated by commas. Make sure to escape reserved regex characters with an escape (\) character.'),
+        'description' => t('Specify illegal words, seperated by commas.'),
       ),
       'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words."),
     ),
@@ -665,7 +665,12 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "blacklist":
-        $blacklist = explode(',', $rule['data']);
+        $blacklist = $rule['data'];
+        $blacklist = preg_quote($blacklist, '/'); // Escape regex control characters
+        If (PHP_VERSION < 5.3) {
+          $pattern = str_replace('-', '\-', $pattern); // PHP bug #47229
+        }
+        $blacklist = explode(',', $blacklist);
         $blacklist = array_map('trim', $blacklist);
         $blacklist_regex = implode('|', $blacklist);
         foreach ($items as $key => $val) {
