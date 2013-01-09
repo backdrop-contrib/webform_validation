@@ -614,10 +614,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         break;
       case 'starts_with':
       case 'ends_with':
-        $pattern = preg_quote($rule['data'], '/');
-        If (PHP_VERSION < 5.3) {
-          $pattern = str_replace('-', '\-', $pattern); // PHP bug #47229
-        }
+        $pattern = _webform_validation_preg_quote($rule['data'], '/');
         if ($validator_name === 'starts_with') {
           $pattern = '^' . $pattern;
           $verb = t('start');
@@ -665,11 +662,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
         break;
       case "blacklist":
-        $blacklist = $rule['data'];
-        $blacklist = preg_quote($blacklist, '/'); // Escape regex control characters
-        If (PHP_VERSION < 5.3) {
-          $pattern = str_replace('-', '\-', $pattern); // PHP bug #47229
-        }
+        $blacklist = _webform_validation_preg_quote($rule['data'], '/');
         $blacklist = explode(',', $blacklist);
         $blacklist = array_map('trim', $blacklist);
         $blacklist_regex = implode('|', $blacklist);
@@ -703,6 +696,18 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         break;
     }
   }
+}
+
+/**
+ * Fixed version of preg_quote() to work around PHP bug #47229. Remove when
+ * PHP_VERSION < 5.3 is no longer supported.
+ */
+function _webform_validation_preg_quote($str, $delimiter = NULL) {
+  $str = preg_quote($str, $delimiter);
+  if (PHP_VERSION < 5.3) {
+    $str = str_replace('-', '\-', $str);
+  }
+  return $str;
 }
 
 /**
