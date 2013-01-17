@@ -396,7 +396,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'min_length':
         $min_length = $rule['data'];
         foreach ($items as $key => $val) {
@@ -405,7 +404,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'max_length':
         $max_length = $rule['data'];
         foreach ($items as $key => $val) {
@@ -414,7 +412,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'min_words':
         $min_words = $rule['data'];
         foreach ($items as $key => $val) {
@@ -424,7 +421,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'max_words':
         $max_words = $rule['data'];
         foreach ($items as $key => $val) {
@@ -434,7 +430,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case "equal":
         $first_entry_key = key($items);
         $first_entry = array_shift($items);
@@ -447,7 +442,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'comparison':
         foreach (array(1, 2) as $count) {
           $entry[$count]['key'] = key($items);
@@ -511,7 +505,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           $errors[$entry[2]['key']] = _webform_validation_i18n_error_message($rule);
         }
         return $errors;
-        break;
       case "unique":
         foreach ($items as $key => $val) {
           if (is_array($val)) {
@@ -532,7 +525,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case "specific_value":
         $specific_values = explode(',', $rule['data']);
         $specific_values = array_map('trim', $specific_values);
@@ -545,7 +537,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case "not_default_value":
         foreach ($items as $key => $val) {
           if (is_array($val)) {
@@ -556,7 +547,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case "oneoftwo":
         // $components should have 2 items
         $keys = array_keys($items);
@@ -567,7 +557,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         if (empty($entry1) && empty($entry2)) {
           return array($item1 => t('You have to specify %item1 or %item2 (or both)', array('%item1' => $components[$item1]['name'], '%item2' => $components[$item2]['name'])));
         }
-        break;
+        return;
       case "oneofseveral":
         foreach ($items as $key => $val) {
           if (is_array($val)) {
@@ -584,7 +574,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
           return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', array('items' => $names)));
         }
-        break;
+        return;
       case "select_min":
         $min_selections = $rule['data'];
         foreach ($items as $key => $val) {
@@ -593,7 +583,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case "select_max":
         $max_selections = $rule['data'];
         foreach ($items as $key => $val) {
@@ -602,7 +591,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case "select_exact":
         $allowed_selections = $rule['data'];
         foreach ($items as $key => $val) {
@@ -611,7 +599,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case "plain_text":
         foreach ($items as $key => $val) {
           if ($val != '' && (strcmp($val, strip_tags($val)))) {
@@ -619,7 +606,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'starts_with':
       case 'ends_with':
         $pattern = _webform_validation_preg_quote($rule['data'], '/');
@@ -640,7 +626,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'regex':
       case 'regexi':
         mb_regex_encoding('UTF-8');
@@ -660,7 +645,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'must_be_empty':
         foreach ($items as $key => $val) {
           if ($val) {
@@ -668,7 +652,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case "blacklist":
         $blacklist = _webform_validation_preg_quote($rule['data'], '/');
         $blacklist = explode(',', $blacklist);
@@ -680,7 +663,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case "username":
         foreach ($items as $key => $val) {
           // load user - if username does not match or status 0 throw error
@@ -690,7 +672,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'valid_url':
         foreach ($items as $key => $val) {
           $val = (string) $val;
@@ -699,7 +680,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
       case 'email_verify':
         if (module_exists('email_verify')) {
           foreach ($items as $key => $val) {
@@ -710,7 +690,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-        break;
     }
   }
 }
