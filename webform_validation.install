@@ -51,6 +51,14 @@ function webform_validation_schema() {
         'not null' => FALSE,
         'length' => 255,
       ),
+      'negate' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'description' => 'Validate the inverse of the rule',
+        'not null' => TRUE,
+        'default' => FALSE,
+      ),
     ),
     'primary key' => array('ruleid'),
     'indexes' => array(
@@ -127,4 +135,18 @@ function _webform_validation_update_range_syntax($range) {
   // replace "-" as separator between range values in favor of "|"
   $range = str_replace("-", "|", $range);
   return $range;
+}
+
+/**
+ * Add column to track negated rules.
+ */
+function webform_validation_update_7101() {
+  db_add_field('webform_validation_rule', 'negate', array(
+    'type' => 'int',
+    'size' => 'tiny',
+    'unsigned' => TRUE,
+    'description' => 'Valide the inverse of the rule',
+    'not null' => TRUE,
+    'default' => 0,
+  ));
 }

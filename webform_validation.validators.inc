@@ -12,6 +12,7 @@
  * Possible options:
  * - name (required): name of the validator
  * - component types (required): defines which component types can be validated by this validator. Specify 'all' to allow all types
+ * - negatable (optional): define whether the rule can be negated, meaning it will validate the inverse of the rule.
  * - custom_error (optional): define whether a user can specify a custom error message upon creating the validation rule.
  * - custom_data (optional): define whether custom data can be added to the validation rule
  * - min_components (optional): define the minimum number of components to be selected for creating a validation rule
