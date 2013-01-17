@@ -673,9 +673,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $blacklist = _webform_validation_preg_quote($rule['data'], '/');
         $blacklist = explode(',', $blacklist);
         $blacklist = array_map('trim', $blacklist);
-        $blacklist_regex = implode('|', $blacklist);
+        $blacklist = '/\b(' . implode('|', $blacklist) . ')\b/i';
         foreach ($items as $key => $val) {
-          if ($val != '' && (preg_match("/$\b(blacklist_regex)\b/i", $val))) {
+          if ($val != '' && (preg_match($blacklist, $val))) {
             $errors[$key] = _webform_validation_i18n_error_message($rule);
           }
         }
