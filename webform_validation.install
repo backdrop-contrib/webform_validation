@@ -82,7 +82,9 @@ function webform_validation_schema() {
 }
 
 /**
- * Implements hook_update_X().
+ * Implements hook_update_N().
+ *
+ * Update numeric validator range to new syntax.
  */
 function webform_validation_update_1() {
   $ret = array();
