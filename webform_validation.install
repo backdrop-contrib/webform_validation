@@ -40,10 +40,9 @@ function webform_validation_schema() {
         'length' => 255,
       ),
       'data' => array(
-        'type' => 'varchar',
+        'type' => 'text',
         'description' => 'Additional rule data',
         'not null' => FALSE,
-        'length' => 255,
       ),
       'error_message' => array(
         'type' => 'varchar',
@@ -139,6 +138,7 @@ function _webform_validation_update_range_syntax($range) {
 
 /**
  * Add column to track negated rules.
+ * Remove explicit length limit on data field.
  */
 function webform_validation_update_7101() {
   db_add_field('webform_validation_rule', 'negate', array(
@@ -148,5 +148,11 @@ function webform_validation_update_7101() {
     'description' => 'Valide the inverse of the rule',
     'not null' => TRUE,
     'default' => 0,
+  ));
+
+  db_change_field('webform_validation_rule', 'data', 'data', array(
+    'type' => 'text',
+    'description' => 'Additional rule data',
+    'not null' => FALSE,
   ));
 }
