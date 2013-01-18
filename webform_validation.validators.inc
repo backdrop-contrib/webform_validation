@@ -138,6 +138,7 @@ function webform_validation_webform_validation_validators() {
     ),
     'specific_value' => array(
       'name' => t('Specific value(s)'),
+      'negatable' => TRUE,
       'component_types' => array(
         'number',
         'select',
@@ -154,8 +155,9 @@ function webform_validation_webform_validation_validators() {
       'max_components' => 1,
       'description' => t('Verifies that the specified component contains a defined value'),
     ),
-    'not_default_value' => array(
-      'name' => t('Not default value'),
+    'default_value' => array(
+      'name' => t('Default value'),
+      'negatable' => TRUE,
       'component_types' => array(
         'select',
         'number',
@@ -165,7 +167,7 @@ function webform_validation_webform_validation_validators() {
         'hidden',
       ),
       'custom_error' => TRUE,
-      'description' => t('Verifies that the user-entered value is not the default value for that component.'),
+      'description' => t('Verifies that the user-entered value is the default value for that component. Negate if you want not the default value.'),
     ),
     'oneoftwo' => array(
       'name' => t('Require at least one of two fields'),
@@ -216,6 +218,7 @@ function webform_validation_webform_validation_validators() {
     ),
     'select_exact' => array(
       'name' => t('Exact number of selections required'),
+      'negatable' => TRUE,
       'component_types' => array(
         'select',
       ),
@@ -227,6 +230,7 @@ function webform_validation_webform_validation_validators() {
     ),
     'plain_text' => array(
       'name' => t('Plain text (disallow tags)'),
+      'negatable' => TRUE,
       'component_types' => array(
         'textfield',
         'textarea',
@@ -237,6 +241,7 @@ function webform_validation_webform_validation_validators() {
     ),
     'starts_with' => array(
       'name' => t('Starts with'),
+      'negatable' => TRUE,
       'component_types' => array(
         'number',
         'textfield',
@@ -252,6 +257,7 @@ function webform_validation_webform_validation_validators() {
     ),
     'ends_with' => array(
       'name' => t('Ends with'),
+      'negatable' => TRUE,
       'component_types' => array(
         'number',
         'textfield',
@@ -267,6 +273,7 @@ function webform_validation_webform_validation_validators() {
     ),
     'regex' => array(
       'name' => t('Regular expression, case-sensitive'),
+      'negatable' => TRUE,
       'component_types' => array(
         'number',
         'textfield',
@@ -283,6 +290,7 @@ function webform_validation_webform_validation_validators() {
     ),
     'regexi' => array(
       'name' => t('Regular expression, case-insensitive'),
+      'negatable' => TRUE,
       'component_types' => array(
         'number',
         'textfield',
@@ -308,6 +316,7 @@ function webform_validation_webform_validation_validators() {
     ),
     'blacklist' => array(
       'name' => t('Words blacklist'),
+      'negatable' => TRUE,
       'component_types' => array(
         'textfield',
         'textarea',
@@ -323,6 +332,7 @@ function webform_validation_webform_validation_validators() {
     ),
    'username' => array(
       'name' => t('Must match a username'),
+      'negatable' => TRUE,
       'component_types' => array(
         'textfield',
         'hidden',
@@ -331,6 +341,7 @@ function webform_validation_webform_validation_validators() {
     ),
     'valid_url' => array(
       'name' => 'Valid URL',
+      'negatable' => TRUE,
       'component_types' => array(
         'textfield',
         'hidden',
@@ -533,19 +544,15 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           if (is_array($val)) {
             $val = _webform_validation_flatten_array($val);
           }
-          if (!in_array($val, $specific_values)) {
-            $errors[$key] = _webform_validation_i18n_error_message($rule);
-          }
+          _webform_validation_test($errors, $key, $rule, !in_array($val, $specific_values));
         }
         return $errors;
-      case "not_default_value":
+      case 'default_value':
         foreach ($items as $key => $val) {
           if (is_array($val)) {
             $val = _webform_validation_flatten_array($val);
           }
-          if ($val == $components[$key]['value']) {
-            $errors[$key] = _webform_validation_i18n_error_message($rule);
-          }
+          _webform_validation_test($errors, $key, $rule, $val != $components[$key]['value']);
         }
         return $errors;
       case "oneoftwo":
@@ -595,16 +602,24 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "select_exact":
         $allowed_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) != $allowed_selections)) {
-            $errors[$key] = t('Please select %num options for %item', array('%num' => $allowed_selections, '%item' => $components[$key]['name']));
-          }
+          $error_strings = array(
+            'regular' => 'Please select %num options for %item',
+            'negated' => 'Please do not select %num options for %item',
+          );
+          $error_vars = array('%num' => $allowed_selections, '%item' => $components[$key]['name']);
+          $test = is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) != $allowed_selections);
+          _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
         }
         return $errors;
       case "plain_text":
         foreach ($items as $key => $val) {
-          if ($val != '' && (strcmp($val, strip_tags($val)))) {
-            $errors[$key] = t('%item only allows the use of plain text', array('%item' => $components[$key]['name']));
-          }
+          $error_strings = array(
+            'regular' => '%item only allows the use of plain text',
+            'negated' => '%item must contain HTML tags',
+          );
+          $error_vars = array('%item' => $components[$key]['name']);
+          $test = $val != '' && (strcmp($val, strip_tags($val)));
+          _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
         }
         return $errors;
       case 'starts_with':
@@ -622,9 +637,13 @@ function webform_validation_webform_validation_validate($validator_name, $items,
 
         foreach ($items as $key => $val) {
           $val = (string) $val;
-          if ($val && !preg_match($pattern, $val)) {
-            $errors[$key] = t('%item must %verb with "%string".', array('%item' => $components[$key]['name'], '%verb' => $verb, '%string' => $rule['data']));
-          }
+          $error_strings = array(
+            'regular' => '%item must %verb with "%string".',
+            'negated' => '%item must not %verb with "%string".',
+          );
+          $error_vars = array('%item' => $components[$key]['name'], '%verb' => $verb, '%string' => $rule['data']);
+          $test = $val && !preg_match($pattern, $val);
+          _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
         }
         return $errors;
       case 'regex':
@@ -640,9 +659,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             else {
               $match = (bool) mb_ereg($regex, $val);
             }
-            if (!$match) {
-              $errors[$key] = _webform_validation_i18n_error_message($rule);
-            }
+            _webform_validation_test($errors, $key, $rule, !$match);
           }
         }
         return $errors;
@@ -659,26 +676,29 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $blacklist = array_map('trim', $blacklist);
         $blacklist = '/\b(' . implode('|', $blacklist) . ')\b/i';
         foreach ($items as $key => $val) {
-          if ($val != '' && (preg_match($blacklist, $val))) {
-            $errors[$key] = _webform_validation_i18n_error_message($rule);
-          }
+          _webform_validation_test($errors, $key, $rule, $val != '' && preg_match($blacklist, $val));
         }
         return $errors;
       case "username":
         foreach ($items as $key => $val) {
-          // load user - if username does not match or status 0 throw error
-          if ($val != '' && !db_query_range('SELECT 1 FROM {users} WHERE name = :username AND status = 1', 0, 1, array(':username' => $val))->fetchField()) {
-            // Username doesn't exist
-            $errors[$key] = t('The %item field does not match an active username.', array('%item' => $components[$key]['name']));
-          }
+          $error_strings = array(
+            'regular' => 'The %item field does not match an active username.',
+            'negated' => 'The %item field matches an active username.',
+          );
+          $error_vars = array('%item' => $components[$key]['name']);
+          $test = $val != '' && !db_query_range('SELECT 1 FROM {users} WHERE name = :username AND status = 1', 0, 1, array(':username' => $val))->fetchField();
+          _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
         }
         return $errors;
       case 'valid_url':
         foreach ($items as $key => $val) {
-          $val = (string) $val;
-          if ($val && !valid_url($val, TRUE)) {
-            $errors[$key] = t('%item does not appear to be a valid URL.', array('%item' => $components[$key]['name']));
-          }
+          $error_strings = array(
+            'regular' => '%item does not appear to be a valid URL.',
+            'negated' => '%item must not be a valid URL.',
+          );
+          $error_vars = array('%item' => $components[$key]['name']);
+          $test = $val && !valid_url($val, TRUE);
+          _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
         }
         return $errors;
       case 'email_verify':
@@ -692,6 +712,25 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         }
         return $errors;
     }
+  }
+}
+
+/**
+ * Helper function to negate validation rules as needed and create the correct error message.
+ */
+function _webform_validation_test(&$errors, $key, $rule, $test, array $error_strings = NULL, array $error_vars = NULL) {
+  $rule['negate'] = !empty($rule['negate']);
+  if ($rule['negate']) {
+    $test = !$test;
+  }
+  if ($test) {
+    if ($error_strings) {
+      $error = t($error_strings[$rule['negate'] ? 'negated' : 'regular'], $error_vars);
+    }
+    else {
+      $error = _webform_validation_i18n_error_message($rule);
+    }
+    $errors[$key] = $error;
   }
 }
 
