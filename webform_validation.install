@@ -139,6 +139,7 @@ function _webform_validation_update_range_syntax($range) {
 /**
  * Add column to track negated rules.
  * Remove explicit length limit on data field.
+ * Remove regex escaping of blacklist data.
  */
 function webform_validation_update_7101() {
   db_add_field('webform_validation_rule', 'negate', array(
@@ -155,4 +156,22 @@ function webform_validation_update_7101() {
     'description' => 'Additional rule data',
     'not null' => FALSE,
   ));
+
+  $replace = array('.', '\\', '+', '*', '?', '[', '^', ']', '$', '(', ')', '{', '}', '=', '!', '<', '>', '|', ':', '-', '/');
+  $search = array();
+  foreach ($replace as $value) {
+    $search[] = '\\' . $value;
+  }
+  $result = db_query("SELECT DISTINCT data FROM {webform_validation_rule} WHERE validator = 'blacklist'");
+  foreach ($result as $row) {
+    $data_new = str_replace($search, $replace, $row->data);
+    if ($row->data !== $data_new) {
+      db_update('webform_validation_rule')
+        ->fields(array(
+          'data' => $data_new,
+        ))
+        ->condition('data', $row->data, '=')
+        ->execute();
+    }
+  }
 }
