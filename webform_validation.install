@@ -56,7 +56,7 @@ function webform_validation_schema() {
         'unsigned' => TRUE,
         'description' => 'Validate the inverse of the rule',
         'not null' => TRUE,
-        'default' => FALSE,
+        'default' => 0,
       ),
     ),
     'primary key' => array('ruleid'),
