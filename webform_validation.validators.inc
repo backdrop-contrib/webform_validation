@@ -271,6 +271,22 @@ function webform_validation_webform_validation_validators() {
       ),
       'description' => t('Verifies that user-entered data ends with a given string.'),
     ),
+    'pattern' => array(
+      'name' => 'Pattern',
+      'component_types' => array(
+        'textfield',
+        'hidden',
+      ),
+      'custom_error' => TRUE,
+      'custom_data' => array(
+        'label' => t('Pattern'),
+        'description' => t('Specify a pattern where:')
+        . theme('item_list', array('items' => array(t('@ = any letter A-Z'), t('# = any numeral 0-9'), t('| = separates two or more acceptable patterns'), t('Any other character must appear in its exact position'))))
+        . t('Examples')
+        . theme('item_list', array('items' => array(t('North American phone number: (###) ###-####'), t('D-2500 series model numbers: D-25##'), t('UK Postal Code: @# #@@|@## #@@|@@# #@@|@@## #@@|@#@ #@@|@@#@ #@@|GIR0AA')))),
+      ),
+      'description' => t('Verifies that a user-entered value follows to a specified pattern.'),
+    ),
     'regex' => array(
       'name' => t('Regular expression, case-sensitive'),
       'negatable' => TRUE,
@@ -644,6 +660,19 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           $error_vars = array('%item' => $components[$key]['name'], '%verb' => $verb, '%string' => $rule['data']);
           $test = $val && !preg_match($pattern, $val);
           _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
+        }
+        return $errors;
+      case 'pattern':
+        $pattern = _webform_validation_preg_quote($rule['data'], '/');
+        $pattern = str_replace('@', '[a-zA-Z]', $pattern);
+        $pattern = str_replace('#', '[0-9]', $pattern);
+        $pattern = '(' . $pattern . ')';
+        // Un-escape "|" operator.
+        $pattern = preg_replace('/(\\s*)(\\\\)(\\|)(\\s*)/', ')|(', $pattern);
+        foreach ($items as $key => $val) {
+          $val = (string) $val;
+          $test = $val !== '' && !preg_match('/^(' . $pattern . ')$/', $val);
+          _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
       case 'regex':
