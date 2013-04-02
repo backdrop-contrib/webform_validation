@@ -140,7 +140,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action = 'ad
       '#description' => $rule_validator['custom_data']['description'],
       '#required' => ($required !== FALSE) ? TRUE : FALSE,
       '#size' => 60,
-      '#maxlength' => 255,
+      '#maxlength' => NULL,
       '#default_value' => $rule['data'],
       '#weight' => 4,
     );
