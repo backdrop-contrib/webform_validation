@@ -362,7 +362,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'hidden',
       ),
-      'description' => t('Validates that the user-entered data is a valid URL using Drupal\'s built in !link.', array('!link' => l(t('valid_url()'), 'http://api.drupal.org/api/drupal/includes!common.inc/function/valid_url/7'))),
+      'description' => t('Validates that the user-entered data is a valid URL.'),
     ),
   );
 
