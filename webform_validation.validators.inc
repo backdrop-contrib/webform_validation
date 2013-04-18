@@ -395,7 +395,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
               $val = (float) $val;
             }
             else {
-              $errors[$key] = t('%item is not numeric', array('%item' => $components[$key]['name']));
+              $errors[$key] = t('%item is not numeric.', array('%item' => $components[$key]['name']));
               continue;
             }
 
@@ -404,20 +404,20 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             if (isset($num_range['min']) && isset($num_range['max'])) {
               // validate the min - max range
               if ($val < $num_range['min'] || $val > $num_range['max']) {
-                $errors[$key] = t('%item is not within the allowed range %range', array('%item' => $components[$key]['name'], '%range' => str_replace('|' , ' - ', $rule['data'])));
+                $errors[$key] = t('%item is not within the allowed range %range.', array('%item' => $components[$key]['name'], '%range' => str_replace('|' , ' - ', $rule['data'])));
               }
             }
             else {
               // b. validate min
               if (isset($num_range['min'])) {
                 if ($val < $num_range['min']) {
-                  $errors[$key] = t('%item should be greater than or equal to %val', array('%item' => $components[$key]['name'], '%val' => $num_range['min']));
+                  $errors[$key] = t('%item should be greater than or equal to %val.', array('%item' => $components[$key]['name'], '%val' => $num_range['min']));
                 }
               }
               // c. validate max
               if (isset($num_range['max'])) {
                 if ($val > $num_range['max']) {
-                  $errors[$key] = t('%item should be less than or equal to %val', array('%item' => $components[$key]['name'], '%val' => $num_range['max']));
+                  $errors[$key] = t('%item should be less than or equal to %val.', array('%item' => $components[$key]['name'], '%val' => $num_range['max']));
                 }
               }
             }
@@ -428,7 +428,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $min_length = $rule['data'];
         foreach ($items as $key => $val) {
           if ($val != '' && (drupal_strlen($val) < $min_length)) {
-            $errors[$key] = t('%item needs to be at least %num characters long', array('%item' => $components[$key]['name'], '%num' => $min_length));
+            $errors[$key] = t('%item should be at least %num characters long.', array('%item' => $components[$key]['name'], '%num' => $min_length));
           }
         }
         return $errors;
@@ -436,7 +436,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $max_length = $rule['data'];
         foreach ($items as $key => $val) {
           if ($val != '' && (drupal_strlen($val) > $max_length)) {
-            $errors[$key] = t('%item can be maximum %num characters long', array('%item' => $components[$key]['name'], '%num' => $max_length));
+            $errors[$key] = t('%item should be at most %num characters long.', array('%item' => $components[$key]['name'], '%num' => $max_length));
           }
         }
         return $errors;
@@ -444,7 +444,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $min_words = $rule['data'];
         foreach ($items as $key => $val) {
           if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) < $min_words)) {
-            $error = format_plural($min_words, '%item needs to be at least 1 word long', '%item needs to be at least @count words long', array('%item' => $components[$key]['name']));
+            $error = format_plural($min_words, '%item should be at least 1 word long.', '%item should be at least @count words long.', array('%item' => $components[$key]['name']));
             $errors[$key] = $error;
           }
         }
@@ -453,7 +453,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $max_words = $rule['data'];
         foreach ($items as $key => $val) {
           if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) > $max_words)) {
-            $error = format_plural($max_words, '%item can be maximum 1 word long', '%item can be maximum @count words long', array('%item' => $components[$key]['name']));
+            $error = format_plural($max_words, '%item should be at most 1 word long.', '%item should be at most @count words long.', array('%item' => $components[$key]['name']));
             $errors[$key] = $error;
           }
         }
@@ -466,7 +466,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           $val = _webform_validation_flatten_array($val); // flatten in case of array
           if ($val !== $first_entry) {
-            $errors[$key] = t('%item_checked does not match %item_first', array('%item_checked' => $components[$key]['name'], '%item_first' => $components[$first_entry_key]['name']));
+            $errors[$key] = t('%item_checked does not match %item_first.', array('%item_checked' => $components[$key]['name'], '%item_first' => $components[$first_entry_key]['name']));
           }
         }
         return $errors;
@@ -549,7 +549,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $doubles = array_filter($items_count, create_function('$x', 'return $x > 1;'));
         foreach ($items as $key => $val) {
           if (in_array(drupal_strtolower($val), array_keys($doubles))) {
-            $errors[$key] = t('The value of %item is not unique', array('%item' => $components[$key]['name']));
+            $errors[$key] = t('The value of %item is not unique.', array('%item' => $components[$key]['name']));
           }
         }
         return $errors;
@@ -579,7 +579,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $entry1 = _webform_validation_flatten_array($items[$item1]);
         $entry2 = _webform_validation_flatten_array($items[$item2]);
         if (empty($entry1) && empty($entry2)) {
-          return array($item1 => t('You have to specify %item1 or %item2 (or both)', array('%item1' => $components[$item1]['name'], '%item2' => $components[$item2]['name'])));
+          return array($item1 => t('You have to specify %item1 or %item2 (or both).', array('%item1' => $components[$item1]['name'], '%item2' => $components[$item2]['name'])));
         }
         return;
       case "oneofseveral":
@@ -603,7 +603,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $min_selections = $rule['data'];
         foreach ($items as $key => $val) {
           if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) < $min_selections)) {
-            $errors[$key] = t('Please select at least %num options for %item', array('%num' => $min_selections, '%item' => $components[$key]['name']));
+            $errors[$key] = t('Please select at least %num options for %item.', array('%num' => $min_selections, '%item' => $components[$key]['name']));
           }
         }
         return $errors;
@@ -611,7 +611,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $max_selections = $rule['data'];
         foreach ($items as $key => $val) {
           if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) > $max_selections)) {
-            $errors[$key] = t('Please select maximum %num options for %item', array('%num' => $max_selections, '%item' => $components[$key]['name']));
+            $errors[$key] = t('Please select maximum %num options for %item.', array('%num' => $max_selections, '%item' => $components[$key]['name']));
           }
         }
         return $errors;
@@ -619,8 +619,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $allowed_selections = $rule['data'];
         foreach ($items as $key => $val) {
           $error_strings = array(
-            'regular' => 'Please select %num options for %item',
-            'negated' => 'Please do not select %num options for %item',
+            'regular' => 'Please select %num options for %item.',
+            'negated' => 'Please do not select %num options for %item.',
           );
           $error_vars = array('%num' => $allowed_selections, '%item' => $components[$key]['name']);
           $test = is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) != $allowed_selections);
@@ -630,8 +630,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case "plain_text":
         foreach ($items as $key => $val) {
           $error_strings = array(
-            'regular' => '%item only allows the use of plain text',
-            'negated' => '%item must contain HTML tags',
+            'regular' => '%item only allows the use of plain text.',
+            'negated' => '%item must contain HTML tags.',
           );
           $error_vars = array('%item' => $components[$key]['name']);
           $test = $val != '' && (strcmp($val, strip_tags($val)));
@@ -695,7 +695,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'must_be_empty':
         foreach ($items as $key => $val) {
           if ($val) {
-            $errors[$key] = t('%item does not contain the correct data', array('%item' => $components[$key]['name']));
+            $errors[$key] = t('%item does not contain the correct data.', array('%item' => $components[$key]['name']));
           }
         }
         return $errors;
