@@ -443,7 +443,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'min_words':
         $min_words = $rule['data'];
         foreach ($items as $key => $val) {
-          if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) < $min_words)) {
+          if ($val != '' && (_webform_validation_count_words($val) < $min_words)) {
             $error = format_plural($min_words, '%item should be at least 1 word long.', '%item should be at least @count words long.', array('%item' => $components[$key]['name']));
             $errors[$key] = $error;
           }
@@ -452,7 +452,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'max_words':
         $max_words = $rule['data'];
         foreach ($items as $key => $val) {
-          if ($val != '' && (count(preg_split("/[\s]+/", trim($val))) > $max_words)) {
+          if ($val != '' && (_webform_validation_count_words($val) > $max_words)) {
             $error = format_plural($max_words, '%item should be at most 1 word long.', '%item should be at most @count words long.', array('%item' => $components[$key]['name']));
             $errors[$key] = $error;
           }
@@ -761,6 +761,13 @@ function _webform_validation_test(&$errors, $key, $rule, $test, array $error_str
     }
     $errors[$key] = $error;
   }
+}
+
+/**
+ * Count the number of words in a value.
+ */
+function _webform_validation_count_words($val) {
+  return count(preg_split('/\s+/', trim($val)));
 }
 
 /**
