@@ -72,6 +72,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'hidden',
+        'html_textarea',
       ),
       'custom_data' => array(
         'label' => t('Minimum number of words'),
@@ -85,6 +86,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'textarea',
         'hidden',
+        'html_textarea',
       ),
       'custom_data' => array(
         'label' => t('Maximum number of words'),
@@ -767,6 +769,16 @@ function _webform_validation_test(&$errors, $key, $rule, $test, array $error_str
  * Count the number of words in a value.
  */
 function _webform_validation_count_words($val) {
+  // Deal with values from HTML textareas.
+  if (is_array($val) && isset($val['value'])) {
+    $val = strip_tags($val['value']);
+    // Replace entities representing spaces with actual spaces.
+    $val = str_replace('&nbsp;', ' ', $val);
+    $val = str_replace('&#160;', ' ', $val);
+  }
+  else {
+    $val = _webform_validation_flatten_array($val);
+  }
   return count(preg_split('/\s+/', trim($val)));
 }
 
