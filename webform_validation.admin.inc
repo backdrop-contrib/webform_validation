@@ -150,7 +150,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action = 'ad
     $form['rule']['negate'] = array(
       '#type' => 'checkbox',
       '#title' => t('Negate rule'),
-      '#description' => t('Valide the inverse of the rule.'),
+      '#description' => t('Validate the inverse of the rule.'),
       '#default_value' => $rule['negate'],
       '#weight' => 5,
     );
