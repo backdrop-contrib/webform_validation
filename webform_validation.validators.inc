@@ -562,7 +562,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           if (is_array($val)) {
             $val = _webform_validation_flatten_array($val);
           }
-          _webform_validation_test($errors, $key, $rule, !in_array($val, $specific_values));
+          $test = !in_array($val, $specific_values);
+          _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
       case 'default_value':
@@ -570,7 +571,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           if (is_array($val)) {
             $val = _webform_validation_flatten_array($val);
           }
-          _webform_validation_test($errors, $key, $rule, $val != $components[$key]['value']);
+          $test = $val != $components[$key]['value'];
+          _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
       case "oneoftwo":
@@ -690,7 +692,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             else {
               $match = (bool) mb_ereg($regex, $val);
             }
-            _webform_validation_test($errors, $key, $rule, !$match);
+            $test = !$match;
+            _webform_validation_test($errors, $key, $rule, $test);
           }
         }
         return $errors;
@@ -707,7 +710,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $blacklist = array_map('trim', $blacklist);
         $blacklist = '/\b(' . implode('|', $blacklist) . ')\b/i';
         foreach ($items as $key => $val) {
-          _webform_validation_test($errors, $key, $rule, $val != '' && preg_match($blacklist, $val));
+          $test = $val != '' && preg_match($blacklist, $val);
+          _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
       case "username":
