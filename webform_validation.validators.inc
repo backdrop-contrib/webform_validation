@@ -239,7 +239,7 @@ function webform_validation_webform_validation_validators() {
         'email',
         'hidden',
       ),
-      'description' => t("Verifies that user-entered data doesn't contain HTML tags."),
+      'description' => t('Verifies that user-entered data doesn\'t contain HTML tags.'),
     ),
     'starts_with' => array(
       'name' => t('Starts with'),
@@ -304,7 +304,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Regex code'),
         'description' => t('Specify regex code to validate the user input against.'),
       ),
-      'description' => t("Validates user-entered text against a specified case-sensitive regular expression. Note: don't include delimiters such as /."),
+      'description' => t('Validates user-entered text against a specified case-sensitive regular expression. Note: don\'t include delimiters such as /.'),
     ),
     'regexi' => array(
       'name' => t('Regular expression, case-insensitive'),
@@ -321,7 +321,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Regex code'),
         'description' => t('Specify regex code to validate the user input against.'),
       ),
-      'description' => t("Validates user-entered text against a specified case-insensitive regular expression. Note: don't include delimiters such as /."),
+      'description' => t('Validates user-entered text against a specified case-insensitive regular expression. Note: don\'t include delimiters such as /.'),
     ),
     'must_be_empty' => array(
       'name' => t('Must be empty'),
@@ -346,7 +346,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Blacklisted words'),
         'description' => t('Specify illegal words, seperated by commas.'),
       ),
-      'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words."),
+      'description' => t('Validates that user-entered data doesn\'t contain any of the specified illegal words.'),
     ),
    'username' => array(
       'name' => t('Must match a username'),
@@ -355,7 +355,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
         'hidden',
       ),
-      'description' => t("Validates that user-entered data matches a username."),
+      'description' => t('Validates that user-entered data matches a username.'),
     ),
     'valid_url' => array(
       'name' => 'Valid URL',
@@ -460,7 +460,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-      case "equal":
+      case 'equal':
         $first_entry_key = key($items);
         $first_entry = array_shift($items);
         $first_entry = _webform_validation_flatten_array($first_entry); // flatten in case of array
@@ -535,7 +535,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           $errors[$entry[2]['key']] = _webform_validation_i18n_error_message($rule);
         }
         return $errors;
-      case "unique":
+      case 'unique':
         foreach ($items as $key => $val) {
           if (is_array($val)) {
             // make sure to flatten arrays first
@@ -555,7 +555,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-      case "specific_value":
+      case 'specific_value':
         $specific_values = explode(',', $rule['data']);
         $specific_values = array_map('trim', $specific_values);
         foreach ($items as $key => $val) {
@@ -575,7 +575,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
-      case "oneoftwo":
+      case 'oneoftwo':
         // $components should have 2 items
         $keys = array_keys($items);
         $item1 = array_shift($keys);
@@ -586,7 +586,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           return array($item1 => t('You have to specify %item1 or %item2 (or both).', array('%item1' => $components[$item1]['name'], '%item2' => $components[$item2]['name'])));
         }
         return;
-      case "oneofseveral":
+      case 'oneofseveral':
         foreach ($items as $key => $val) {
           if (is_array($val)) {
             // make sure to flatten arrays first
@@ -603,7 +603,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', array('items' => $names)));
         }
         return;
-      case "select_min":
+      case 'select_min':
         $min_selections = $rule['data'];
         foreach ($items as $key => $val) {
           if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) < $min_selections)) {
@@ -611,7 +611,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-      case "select_max":
+      case 'select_max':
         $max_selections = $rule['data'];
         foreach ($items as $key => $val) {
           if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) > $max_selections)) {
@@ -619,7 +619,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-      case "select_exact":
+      case 'select_exact':
         $allowed_selections = $rule['data'];
         foreach ($items as $key => $val) {
           $error_strings = array(
@@ -631,7 +631,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
         }
         return $errors;
-      case "plain_text":
+      case 'plain_text':
         foreach ($items as $key => $val) {
           $error_strings = array(
             'regular' => '%item only allows the use of plain text.',
@@ -704,7 +704,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         return $errors;
-      case "blacklist":
+      case 'blacklist':
         $blacklist = _webform_validation_preg_quote($rule['data'], '/');
         $blacklist = explode(',', $blacklist);
         $blacklist = array_map('trim', $blacklist);
@@ -714,7 +714,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
-      case "username":
+      case 'username':
         foreach ($items as $key => $val) {
           $error_strings = array(
             'regular' => 'The %item field does not match an active username.',
@@ -814,7 +814,7 @@ function _webform_validation_flatten_array($val) {
  * Get a list of validator definitions
  */
 function webform_validation_get_validators() {
-  $validators = module_invoke_all("webform_validation_validators");
+  $validators = module_invoke_all('webform_validation_validators');
   // let modules use hook_webform_validator_alter($validators) to change validator settings
   drupal_alter('webform_validator', $validators);
   return $validators;
@@ -856,7 +856,7 @@ function webform_validation_valid_component_types($validator) {
 function _webform_validation_all_allowed($allowed) {
   if ($allowed) {
     foreach ($allowed as $type) {
-      if ($type == "all") {
+      if ($type == 'all') {
         return TRUE;
       }
     }
