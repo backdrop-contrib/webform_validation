@@ -155,7 +155,7 @@ function webform_validation_webform_validation_validators() {
         'description' => t('Specify the specific value(s) you want the component to contain. Separate multiple options by a comma. For components that have keys, use the key value instead.'),
       ),
       'max_components' => 1,
-      'description' => t('Verifies that the specified component contains a defined value'),
+      'description' => t('Verifies that the value of the specified component is from a list of allowed values.'),
     ),
     'default_value' => array(
       'name' => t('Default value'),
@@ -560,9 +560,14 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $specific_values = array_map('trim', $specific_values);
         foreach ($items as $key => $val) {
           if (is_array($val)) {
-            $val = _webform_validation_flatten_array($val);
+            // Selects: Fail if at least one checked and at least one not in the allowed values.
+            $val = array_filter($val);
+            $test = count($val) && count(array_diff($val, $specific_values));
           }
-          $test = !in_array($val, $specific_values);
+          else {
+            // Fail if not empty and not in the allowed values.
+            $test = $val && !in_array($val, $specific_values);
+          }
           _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
