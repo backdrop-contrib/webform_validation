@@ -779,7 +779,7 @@ function _webform_validation_count_words($val) {
   else {
     $val = _webform_validation_flatten_array($val);
   }
-  return count(preg_split('/\s+/', trim($val)));
+  return str_word_count($val);
 }
 
 /**
