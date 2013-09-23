@@ -20,7 +20,7 @@ function webform_validation_manage($node) {
  * Get the list of rules associated with the webform
  */
 function webform_validation_get_webform_rules($node) {
-  if (in_array($node->type, _webform_validation_webform_node_types())) {
+  if (in_array($node->type, webform_variable_get('webform_node_types'))) {
     $webform_nid = $node->nid;
     $rules = webform_validation_get_node_rules($node->nid);
   }

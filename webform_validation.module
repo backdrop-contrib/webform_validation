@@ -283,23 +283,9 @@ function webform_validation_webform_validation($type, $op, $data) {
  */
 function webform_validation_node_insert($node) {
   if (module_exists('clone')) {
-    if (in_array($node->type, _webform_validation_webform_node_types())) {
+    if (in_array($node->type, webform_variable_get('webform_node_types'))) {
       webform_validation_node_clone($node);
     }
-  }
-}
-
-/**
- * Query for webform_node_types compatible with both the Webform 3 and Webform 4 APIs.
- */
-function _webform_validation_webform_node_types() {
-  if (function_exists('webform_node_types')) {
-    // Webform 4.
-    return webform_node_types();
-  }
-  else {
-    // Webform 3.
-    return webform_variable_get('webform_node_types');
   }
 }
 
