@@ -145,7 +145,7 @@ function webform_validation_validate($form, &$form_state) {
       // create a list of components that need validation against this rule (component id => user submitted value)
       $items = array();
       foreach ($rule['components'] as $cid => $component) {
-        if (isset($flat_values[$cid])) {
+        if (array_key_exists($cid, $flat_values)) {
           $items[$cid] = $flat_values[$cid];
         }
       }
