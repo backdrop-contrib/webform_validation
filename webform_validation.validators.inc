@@ -704,7 +704,20 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
       case 'must_be_empty':
         foreach ($items as $key => $val) {
-          if ($val) {
+          // select multiple components have their values as array, with int zero to mean not selected.
+          if (is_array($val)) {
+            $error = FALSE;
+            foreach ($val as $test) {
+              if ($test !== 0) {
+                $error = TRUE;
+                break;
+              }
+            }
+          }
+          else {
+            $error = (bool) strlen($val);
+          }
+          if ($error) {
             $errors[$key] = t('%item does not contain the correct data.', array('%item' => $components[$key]['name']));
           }
         }
