@@ -597,6 +597,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             // make sure to flatten arrays first
             $items[$key] = _webform_validation_flatten_array($val);
           }
+          $items[$key] = (bool) strlen($items[$key]);
         }
         // $components should have at least one of several items
         if (count(array_filter($items)) < 1) {
