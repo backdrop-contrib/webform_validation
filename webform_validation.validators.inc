@@ -602,7 +602,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             return array($item1 => t('You have to specify %item1 or %item2 (or both).', array('%item1' => $components[$item1]['name'], '%item2' => $components[$item2]['name'])));
           }
           else {
-          return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', array('items' => $names)));
+            return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', array('items' => $names)));
           }
         }
         return;
