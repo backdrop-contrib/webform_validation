@@ -566,7 +566,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
           else {
             // Fail if not empty and not in the allowed values.
-            $test = $val && !in_array($val, $specific_values);
+            $test = strlen($val) && !in_array($val, $specific_values);
           }
           _webform_validation_test($errors, $key, $rule, $test);
         }
@@ -667,7 +667,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             'negated' => '%item must not %verb with "%string".',
           );
           $error_vars = array('%item' => $components[$key]['name'], '%verb' => $verb, '%string' => $rule['data']);
-          $test = $val && !preg_match($pattern, $val);
+          $test = strlen($val) && !preg_match($pattern, $val);
           _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
         }
         return $errors;
@@ -750,7 +750,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             'negated' => '%item must not be a valid URL.',
           );
           $error_vars = array('%item' => $components[$key]['name']);
-          $test = $val && !valid_url($val, TRUE);
+          $test = strlen($val) && !valid_url($val, TRUE);
           _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
         }
         return $errors;
