@@ -248,18 +248,28 @@ function theme_webform_validation_manage_add_rule($variables) {
   $validators = webform_validation_get_validators();
 
   if ($validators) {
+    $results = db_query('SELECT DISTINCT type FROM {webform_component} WHERE nid = :nid', array('nid' => $nid));
+    $types = array();
+    while ($item = $results->fetch()) {
+      $types[] = $item->type;
+    }
+
     $output = '<h3>' . t('Add a validation rule') . '</h3>';
     $output .= '<dl>';
     foreach ($validators as $validator_key => $validator_info) {
-      $item = '';
       $url = 'node/' . $nid . '/webform/validation/add/' . $validator_key;
-      $components = ' (' . implode(', ', $validator_info['component_types']) . ')';
-      $item = '<dt>' . l($validator_info['name'], $url, array("query" => drupal_get_destination())) . '</dt>';
-      $item .= '<dd>';
-      if ($validator_info['description']) {
-        $item .= $validator_info['description'] . ' ';
+      if (array_intersect($types, $validator_info['component_types'])) {
+        $title = l($validator_info['name'], $url, array('query' => drupal_get_destination()));
+        $component_list_postfix = '';
       }
-      $item .= $components . '</dd>';
+      else {
+        $title = $validator_info['name'];
+        $component_list_postfix = '; none present in this form';
+      }
+      $item = '<dt>' . $title . '</dt>';
+      $item .= '<dd>';
+      $item .= $validator_info['description'];
+      $item .= ' Works with: ' . implode(', ', $validator_info['component_types']) . $component_list_postfix . '.</dd>';
       $output .= $item;
     }
     $output .= '</dl>';
