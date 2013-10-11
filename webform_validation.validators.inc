@@ -171,8 +171,8 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'description' => t('Verifies that the user-entered value is the default value for that component. Negate if you want not the default value.'),
     ),
-    'oneofseveral' => array(
-      'name' => t('Require at least one of several fields'),
+    'someofseveral' => array(
+      'name' => t('At least one or more out of two or more'),
       'component_types' => array(
         'number',
         'textfield',
@@ -180,8 +180,12 @@ function webform_validation_webform_validation_validators() {
         'email',
         'select',
       ),
+      'custom_data' => array(
+        'label' => t('Minimum number to be completed'),
+        'description' => t('Specify the minimum number that must be completed. For example, enter 1 if the user must complete at least 1 of the selected components.'),
+      ),
       'min_components' => 2,
-      'description' => t('Requires the user to complete at least one of two or more Webform components.'),
+      'description' => t('Requires the user to complete at least one or more of two or more Webform components, such as 3 out of 5 or 1 out of 3.'),
     ),
     'select_min' => array(
       'name' => t('Minimum number of selections required'),
@@ -567,8 +571,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
-      case 'oneoftwo': // for legacy compatibility. It is just a limited version of oneofseveral.
-      case 'oneofseveral':
+      case 'someofseveral':
         foreach ($items as $key => $val) {
           if (is_array($val)) {
             // make sure to flatten arrays first
@@ -576,14 +579,14 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
           $items[$key] = (bool) strlen($items[$key]);
         }
-        // $components should have at least one of several items
-        if (count(array_filter($items)) < 1) {
+        $min_selections = isset($rule['data']) ? ((int) $rule['data']) : 1;
+        if (count(array_filter($items)) < $min_selections) {
           $keys = array_keys($items);
           $names = array();
           foreach ($keys as $value) {
             $names[] = $components[$value]['name'];
           }
-          return array($keys[0] => t('You must complete at least one of these items:') . theme('item_list', array('items' => $names)));
+          return array($keys[0] => t('You must complete at least %min_selections of these items:', array('%min_selections' => $min_selections)) . theme('item_list', array('items' => $names)));
         }
         return;
       case 'select_min':

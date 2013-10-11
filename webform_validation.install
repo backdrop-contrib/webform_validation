@@ -176,3 +176,16 @@ function webform_validation_update_7101() {
     }
   }
 }
+
+/**
+ * Rename oneoftwo and oneofseveral to someofseveral and default data to 1.
+ */
+function webform_validation_update_7104() {
+  db_update('webform_validation_rule')
+    ->fields(array(
+      'validator' => 'someofseveral',
+      'data' => 1,
+    ))
+    ->condition('validator', array('oneoftwo', 'oneofseveral'), 'IN')
+    ->execute();
+}
