@@ -161,6 +161,7 @@ function webform_validation_validate($form, &$form_state) {
         foreach ($errors as $item_key => $error) {
           // build the proper form element error key, taking into account hierarchy
           $error_key = 'submitted][' . webform_validation_parent_tree($item_key, $components) . $components[$item_key]['form_key'];
+          // @ignore security_form_set_error. filter_xss() is run in _webform_validation_i18n_error_message().
           form_set_error($error_key, $error);
         }
       }

@@ -795,7 +795,7 @@ function _webform_validation_preg_quote($str, $delimiter = NULL) {
 }
 
 /**
- * Helper function to deal with submitted values that are arrays (e.g. multiple select component)
+ * Helper function to deal with submitted values that are arrays (for example, multiple select component).
  * We flatten the array as a comma-separated list to do the comparison.
  */
 function _webform_validation_flatten_array($val) {
