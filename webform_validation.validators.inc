@@ -171,19 +171,6 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'description' => t('Verifies that the user-entered value is the default value for that component. Negate if you want not the default value.'),
     ),
-    'oneoftwo' => array(
-      'name' => t('Require at least one of two fields'),
-      'component_types' => array(
-        'number',
-        'textfield',
-        'textarea',
-        'email',
-        'select',
-      ),
-      'min_components' => 2,
-      'max_components' => 2,
-      'description' => t('Forces the user to specify / select at least one of two selected webform components.'),
-    ),
     'oneofseveral' => array(
       'name' => t('Require at least one of several fields'),
       'component_types' => array(
@@ -194,7 +181,7 @@ function webform_validation_webform_validation_validators() {
         'select',
       ),
       'min_components' => 2,
-      'description' => t('Forces the user to specify / select at least one of several selected webform components.'),
+      'description' => t('Requires the user to complete at least one of two or more Webform components.'),
     ),
     'select_min' => array(
       'name' => t('Minimum number of selections required'),
@@ -580,7 +567,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
-      case 'oneoftwo':
+      case 'oneoftwo': // for legacy compatibility. It is just a limited version of oneofseveral.
       case 'oneofseveral':
         foreach ($items as $key => $val) {
           if (is_array($val)) {
@@ -596,14 +583,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           foreach ($keys as $value) {
             $names[] = $components[$value]['name'];
           }
-          if ($validator_name === 'oneoftwo') {
-            $item1 = array_shift($keys);
-            $item2 = array_shift($keys);
-            return array($item1 => t('You have to specify %item1 or %item2 (or both).', array('%item1' => $components[$item1]['name'], '%item2' => $components[$item2]['name'])));
-          }
-          else {
-            return array($keys[0] => t('You have to specify at least one of these items:') . theme('item_list', array('items' => $names)));
-          }
+          return array($keys[0] => t('You must complete at least one of these items:') . theme('item_list', array('items' => $names)));
         }
         return;
       case 'select_min':
