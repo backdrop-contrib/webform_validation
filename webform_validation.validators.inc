@@ -49,7 +49,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Minimum number of characters'),
         'description' => t('Specify the minimum number of characters that have to be entered to pass validation.'),
       ),
-      'description' => t('Verifies that a user-entered value contains at least the specified number of characters'),
+      'description' => t('Verifies that a user-entered value contains at least the specified number of characters.'),
     ),
     'max_length' => array(
       'name' => t('Maximum length'),
@@ -64,7 +64,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Maximum number of characters'),
         'description' => t('Specify the maximum number of characters that can be entered to pass validation.'),
       ),
-      'description' => t('Verifies that a user-entered value contains at most the specified number of characters'),
+      'description' => t('Verifies that a user-entered value contains at most the specified number of characters.'),
     ),
     'min_words' => array(
       'name' => t('Minimum number of words'),
@@ -182,7 +182,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'min_components' => 2,
       'max_components' => 2,
-      'description' => t('Forces the user to specify / select at least one of two selected webform components'),
+      'description' => t('Forces the user to specify / select at least one of two selected webform components.'),
     ),
     'oneofseveral' => array(
       'name' => t('Require at least one of several fields'),
