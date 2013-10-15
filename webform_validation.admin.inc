@@ -10,9 +10,12 @@
  */
 function webform_validation_manage($node) {
   $rules = webform_validation_get_webform_rules($node);
-  $output = '';
-  $output .= drupal_render(drupal_get_form('webform_validation_manage_overview_form', $rules, $node));
-  $output .= theme('webform_validation_manage_add_rule', array('nid' => $node->nid));
+  $output = array();
+  $output['webform_validation_manage_overview_form'] = drupal_get_form('webform_validation_manage_overview_form', $rules, $node);
+  $output['webform_validation_manage_add_rule'] = array(
+    '#theme' => 'webform_validation_manage_add_rule',
+    '#nid' => $node->nid,
+  );
   return $output;
 }
 
