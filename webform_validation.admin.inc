@@ -58,7 +58,7 @@ function theme_webform_validation_manage_overview_form($variables) {
         'class' => array('draggable'),
       );
       //hide any fieldsets, since we are displaying the form in a table.
-      if($form[$rule]['#type'] == 'fieldset') {
+      if ($form[$rule]['#type'] == 'fieldset') {
         hide($form[$rule]);
       }
     }
@@ -137,7 +137,7 @@ function webform_validation_manage_overview_form_submit($form, $form_state) {
       $update = db_update('webform_validation_rule')
         ->fields(array(
           'weight' => $value['weight'],
-         ))
+        ))
         ->condition('ruleid', $ruleid)
         ->execute();
     }

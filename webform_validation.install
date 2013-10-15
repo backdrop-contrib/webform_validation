@@ -58,7 +58,7 @@ function webform_validation_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
-      'weight' => array (
+      'weight' => array(
         'description' => 'Weight of the rule order.',
         'type' => 'int',
         'not null' => TRUE,
