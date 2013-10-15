@@ -35,9 +35,9 @@ function theme_webform_validation_manage_overview($variables) {
   $node = $variables['node'];
 
   $header = array(t('Rule name'), t('Validator'), t('Components'), array(
-      'data' => t('Operations'),
-      'colspan' => 2,
-    ));
+    'data' => t('Operations'),
+    'colspan' => 2,
+  ));
   $validators = webform_validation_get_validators_selection();
   if (!empty($rules)) {
     foreach ($rules as $rule) {

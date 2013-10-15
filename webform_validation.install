@@ -104,11 +104,11 @@ function webform_validation_update_1() {
     $range = $row->data;
     $range = _webform_validation_update_range_syntax($range);
     db_update('webform_validation_rule')
-    ->fields(array(
-      'data' => $range,
-    ))
-    ->condition('ruleid', $row->ruleid, '=')
-    ->execute();
+      ->fields(array(
+        'data' => $range,
+      ))
+      ->condition('ruleid', $row->ruleid, '=')
+      ->execute();
   }
   if ($has_numeric_validator) {
     drupal_set_message(t('The numeric validation rule range syntax has changed with this release. Existing numeric validation rules were found and updated. Please verify that they still work as expected!'), 'warning');

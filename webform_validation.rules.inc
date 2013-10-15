@@ -84,10 +84,10 @@ function webform_validation_rule_components_basic($components) {
 function webform_dynamic_delete_rule($ruleid) {
   // delete rule
   db_delete('webform_validation_rule')
-  ->condition('ruleid', $ruleid)
-  ->execute();
+    ->condition('ruleid', $ruleid)
+    ->execute();
   // delete rule components
   db_delete('webform_validation_rule_components')
-  ->condition('ruleid', $ruleid)
-  ->execute();
+    ->condition('ruleid', $ruleid)
+    ->execute();
 }
