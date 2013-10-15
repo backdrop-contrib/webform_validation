@@ -76,11 +76,8 @@ function webform_validation_theme() {
         'nid' => NULL,
       ),
     ),
-    'webform_validation_manage_overview' => array(
-      'variables' => array(
-        'rules' => NULL,
-        'node' => NULL,
-      ),
+    'webform_validation_manage_overview_form' => array(
+      'render element' => 'form',
     ),
   );
 }

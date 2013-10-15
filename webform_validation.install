@@ -58,6 +58,13 @@ function webform_validation_schema() {
         'not null' => TRUE,
         'default' => 0,
       ),
+      'weight' => array (
+        'description' => 'Weight of the rule order.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => FALSE,
+        'default' => 0,
+      ),
     ),
     'primary key' => array('ruleid'),
     'indexes' => array(
@@ -188,4 +195,18 @@ function webform_validation_update_7104() {
     ))
     ->condition('validator', array('oneoftwo', 'oneofseveral'), 'IN')
     ->execute();
+}
+
+/**
+ * Add a weight field to webform_validation rules, so they can be sorted.
+ */
+function webform_validation_update_7105() {
+  $spec = array(
+    'description' => 'Weight of the rule order.',
+    'type' => 'int',
+    'not null' => TRUE,
+    'unsigned' => FALSE,
+    'default' => 0,
+  );
+  db_add_field('webform_validation_rule', 'weight', $spec);
 }
