@@ -164,8 +164,8 @@ function webform_validation_validate($form, &$form_state) {
             }
           }
           else {
-          // @ignore security_form_set_error. filter_xss() is run in _webform_validation_i18n_error_message().
-          form_set_error($error_key, $error);
+            // @ignore security_form_set_error. filter_xss() is run in _webform_validation_i18n_error_message().
+            form_set_error($error_key, $error);
           }
         }
       }
