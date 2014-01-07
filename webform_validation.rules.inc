@@ -79,14 +79,17 @@ function webform_validation_rule_components_basic($components) {
 }
 
 /**
- * Delete a rule and dependencies
+ * Delete a rule and dependencies.
+ *
+ * @param int $ruleid
+ *   The ruleid of the rule to delete.
  */
 function webform_dynamic_delete_rule($ruleid) {
-  // delete rule
+  // Delete rule.
   db_delete('webform_validation_rule')
     ->condition('ruleid', $ruleid)
     ->execute();
-  // delete rule components
+  // Delete rule components.
   db_delete('webform_validation_rule_components')
     ->condition('ruleid', $ruleid)
     ->execute();

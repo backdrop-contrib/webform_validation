@@ -337,11 +337,21 @@ function webform_validation_node_clone($node) {
 }
 
 /**
- * Save a validation rule. Data comes from the admin form
- * or nodeapi function in case of node clone
+ * Save a validation rule. Data comes from the admin form or nodeapi function in
+ * case of node clone.
+ *
+ * @param array $values
+ *   An associative array containing:
+ *   - action: "add" or "edit".
+ *   - ruleid: ID of the rule to edit. Do not set for "add".
+ *   - nid: Node ID of the Webform.
+ *   - validator: Machine name of the validator used by this validation rule.
+ *   - rulename: Human-readable name for this validation rule.
+ *   - rule_components: An array in which the keys and the values are the cid's
+ *     of the Webform components that this rule applies to.
  */
 function webform_validation_rule_save($values) {
-  // save rules data
+  // Add new rule.
   if ($values['action'] == 'add') {
     drupal_write_record('webform_validation_rule', $values);
     $ruleid = $values['ruleid'];
@@ -351,10 +361,11 @@ function webform_validation_rule_save($values) {
     }
   }
 
+  // Update existing rule.
   if ($values['action'] == 'edit') {
     drupal_write_record('webform_validation_rule', $values, 'ruleid');
     $ruleid = $values['ruleid'];
-    // delete earlier component records for this rule id*/
+    // Delete earlier component records for this ruleid.
     db_delete('webform_validation_rule_components')
       ->condition('ruleid', $ruleid)
       ->execute();
