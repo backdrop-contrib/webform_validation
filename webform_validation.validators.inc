@@ -584,7 +584,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           $keys = array_keys($items);
           $names = array();
           foreach ($keys as $value) {
-            $names[] = $components[$value]['name'];
+            $names[] = _webform_filter_xss($components[$value]['name']);
           }
           return array($keys[0] => t('You must complete at least %min_selections of these items:', array('%min_selections' => $min_selections)) . theme('item_list', array('items' => $names)));
         }
