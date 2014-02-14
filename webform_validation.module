@@ -430,6 +430,7 @@ function webform_validation_webform_validator_alter(&$validators) {
         if (in_array('textfield', $validator_info['component_types'])) {
           $validators[$validator_name]['component_types'][] = 'select';
         }
+        $validators[$validator_name]['component_types'] = array_unique($validators[$validator_name]['component_types']);
       }
     }
   }
