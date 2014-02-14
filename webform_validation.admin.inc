@@ -57,8 +57,8 @@ function theme_webform_validation_manage_overview_form($variables) {
         'data' => $row,
         'class' => array('draggable'),
       );
-      //hide any fieldsets, since we are displaying the form in a table.
-      if ($form[$rule]['#type'] == 'fieldset') {
+      // Hide any fieldsets, since we are displaying the form in a table.
+      if (isset($form[$rule]['#type']) && $form[$rule]['#type'] === 'fieldset') {
         hide($form[$rule]);
       }
     }
