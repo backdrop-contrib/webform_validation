@@ -731,7 +731,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           foreach ($val as $subval) {
             $test = preg_match($blacklist, $subval);
-          _webform_validation_test($errors, $key, $rule, $test);
+            _webform_validation_test($errors, $key, $rule, $test);
           }
         }
         return $errors;
