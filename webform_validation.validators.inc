@@ -560,15 +560,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $specific_values = explode(',', $rule['data']);
         $specific_values = array_map('trim', $specific_values);
         foreach ($items as $key => $val) {
-          if (is_array($val)) {
             // Selects: Fail if at least one checked and at least one not in the allowed values.
             $val = array_filter($val);
             $test = count($val) && count(array_diff($val, $specific_values));
-          }
-          else {
-            // Fail if not empty and not in the allowed values.
-            $test = strlen($val) && !in_array($val, $specific_values);
-          }
           _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
@@ -597,7 +591,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'select_min':
         $min_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) < $min_selections)) {
+          if (count(array_filter($val, '_webform_validation_check_false')) < $min_selections) {
             $errors[$key] = t('Please select at least %num options for %item.', array('%num' => $min_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -605,7 +599,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'select_max':
         $max_selections = $rule['data'];
         foreach ($items as $key => $val) {
-          if (is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) > $max_selections)) {
+          if (count(array_filter($val, '_webform_validation_check_false')) > $max_selections) {
             $errors[$key] = t('Please select maximum %num options for %item.', array('%num' => $max_selections, '%item' => $components[$key]['name']));
           }
         }
@@ -618,7 +612,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             'negated' => 'Please do not select %num options for %item.',
           );
           $error_vars = array('%num' => $allowed_selections, '%item' => $components[$key]['name']);
-          $test = is_array($val) && (count(array_filter($val, '_webform_validation_check_false')) != $allowed_selections);
+          $test = count(array_filter($val, '_webform_validation_check_false')) != $allowed_selections;
           _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
         }
         return $errors;
@@ -694,7 +688,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'must_be_empty':
         foreach ($items as $key => $val) {
           // select multiple components have their values as array, with int zero to mean not selected.
-          if (is_array($val)) {
             $error = FALSE;
             foreach ($val as $test) {
               if ($test !== 0) {
@@ -702,10 +695,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
                 break;
               }
             }
-          }
-          else {
-            $error = (bool) strlen($val);
-          }
           if ($error) {
             $errors[$key] = t('%item does not contain the correct data.', array('%item' => $components[$key]['name']));
           }
