@@ -453,7 +453,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $min_words = $rule['data'];
         foreach ($items as $key => $val) {
           foreach ($val as $subval) {
-            if (_webform_validation_count_words($val) < $min_words) {
+            if (_webform_validation_count_words($subval) < $min_words) {
               $error = format_plural($min_words, '%item should be at least 1 word long.', '%item should be at least @count words long.', array('%item' => $components[$key]['name']));
               $errors[$key] = $error;
             }
@@ -464,7 +464,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $max_words = $rule['data'];
         foreach ($items as $key => $val) {
           foreach ($val as $subval) {
-            if (_webform_validation_count_words($val) > $max_words) {
+            if (_webform_validation_count_words($subval) > $max_words) {
               $error = format_plural($max_words, '%item should be at most 1 word long.', '%item should be at most @count words long.', array('%item' => $components[$key]['name']));
               $errors[$key] = $error;
             }
