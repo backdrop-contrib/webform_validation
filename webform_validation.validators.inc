@@ -546,10 +546,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'unique':
         foreach ($items as $key => $val) {
           $items[$key] = _webform_validation_flatten_array($val);
-          if (empty($items[$key])) {
-            // items without a value selected shouldn't be validated
-            unset($items[$key]);
-          }
         }
         // now we count how many times each value appears, and find out which values appear more than once
         $items_count = array_count_values(array_map('drupal_strtolower', array_map('trim', $items)));
