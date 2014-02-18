@@ -434,7 +434,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           foreach ($val as $subval) {
             if (drupal_strlen($subval) < $min_length) {
-            $errors[$key] = t('%item should be at least %num characters long.', array('%item' => $components[$key]['name'], '%num' => $min_length));
+              $errors[$key] = t('%item should be at least %num characters long.', array('%item' => $components[$key]['name'], '%num' => $min_length));
             }
           }
         }
@@ -444,7 +444,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           foreach ($val as $subval) {
             if (drupal_strlen($subval) > $max_length) {
-            $errors[$key] = t('%item should be at most %num characters long.', array('%item' => $components[$key]['name'], '%num' => $max_length));
+              $errors[$key] = t('%item should be at most %num characters long.', array('%item' => $components[$key]['name'], '%num' => $max_length));
             }
           }
         }
@@ -454,8 +454,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           foreach ($val as $subval) {
             if (_webform_validation_count_words($val) < $min_words) {
-            $error = format_plural($min_words, '%item should be at least 1 word long.', '%item should be at least @count words long.', array('%item' => $components[$key]['name']));
-            $errors[$key] = $error;
+              $error = format_plural($min_words, '%item should be at least 1 word long.', '%item should be at least @count words long.', array('%item' => $components[$key]['name']));
+              $errors[$key] = $error;
             }
           }
         }
@@ -465,8 +465,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           foreach ($val as $subval) {
             if (_webform_validation_count_words($val) > $max_words) {
-            $error = format_plural($max_words, '%item should be at most 1 word long.', '%item should be at most @count words long.', array('%item' => $components[$key]['name']));
-            $errors[$key] = $error;
+              $error = format_plural($max_words, '%item should be at most 1 word long.', '%item should be at most @count words long.', array('%item' => $components[$key]['name']));
+              $errors[$key] = $error;
             }
           }
         }
@@ -643,7 +643,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           $error_vars = array('%item' => $components[$key]['name']);
           foreach ($val as $subval) {
             $test = strcmp($subval, strip_tags($subval));
-          _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
+            _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
           }
         }
         return $errors;
@@ -668,7 +668,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           $error_vars = array('%item' => $components[$key]['name'], '%verb' => $verb, '%string' => $rule['data']);
           foreach ($val as $subval) {
             $test = !preg_match($pattern, $subval);
-          _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
+            _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
           }
         }
         return $errors;
@@ -682,7 +682,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         foreach ($items as $key => $val) {
           foreach ($val as $subval) {
             $test = !preg_match('/^(' . $pattern . ')$/', $subval);
-          _webform_validation_test($errors, $key, $rule, $test);
+            _webform_validation_test($errors, $key, $rule, $test);
           }
         }
         return $errors;
@@ -744,7 +744,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           $error_vars = array('%item' => $components[$key]['name']);
           foreach ($val as $subval) {
             $test = !db_query_range('SELECT 1 FROM {users} WHERE name = :username AND status = 1', 0, 1, array(':username' => $subval))->fetchField();
-          _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
+            _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
           }
         }
         return $errors;
@@ -757,7 +757,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           $error_vars = array('%item' => $components[$key]['name']);
           foreach ($val as $subval) {
             $test = !valid_url($subval, TRUE);
-          _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
+            _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
           }
         }
         return $errors;
@@ -766,9 +766,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           foreach ($items as $key => $val) {
             foreach ($val as $subval) {
               $error = email_verify_check($subval);
-            if ($error) {
-              $errors[$key] = $error;
-            }
+              if ($error) {
+                $errors[$key] = $error;
+              }
             }
           }
         }
