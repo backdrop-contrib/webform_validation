@@ -545,10 +545,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
       case 'unique':
         foreach ($items as $key => $val) {
-          if (is_array($val)) {
-            // make sure to flatten arrays first
-            $items[$key] = _webform_validation_flatten_array($val);
-          }
+          $items[$key] = _webform_validation_flatten_array($val);
           if (empty($items[$key])) {
             // items without a value selected shouldn't be validated
             unset($items[$key]);
@@ -581,19 +578,14 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         return $errors;
       case 'default_value':
         foreach ($items as $key => $val) {
-          if (is_array($val)) {
-            $val = _webform_validation_flatten_array($val);
-          }
+          $val = _webform_validation_flatten_array($val);
           $test = $val != $components[$key]['value'];
           _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
       case 'someofseveral':
         foreach ($items as $key => $val) {
-          if (is_array($val)) {
-            // make sure to flatten arrays first
-            $items[$key] = _webform_validation_flatten_array($val);
-          }
+          $items[$key] = _webform_validation_flatten_array($val);
           $items[$key] = (bool) strlen($items[$key]);
         }
         $min_selections = isset($rule['data']) ? ((int) $rule['data']) : 1;
