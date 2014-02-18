@@ -560,9 +560,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $specific_values = explode(',', $rule['data']);
         $specific_values = array_map('trim', $specific_values);
         foreach ($items as $key => $val) {
-            // Selects: Fail if at least one checked and at least one not in the allowed values.
-            $val = array_filter($val);
-            $test = count($val) && count(array_diff($val, $specific_values));
+          // Selects: Fail if at least one checked and at least one not in the allowed values.
+          $val = array_filter($val);
+          $test = count($val) && count(array_diff($val, $specific_values));
           _webform_validation_test($errors, $key, $rule, $test);
         }
         return $errors;
@@ -688,13 +688,13 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       case 'must_be_empty':
         foreach ($items as $key => $val) {
           // select multiple components have their values as array, with int zero to mean not selected.
-            $error = FALSE;
-            foreach ($val as $test) {
-              if ($test !== 0) {
-                $error = TRUE;
-                break;
-              }
+          $error = FALSE;
+          foreach ($val as $test) {
+            if ($test !== 0) {
+              $error = TRUE;
+              break;
             }
+          }
           if ($error) {
             $errors[$key] = t('%item does not contain the correct data.', array('%item' => $components[$key]['name']));
           }
