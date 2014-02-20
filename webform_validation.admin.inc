@@ -124,10 +124,12 @@ function webform_validation_manage_overview_form($form, &$form_state, $rules, $n
       '#markup' => l(t('Delete'), 'node/' . $node->nid . '/webform/validation/delete/' . $rule['ruleid'], array("query" => drupal_get_destination())),
     );
   }
+  if (count($rules) > 1) {
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => t('Save rule order'),
   );
+  }
 
   return $form;
 }
