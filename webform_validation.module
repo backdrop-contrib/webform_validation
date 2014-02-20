@@ -374,20 +374,27 @@ function webform_validation_rule_save($values) {
       module_invoke_all('webform_validation', 'rule', 'edit', $values);
     }
   }
+  return $ruleid;
 }
 
 /**
  * Save components attached to a specific rule
  */
 function webform_validation_save_rule_components($ruleid, $components) {
+  $return_status = array();
   foreach ($components as $cid => $component) {
-    $id = db_insert('webform_validation_rule_components')
+    $return_status[$cid] = db_merge('webform_validation_rule_components')
+      ->key(array(
+        'ruleid' => $ruleid,
+        'cid' => $cid,
+      ))
       ->fields(array(
         'ruleid' => $ruleid,
         'cid' => $cid,
       ))
       ->execute();
   }
+  return $return_status;
 }
 
 /**
