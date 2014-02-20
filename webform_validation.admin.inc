@@ -126,7 +126,7 @@ function webform_validation_manage_overview_form($form, &$form_state, $rules, $n
   }
   $form['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Save'),
+    '#value' => t('Save rule order'),
   );
 
   return $form;
