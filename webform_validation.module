@@ -349,6 +349,9 @@ function webform_validation_node_clone($node) {
  *   - rulename: Human-readable name for this validation rule.
  *   - rule_components: An array in which the keys and the values are the cid's
  *     of the Webform components that this rule applies to.
+ *
+ * @return int
+ *   The $ruleid of the rule added or edited.
  */
 function webform_validation_rule_save($values) {
   // Add new rule.
@@ -378,7 +381,14 @@ function webform_validation_rule_save($values) {
 }
 
 /**
- * Save components attached to a specific rule
+ * Save components attached to a specific rule.
+ *
+ * @param int $ruleid
+ *   The ruleid of the rule being saved.
+ * @param array $components
+ *   An array in which the keys are the cid's of the components attached to the rule.
+ * @return array
+ *   An array of the return statuses for each query keyed by cid.
  */
 function webform_validation_save_rule_components($ruleid, $components) {
   $return_status = array();
