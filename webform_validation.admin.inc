@@ -41,6 +41,7 @@ function theme_webform_validation_manage_overview_form($variables) {
     'colspan' => 2,
   ));
 
+  $rows = array();
   $element_children = element_children($form);
   if (is_array($element_children)) {
     foreach ($element_children as $rule) {
@@ -66,7 +67,7 @@ function theme_webform_validation_manage_overview_form($variables) {
       }
     }
   }
-  else {
+  if (!$rows) {
     $rows[][] = array(
       'data' => t('No validation rules available.'),
       'colspan' => 5,
