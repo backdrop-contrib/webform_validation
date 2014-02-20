@@ -42,28 +42,28 @@ function theme_webform_validation_manage_overview_form($variables) {
   ));
 
   $rows = array();
-    foreach (element_children($form) as $rule) {
-      $row = array();
-      foreach (element_children($form[$rule]) as $item) {
-        //unset the titles of the form elements, since we are displaying them in a table with a header.
-        unset($form[$rule][$item]['#title']);
-        //add a class to the weight field
-        $form[$rule]['weight']['#attributes']['class'] = array('ruleid-weight');
-        $row[] = array(
-          'data' => drupal_render($form[$rule][$item]),
-        );
-      }
-      if (count($row) > 1) {
+  foreach (element_children($form) as $rule) {
+    $row = array();
+    foreach (element_children($form[$rule]) as $item) {
+      //unset the titles of the form elements, since we are displaying them in a table with a header.
+      unset($form[$rule][$item]['#title']);
+      //add a class to the weight field
+      $form[$rule]['weight']['#attributes']['class'] = array('ruleid-weight');
+      $row[] = array(
+        'data' => drupal_render($form[$rule][$item]),
+      );
+    }
+    if (count($row) > 1) {
       $rows[] = array(
         'data' => $row,
         'class' => array('draggable'),
       );
-      }
-      // Hide any fieldsets, since we are displaying the form in a table.
-      if (isset($form[$rule]['#type']) && $form[$rule]['#type'] === 'fieldset') {
-        hide($form[$rule]);
-      }
     }
+    // Hide any fieldsets, since we are displaying the form in a table.
+    if (isset($form[$rule]['#type']) && $form[$rule]['#type'] === 'fieldset') {
+      hide($form[$rule]);
+    }
+  }
   $drag = TRUE;
   if (!$rows) {
     $drag = FALSE;
@@ -75,7 +75,7 @@ function theme_webform_validation_manage_overview_form($variables) {
   $output = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'webform-validation-overview-form')));
   $output .= drupal_render_children($form);
   if ($drag) {
-  drupal_add_tabledrag('webform-validation-overview-form', 'order', 'sibling', 'ruleid-weight');
+    drupal_add_tabledrag('webform-validation-overview-form', 'order', 'sibling', 'ruleid-weight');
   }
   return $output;
 }
