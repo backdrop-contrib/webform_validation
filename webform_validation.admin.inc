@@ -42,9 +42,7 @@ function theme_webform_validation_manage_overview_form($variables) {
   ));
 
   $rows = array();
-  $element_children = element_children($form);
-  if (is_array($element_children)) {
-    foreach ($element_children as $rule) {
+    foreach (element_children($form) as $rule) {
       $row = array();
       foreach (element_children($form[$rule]) as $item) {
         //unset the titles of the form elements, since we are displaying them in a table with a header.
@@ -66,7 +64,6 @@ function theme_webform_validation_manage_overview_form($variables) {
         hide($form[$rule]);
       }
     }
-  }
   if (!$rows) {
     $rows[][] = array(
       'data' => t('No validation rules available.'),
