@@ -54,10 +54,12 @@ function theme_webform_validation_manage_overview_form($variables) {
           'data' => drupal_render($form[$rule][$item]),
         );
       }
+      if (count($row) > 1) {
       $rows[] = array(
         'data' => $row,
         'class' => array('draggable'),
       );
+      }
       // Hide any fieldsets, since we are displaying the form in a table.
       if (isset($form[$rule]['#type']) && $form[$rule]['#type'] === 'fieldset') {
         hide($form[$rule]);
