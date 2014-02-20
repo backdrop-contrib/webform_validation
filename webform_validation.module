@@ -354,30 +354,32 @@ function webform_validation_node_clone($node) {
  *   The $ruleid of the rule added or edited.
  */
 function webform_validation_rule_save($values) {
-  // Add new rule.
-  if ($values['action'] == 'add') {
-    drupal_write_record('webform_validation_rule', $values);
-    $ruleid = $values['ruleid'];
-    if ($ruleid && array_filter($values['rule_components'])) {
-      webform_validation_save_rule_components($ruleid, array_filter($values['rule_components']));
-      module_invoke_all('webform_validation', 'rule', 'add', $values);
-    }
+  if ($values['action'] === 'add') {
+    $primary_keys = array();
+  }
+  elseif ($values['action'] === 'edit') {
+    $primary_keys = array('ruleid');
+  }
+  else {
+    return FALSE;
   }
 
-  // Update existing rule.
-  if ($values['action'] == 'edit') {
-    drupal_write_record('webform_validation_rule', $values, 'ruleid');
-    $ruleid = $values['ruleid'];
-    // Delete earlier component records for this ruleid.
+  drupal_write_record('webform_validation_rule', $values, $primary_keys);
+
+  // Delete existing component records for this ruleid.
+  if ($values['action'] === 'edit') {
     db_delete('webform_validation_rule_components')
-      ->condition('ruleid', $ruleid)
+      ->condition('ruleid', $values['ruleid'])
       ->execute();
-    if ($components = array_filter($values['rule_components'])) {
-      webform_validation_save_rule_components($ruleid, $components);
-      module_invoke_all('webform_validation', 'rule', 'edit', $values);
-    }
   }
-  return $ruleid;
+
+  $components = array_filter($values['rule_components']);
+  if ($values['ruleid'] && $components) {
+    webform_validation_save_rule_components($values['ruleid'], $components);
+    module_invoke_all('webform_validation', 'rule', $values['action'], $values);
+  }
+
+  return $values['ruleid'];
 }
 
 /**
