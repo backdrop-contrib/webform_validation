@@ -64,7 +64,9 @@ function theme_webform_validation_manage_overview_form($variables) {
         hide($form[$rule]);
       }
     }
+  $drag = TRUE;
   if (!$rows) {
+    $drag = FALSE;
     $rows[][] = array(
       'data' => t('No validation rules available.'),
       'colspan' => 5,
@@ -72,7 +74,9 @@ function theme_webform_validation_manage_overview_form($variables) {
   }
   $output = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'webform-validation-overview-form')));
   $output .= drupal_render_children($form);
+  if ($drag) {
   drupal_add_tabledrag('webform-validation-overview-form', 'order', 'sibling', 'ruleid-weight');
+  }
   return $output;
 }
 
