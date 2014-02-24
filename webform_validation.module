@@ -92,6 +92,21 @@ function webform_validation_form_alter(&$form, &$form_state, $form_id) {
 }
 
 /**
+ * Implements hook_i18n_string_info().
+ */
+function webform_validation_i18n_string_info() {
+  $groups = array();
+  $groups['webform_validation'] = array(
+    'title' => t('Webform Validation'),
+    'description' => t('Translatable strings for webform validation translation'),
+    'format' => FALSE, // This group doesn't have strings with format
+    'list' => FALSE, // This group cannot list all strings
+    'refresh callback' => 'webform_validation_i18n_string_refresh',
+  );
+  return $groups;
+}
+
+/**
  * Webform validation handler to validate against the given rules
  */
 function webform_validation_validate($form, &$form_state) {
@@ -287,8 +302,8 @@ function theme_webform_validation_manage_add_rule($variables) {
  */
 function webform_validation_webform_validation($type, $op, $data) {
   if ($type == 'rule' && in_array($op, array('add', 'edit'))) {
-    if (module_exists('i18nstrings') && isset($data['error_message'])) {
-      i18nstrings_update('webform_validation:error_message:' . $data['ruleid'] . ':message', $data['error_message']);
+    if (module_exists('i18n') && isset($data['error_message'])) {
+      i18n_string_update('webform_validation:error_message:' . $data['ruleid'] . ':message', $data['error_message']);
     }
   }
 }
