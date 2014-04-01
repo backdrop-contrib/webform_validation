@@ -136,7 +136,7 @@ function webform_validation_webform_validation_validators() {
         'hidden',
       ),
       'min_components' => 2,
-      'description' => t('Verifies that all specified components contain unique values.'),
+      'description' => t('Verifies that none of the specified components contain the same value as another selected component in this submission. (To check that values are unique between submissions, use the unique validation option on the "Edit component" page for that component.)'),
     ),
     'specific_value' => array(
       'name' => t('Specific value(s)'),
