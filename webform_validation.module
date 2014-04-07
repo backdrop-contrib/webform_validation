@@ -284,12 +284,12 @@ function theme_webform_validation_manage_add_rule($variables) {
       }
       else {
         $title = $validator_info['name'];
-        $component_list_postfix = '; none present in this form';
+        $component_list_postfix = '; ' . t('none present in this form');
       }
       $item = '<dt>' . $title . '</dt>';
       $item .= '<dd>';
       $item .= $validator_info['description'];
-      $item .= ' Works with: ' . implode(', ', $validator_info['component_types']) . $component_list_postfix . '.</dd>';
+      $item .= ' ' . t('Works with: @component_types.', array('@component_types' => implode(', ', $validator_info['component_types']) . $component_list_postfix)) . '</dd>';
       $output .= $item;
     }
     $output .= '</dl>';
