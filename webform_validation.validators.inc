@@ -265,7 +265,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that user-entered data ends with a given string.'),
     ),
     'pattern' => array(
-      'name' => 'Pattern',
+      'name' => t('Pattern'),
       'component_types' => array(
         'textfield',
         'hidden',
@@ -349,7 +349,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Validates that user-entered data matches a username.'),
     ),
     'valid_url' => array(
-      'name' => 'Valid URL',
+      'name' => t('Valid URL'),
       'negatable' => TRUE,
       'component_types' => array(
         'textfield',
@@ -361,7 +361,7 @@ function webform_validation_webform_validation_validators() {
 
   if (module_exists('email_verify')) {
     $validators['email_verify'] = array(
-      'name' => 'Email Verify',
+      'name' => t('Email Verify'),
       'component_types' => array(
         'email',
       ),
