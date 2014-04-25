@@ -806,12 +806,23 @@ function _webform_validation_flatten_array($val) {
 }
 
 /**
- * Get a list of validator definitions
+ * Get a list of validator definitions.
+ *
+ * @return
+ *   Array of information about validators.
  */
 function webform_validation_get_validators() {
   $validators = module_invoke_all('webform_validation_validators');
-  // let modules use hook_webform_validator_alter($validators) to change validator settings
+  // Let modules use hook_webform_validator_alter($validators) to change validator settings.
   drupal_alter('webform_validator', $validators);
+
+  // Remove entries for which only partial information exists.
+  foreach ($validators as $validator_key => $validator_info) {
+    if (!isset($validator_info['name']) || !isset($validator_info['component_types'])) {
+      unset($validators[$validator_key]);
+    }
+  }
+
   return $validators;
 }
 
