@@ -97,11 +97,14 @@ function webform_validation_webform_validation_validators() {
     'equal' => array(
       'name' => t('Equal values'),
       'component_types' => array(
+        'date',
         'email',
         'hidden',
         'number',
         'select',
+        'textarea',
         'textfield',
+        'time',
       ),
       'min_components' => 2,
       'description' => t('Verifies that all specified components contain equal values.'),
@@ -114,6 +117,7 @@ function webform_validation_webform_validation_validators() {
         'hidden',
         'number',
         'select',
+        'textarea',
         'textfield',
         'time',
       ),
@@ -129,11 +133,14 @@ function webform_validation_webform_validation_validators() {
     'unique' => array(
       'name' => t('Unique values'),
       'component_types' => array(
+        'date',
         'email',
         'hidden',
         'number',
         'select',
+        'textarea',
         'textfield',
+        'time',
       ),
       'min_components' => 2,
       'description' => t('Verifies that none of the specified components contain the same value as another selected component in this submission. (To check that values are unique between submissions, use the unique validation option on the "Edit component" page for that component.)'),
@@ -174,11 +181,13 @@ function webform_validation_webform_validation_validators() {
     'someofseveral' => array(
       'name' => t('At least one or more out of two or more'),
       'component_types' => array(
+        'date',
         'email',
         'number',
         'select',
         'textarea',
         'textfield',
+        'time'
       ),
       'custom_data' => array(
         'label' => t('Minimum number to be completed'),
@@ -268,6 +277,7 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Pattern'),
       'component_types' => array(
         'hidden',
+        'textarea',
         'textfield',
       ),
       'custom_error' => TRUE,
@@ -319,6 +329,7 @@ function webform_validation_webform_validation_validators() {
       'component_types' => array(
         'hidden',
         'number',
+        'textarea',
         'textfield',
       ),
       'description' => t('Verifies that a specified textfield remains empty. Recommended use case: used as an anti-spam measure by hiding the element with CSS.'),
