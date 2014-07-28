@@ -24,9 +24,9 @@ function webform_validation_webform_validation_validators() {
     'numeric' => array(
       'name' => t('Numeric values'),
       'component_types' => array(
+        'hidden',
         'number',
         'textfield',
-        'hidden',
       ),
       'custom_data' => array(
         'label' => t('Specify numeric validation range'),
@@ -39,11 +39,11 @@ function webform_validation_webform_validation_validators() {
     'min_length' => array(
       'name' => t('Minimum length'),
       'component_types' => array(
-        'number',
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'number',
+        'textarea',
+        'textfield',
       ),
       'custom_data' => array(
         'label' => t('Minimum number of characters'),
@@ -54,11 +54,11 @@ function webform_validation_webform_validation_validators() {
     'max_length' => array(
       'name' => t('Maximum length'),
       'component_types' => array(
-        'number',
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'number',
+        'textarea',
+        'textfield',
       ),
       'custom_data' => array(
         'label' => t('Maximum number of characters'),
@@ -69,10 +69,10 @@ function webform_validation_webform_validation_validators() {
     'min_words' => array(
       'name' => t('Minimum number of words'),
       'component_types' => array(
-        'textfield',
-        'textarea',
         'hidden',
         'html_textarea',
+        'textarea',
+        'textfield',
       ),
       'custom_data' => array(
         'label' => t('Minimum number of words'),
@@ -83,10 +83,10 @@ function webform_validation_webform_validation_validators() {
     'max_words' => array(
       'name' => t('Maximum number of words'),
       'component_types' => array(
-        'textfield',
-        'textarea',
         'hidden',
         'html_textarea',
+        'textarea',
+        'textfield',
       ),
       'custom_data' => array(
         'label' => t('Maximum number of words'),
@@ -97,11 +97,11 @@ function webform_validation_webform_validation_validators() {
     'equal' => array(
       'name' => t('Equal values'),
       'component_types' => array(
-        'number',
-        'textfield',
         'email',
-        'select',
         'hidden',
+        'number',
+        'select',
+        'textfield',
       ),
       'min_components' => 2,
       'description' => t('Verifies that all specified components contain equal values.'),
@@ -113,8 +113,8 @@ function webform_validation_webform_validation_validators() {
         'email',
         'hidden',
         'number',
-        'textfield',
         'select',
+        'textfield',
         'time',
       ),
       'custom_error' => TRUE,
@@ -129,11 +129,11 @@ function webform_validation_webform_validation_validators() {
     'unique' => array(
       'name' => t('Unique values'),
       'component_types' => array(
-        'number',
-        'textfield',
         'email',
-        'select',
         'hidden',
+        'number',
+        'select',
+        'textfield',
       ),
       'min_components' => 2,
       'description' => t('Verifies that none of the specified components contain the same value as another selected component in this submission. (To check that values are unique between submissions, use the unique validation option on the "Edit component" page for that component.)'),
@@ -142,12 +142,12 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Specific value(s)'),
       'negatable' => TRUE,
       'component_types' => array(
-        'number',
-        'select',
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'number',
+        'select',
+        'textarea',
+        'textfield',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
@@ -161,12 +161,12 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Default value'),
       'negatable' => TRUE,
       'component_types' => array(
-        'select',
-        'number',
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'number',
+        'select',
+        'textarea',
+        'textfield',
       ),
       'custom_error' => TRUE,
       'description' => t('Verifies that the user-entered value is the default value for that component. Negate if you want not the default value.'),
@@ -174,11 +174,11 @@ function webform_validation_webform_validation_validators() {
     'someofseveral' => array(
       'name' => t('At least one or more out of two or more'),
       'component_types' => array(
-        'number',
-        'textfield',
-        'textarea',
         'email',
+        'number',
         'select',
+        'textarea',
+        'textfield',
       ),
       'custom_data' => array(
         'label' => t('Minimum number to be completed'),
@@ -225,10 +225,10 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Plain text (disallow tags)'),
       'negatable' => TRUE,
       'component_types' => array(
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'textarea',
+        'textfield',
       ),
       'description' => t('Verifies that user-entered data doesn\'t contain HTML tags.'),
     ),
@@ -236,11 +236,11 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Starts with'),
       'negatable' => TRUE,
       'component_types' => array(
-        'number',
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'number',
+        'textarea',
+        'textfield',
       ),
       'custom_data' => array(
         'label' => t('Starts with'),
@@ -252,11 +252,11 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Ends with'),
       'negatable' => TRUE,
       'component_types' => array(
-        'number',
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'number',
+        'textarea',
+        'textfield',
       ),
       'custom_data' => array(
         'label' => t('Ends with'),
@@ -267,8 +267,8 @@ function webform_validation_webform_validation_validators() {
     'pattern' => array(
       'name' => t('Pattern'),
       'component_types' => array(
-        'textfield',
         'hidden',
+        'textfield',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
@@ -284,11 +284,11 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Regular expression, case-sensitive'),
       'negatable' => TRUE,
       'component_types' => array(
-        'number',
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'number',
+        'textarea',
+        'textfield',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
@@ -301,11 +301,11 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Regular expression, case-insensitive'),
       'negatable' => TRUE,
       'component_types' => array(
-        'number',
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'number',
+        'textarea',
+        'textfield',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
@@ -317,9 +317,9 @@ function webform_validation_webform_validation_validators() {
     'must_be_empty' => array(
       'name' => t('Must be empty'),
       'component_types' => array(
+        'hidden',
         'number',
         'textfield',
-        'hidden',
       ),
       'description' => t('Verifies that a specified textfield remains empty. Recommended use case: used as an anti-spam measure by hiding the element with CSS.'),
     ),
@@ -327,10 +327,10 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Words blacklist'),
       'negatable' => TRUE,
       'component_types' => array(
-        'textfield',
-        'textarea',
         'email',
         'hidden',
+        'textarea',
+        'textfield',
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
@@ -343,8 +343,8 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Must match a username'),
       'negatable' => TRUE,
       'component_types' => array(
-        'textfield',
         'hidden',
+        'textfield',
       ),
       'description' => t('Validates that user-entered data matches a username.'),
     ),
@@ -352,8 +352,8 @@ function webform_validation_webform_validation_validators() {
       'name' => t('Valid URL'),
       'negatable' => TRUE,
       'component_types' => array(
-        'textfield',
         'hidden',
+        'textfield',
       ),
       'description' => t('Validates that the user-entered data is a valid URL.'),
     ),
