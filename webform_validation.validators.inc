@@ -183,6 +183,7 @@ function webform_validation_webform_validation_validators() {
       'component_types' => array(
         'date',
         'email',
+        'file',
         'number',
         'select',
         'textarea',
