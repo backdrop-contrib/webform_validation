@@ -856,8 +856,10 @@ function webform_validation_get_validators() {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Return an array of the names of the validators.
+ *
+ * @return array
+ *   Array of with keys being validator IDs and values validator names.
  */
 function webform_validation_get_validators_selection() {
   $selection = array();
@@ -886,8 +888,13 @@ function webform_validation_valid_component_types($validator) {
 }
 
 /**
- * @todo Please document this function.
- * @see http://drupal.org/node/1354
+ * Return information about a specified validator.
+ *
+ * @param $validator_key string
+ *   The key of the validator to return information about.
+ *
+ * @return array
+ *   Array of information about the validator.
  */
 function webform_validation_get_validator_info($validator_key) {
   $validators = webform_validation_get_validators();
