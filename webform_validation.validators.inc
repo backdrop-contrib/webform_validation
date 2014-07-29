@@ -878,25 +878,11 @@ function webform_validation_valid_component_types($validator) {
   $validators = webform_validation_get_validators();
   if ($info = $validators[$validator]) {
     $allowed_types = $info['component_types'];
-    if (_webform_validation_all_allowed($allowed_types)) {
+    if (in_array('all', $allowed_types, TRUE)) {
       return array_keys(webform_components());
     }
     return $info['component_types'];
   }
-}
-
-/**
- * Helper function to check whether all components are allowed to be used for a certain validator
- */
-function _webform_validation_all_allowed($allowed) {
-  if ($allowed) {
-    foreach ($allowed as $type) {
-      if ($type == 'all') {
-        return TRUE;
-      }
-    }
-  }
-  return FALSE;
 }
 
 /**
