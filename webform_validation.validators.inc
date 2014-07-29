@@ -388,7 +388,9 @@ function webform_validation_webform_validation_validators() {
  * Implements hook_webform_validation_validate().
  */
 function webform_validation_webform_validation_validate($validator_name, $items, $components, $rule) {
-  if ($items) {
+  if (!$items) {
+    return NULL;
+  }
     // Some components, such as multiple select, send their values as arrays, others don't.
     // Convert all to arrays and write the rules to handle them that way. Remove empty values.
     foreach ($items as $key => $val) {
@@ -755,7 +757,6 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         }
         return $errors;
     }
-  }
 }
 
 /**
