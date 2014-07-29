@@ -107,7 +107,7 @@ function webform_validation_webform_validation_validators() {
         'time',
       ),
       'min_components' => 2,
-      'description' => t('Verifies that all specified components contain equal values.'),
+      'description' => t('Verifies that all specified components contain equal values. If all components are of type email, they will get case-insensitive comparison.'),
     ),
     'comparison' => array(
       'name' => t('Compare two values'),
@@ -124,7 +124,7 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Comparison operator'),
-        'description' => t('Specify the comparison operator you want to use. Must be one of: >, >=, <, <=. The validator will compare the first component with the second using this operator.'),
+        'description' => t('Specify the comparison operator you want to use. Must be one of: >, >=, <, <=. The validator will compare the first component with the second using this operator. If the components are of type email, they will get case-insensitive comparison.'),
       ),
       'min_components' => 2,
       'max_components' => 2,
@@ -143,7 +143,7 @@ function webform_validation_webform_validation_validators() {
         'time',
       ),
       'min_components' => 2,
-      'description' => t('Verifies that none of the specified components contain the same value as another selected component in this submission. (To check that values are unique between submissions, use the unique validation option on the "Edit component" page for that component.)'),
+      'description' => t('Verifies that none of the specified components contain the same value as another selected component in this submission. (To check that values are unique between submissions, use the unique validation option on the "Edit component" page for that component.) If all components are of type email, they will get case-insensitive comparison.'),
     ),
     'specific_value' => array(
       'name' => t('Specific value(s)'),
@@ -391,6 +391,22 @@ function webform_validation_webform_validation_validate($validator_name, $items,
   if (!$items) {
     return NULL;
   }
+
+  // For certain validators, if all components to be compared are email
+  // components, make the values lower-case to avoid case-sensitive comparison.
+  if (in_array($validator_name, array('equal', 'comparison', 'unique'))) {
+    $all_email = TRUE;
+    foreach ($rule['components'] as $component) {
+      if ($component['type'] !== 'email') {
+        $all_email = FALSE;
+        break;
+      }
+    }
+    if ($all_email) {
+      $items = array_map('strtolower', $items);
+    }
+  }
+
   // Some components, such as multiple select, send their values as arrays, others don't.
   // Convert all to arrays and write the rules to handle them that way. Remove empty values.
   foreach ($items as $key => $val) {
