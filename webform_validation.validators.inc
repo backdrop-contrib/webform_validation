@@ -661,7 +661,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       return $errors;
     case 'starts_with':
     case 'ends_with':
-      $pattern = _webform_validation_preg_quote($rule['data'], '/');
+      $pattern = preg_quote($rule['data'], '/');
       if ($validator_name === 'starts_with') {
         $pattern = '^' . $pattern;
         $verb = t('start');
@@ -685,7 +685,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       }
       return $errors;
     case 'pattern':
-      $pattern = _webform_validation_preg_quote($rule['data'], '/');
+      $pattern = preg_quote($rule['data'], '/');
       $pattern = str_replace('@', '[a-zA-Z]', $pattern);
       $pattern = str_replace('#', '[0-9]', $pattern);
       $pattern = '(' . $pattern . ')';
@@ -723,7 +723,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       }
       return $errors;
     case 'blacklist':
-      $blacklist = _webform_validation_preg_quote($rule['data'], '/');
+      $blacklist = preg_quote($rule['data'], '/');
       $blacklist = explode(',', $blacklist);
       $blacklist = array_map('trim', $blacklist);
       $blacklist = '/\b(' . implode('|', $blacklist) . ')\b/i';
@@ -808,18 +808,6 @@ function _webform_validation_count_words($val) {
   $val = str_replace('&#160;', ' ', $val);
 
   return str_word_count($val);
-}
-
-/**
- * Fixed version of preg_quote() to work around PHP bug #47229. Remove when
- * PHP_VERSION < 5.3 is no longer supported.
- */
-function _webform_validation_preg_quote($str, $delimiter = NULL) {
-  $str = preg_quote($str, $delimiter);
-  if (PHP_VERSION < 5.3) {
-    $str = str_replace('-', '\-', $str);
-  }
-  return $str;
 }
 
 /**
