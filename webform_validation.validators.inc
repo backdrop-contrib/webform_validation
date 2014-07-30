@@ -179,7 +179,7 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Verifies that the user-entered value is the default value for that component. Negate if you want not the default value.'),
     ),
     'someofseveral' => array(
-      'name' => t('At least one or more out of two or more'),
+      'name' => t('Some of several'),
       'component_types' => array(
         'date',
         'email',
@@ -191,11 +191,15 @@ function webform_validation_webform_validation_validators() {
         'time'
       ),
       'custom_data' => array(
-        'label' => t('Minimum number to be completed'),
-        'description' => t('Specify the minimum number that must be completed. For example, enter 1 if the user must complete at least 1 of the selected components.'),
+        'label' => t('Number to be completed'),
+        'description' => t('Specify the number that must be completed and the type of comparison. For example:') . theme('item_list', array('items' => array(
+          t('Enter ">=1" if the user must complete <b>at least</b> 1 of the selected components.'),
+          t('Enter "=3" if the user must complete <b>exactly</b> 3 of the selected components.'),
+          t('Enter "<=2" if the user must complete <b>at most</b> 2 of the selected components.'),
+        ))),
       ),
       'min_components' => 2,
-      'description' => t('Requires the user to complete at least one or more of two or more Webform components, such as 3 out of 5 or 1 out of 3.'),
+      'description' => t('Requires the user to complete some number of components out of a group of components. For example, complete at least 2 out of 3, complete at most 4 out of 6, or complete exactly 3 our of 4.'),
     ),
     'select_min' => array(
       'name' => t('Minimum number of selections required'),
@@ -604,18 +608,48 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       }
       return $errors;
     case 'someofseveral':
+      // Determine the number of components completed.
       foreach ($items as $key => $val) {
         $items[$key] = _webform_validation_flatten_array($val);
         $items[$key] = (bool) strlen($items[$key]);
       }
-      $min_selections = isset($rule['data']) ? ((int) $rule['data']) : 1;
-      if (count(array_filter($items)) < $min_selections) {
+      $number_completed = count(array_filter($items));
+
+      // Number being compared with.
+      $compare_number = (int) preg_replace('/[^0-9]+/', '', $rule['data']);
+      if ($compare_number < 1) {
+        $compare_number = 1;
+      }
+      elseif ($compare_number > count($rule['components'])) {
+        $compare_number = count($rule['components']);
+      }
+
+      // Parse the comparision operator and do comparison.
+      $error = FALSE;
+      if (substr($rule['data'], 0, 1) === '=') {
+        if (!($number_completed === $compare_number)) {
+          $error = t('exactly');
+        }
+      }
+      elseif (substr($rule['data'], 0, 2) === '<=') {
+        if (!($number_completed <= $compare_number)) {
+          $error = t('at most');
+        }
+      }
+      else {
+        if (!($number_completed >= $compare_number)) {
+          $error = t('at least');
+        }
+      }
+
+      // Set error if needed.
+      if ($error) {
         $keys = array_keys($items);
         $names = array();
         foreach ($keys as $value) {
           $names[] = _webform_filter_xss($components[$value]['name']);
         }
-        return array($keys[0] => t('You must complete at least %min_selections of these items:', array('%min_selections' => $min_selections)) . theme('item_list', array('items' => $names)));
+        return array($keys[0] => t('You must complete %verb %compare_number of these items:', array('%verb' => $error, '%compare_number' => $compare_number)) . theme('item_list', array('items' => $names)));
       }
       return;
     case 'select_min':
