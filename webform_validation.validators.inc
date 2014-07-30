@@ -613,7 +613,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       }
 
       // Don't validate if either are empty.
-      if (empty($entry[1]['value']) || empty($entry[2]['value'])) {
+      if ((string) $entry[1]['value'] === '' || (string) $entry[2]['value'] === '') {
         return;
       }
 
