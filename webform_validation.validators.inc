@@ -645,13 +645,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       // Set error if needed.
       if ($error) {
         $keys = array_keys($items);
-        $names = array();
-        foreach ($keys as $value) {
-          $names[] = _webform_filter_xss($components[$value]['name']);
-        }
-        return array($keys[0] => t('You must complete %verb %compare_number of these items:', array('%verb' => $error, '%compare_number' => $compare_number)) . theme('item_list', array('items' => $names)));
+        $errors[$keys[0]] = t('You must complete %verb %compare_number of these items:', array('%verb' => $error, '%compare_number' => $compare_number)) . theme('item_list', array('items' => _webform_validation_get_names_of_rule_components($rule)));
       }
-      return;
+      return $errors;
     case 'select_min':
       $min_selections = $rule['data'];
       foreach ($items as $key => $val) {
@@ -807,6 +803,23 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       }
       return $errors;
   }
+}
+
+/**
+ * Return an array of the names of the components in a validation rule.
+ *
+ * @param $rule array
+ *   Array of information about a validation rule.
+ *
+ * @return array
+ *   Array of the filtered names of the components in $rule.
+ */
+function _webform_validation_get_names_of_rule_components(array $rule) {
+  $names = array();
+  foreach ($rule['components'] as $component) {
+    $names[] = _webform_filter_xss($component['name']);
+  }
+  return $names;
 }
 
 /**
