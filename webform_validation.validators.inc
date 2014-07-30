@@ -532,7 +532,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       }
       // If none of the components are completed, don't run this validator.
       if (!count($sum)) {
-        break;
+        return array();
       }
       $sum = array_sum($sum);
 
@@ -614,7 +614,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
 
       // Don't validate if either are empty.
       if ((string) $entry[1]['value'] === '' || (string) $entry[2]['value'] === '') {
-        return;
+        return array();
       }
 
       $error = FALSE;
