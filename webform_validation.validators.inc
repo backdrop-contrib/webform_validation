@@ -94,6 +94,23 @@ function webform_validation_webform_validation_validators() {
       ),
       'description' => t('Verifies that a user-entered value contains at most the specified number of words.'),
     ),
+    'sum' => array(
+      'name' => t('Adds up to'),
+      'component_types' => array(
+        'number',
+      ),
+      'custom_data' => array(
+        'label' => t('Number the fields add up to'),
+        'description' => t('Specify the number and the type of comparison. For example:') . theme('item_list', array('items' => array(
+          t('Enter "=3" if the components must add up to exactly 3.'),
+          t('Enter ">10" if the components must add up to greater than 10.'),
+          t('Enter ">=10" if the components must add up to greater than or equal to 10.'),
+          t('Enter "<20" if the components must add up to less than 20.'),
+          t('Enter "<=20" if the components must add up to less than or equal to 20.'),
+        ))),
+      ),
+      'description' => t('Require the values of the selected fields to add up to exactly, greater than or equal to, or less than or equal to a specified number.'),
+    ),
     'equal' => array(
       'name' => t('Equal values'),
       'component_types' => array(
@@ -503,6 +520,57 @@ function webform_validation_webform_validation_validate($validator_name, $items,
             $errors[$key] = $error;
           }
         }
+      }
+      return $errors;
+    case 'sum':
+      // Get the numbers to sum.
+      $sum = array();
+      foreach ($items as $item) {
+        if (isset($item[0])) {
+          $sum[] = $item[0];
+        }
+      }
+      // If none of the components are completed, don't run this validator.
+      if (!count($sum)) {
+        break;
+      }
+      $sum = array_sum($sum);
+
+      // Number being compared with.
+      $compare_number = (float) preg_replace('/^[^0-9]+/', '', $rule['data']);
+
+      // Parse the comparision operator and do comparison.
+      module_load_include('inc', 'webform', 'includes/webform.conditionals');
+      $error = FALSE;
+      if (substr($rule['data'], 0, 2) === '<=') {
+        if (!(webform_conditional_compare_floats($sum, $compare_number) <= 0)) {
+          $error = t('less than or equal to');
+        }
+      }
+      elseif (substr($rule['data'], 0, 1) === '<') {
+        if (!(webform_conditional_compare_floats($sum, $compare_number) < 0)) {
+          $error = t('less than');
+        }
+      }
+      elseif (substr($rule['data'], 0, 2) === '>=') {
+        if (!(webform_conditional_compare_floats($sum, $compare_number) >= 0)) {
+          $error = t('greater than or equal to');
+        }
+      }
+      elseif (substr($rule['data'], 0, 1) === '>') {
+        if (!(webform_conditional_compare_floats($sum, $compare_number) > 0)) {
+          $error = t('greater than');
+        }
+      }
+      else {
+        if (!(webform_conditional_compare_floats($sum, $compare_number) === 0)) {
+          $error = t('exactly');
+        }
+      }
+      // Set error if needed.
+      if ($error) {
+        $keys = array_keys($items);
+        $errors[$keys[0]] = t('These items must add up to %verb %compare_number:', array('%verb' => $error, '%compare_number' => $compare_number)) . theme('item_list', array('items' => _webform_validation_get_names_of_rule_components($rule)));
       }
       return $errors;
     case 'equal':
