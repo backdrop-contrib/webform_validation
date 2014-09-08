@@ -94,6 +94,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'description' => t('Verifies that a user-entered value contains at most the specified number of words.'),
     ),
+    // Only available in Webform 4; removed below if not.
     'sum' => array(
       'name' => t('Adds up to'),
       'component_types' => array(
@@ -391,6 +392,12 @@ function webform_validation_webform_validation_validators() {
       'description' => t('Validates that the user-entered data is a valid URL.'),
     ),
   );
+
+  // Only available in Webform 4.
+  module_load_include('inc', 'webform', 'components/number');
+  if (!function_exists('webform_compare_floats')) {
+    unset($validators['sum']);
+  }
 
   if (module_exists('email_verify')) {
     $validators['email_verify'] = array(
