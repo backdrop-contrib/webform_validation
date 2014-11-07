@@ -302,7 +302,7 @@ function theme_webform_validation_manage_add_rule($variables) {
  */
 function webform_validation_webform_validation($type, $op, $data) {
   if ($type == 'rule' && in_array($op, array('add', 'edit'))) {
-    if (module_exists('i18n') && isset($data['error_message'])) {
+    if (module_exists('i18n_string') && isset($data['error_message'])) {
       i18n_string_update('webform_validation:error_message:' . $data['ruleid'] . ':message', $data['error_message']);
     }
   }
