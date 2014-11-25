@@ -446,6 +446,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
     }
     $items[$key] = $new_values;
   }
+  // Ensure later calls to key() get the first item.
+  reset($items);
 
   $errors = array();
   switch ($validator_name) {
