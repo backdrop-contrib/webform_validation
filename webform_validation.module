@@ -5,8 +5,8 @@
  * Add validation rules to webforms
  */
 
-include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'webform_validation') . '/' . 'webform_validation.validators.inc';
-include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'webform_validation') . '/' . 'webform_validation.rules.inc';
+include_once('webform_validation.validators.inc');
+include_once('webform_validation.rules.inc');
 
 /**
  * Implements hook_menu().
