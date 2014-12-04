@@ -153,6 +153,7 @@ function webform_validation_validate($form, &$form_state) {
   }
 
   if ($rules) {
+    $component_definitions = webform_validation_prefix_keys($node->webform['components']);
     foreach ($rules as $rule) {
       // create a list of components that need validation against this rule (component id => user submitted value)
       $items = array();
@@ -163,7 +164,6 @@ function webform_validation_validate($form, &$form_state) {
       }
       // prefix array keys to avoid reindexing by the module_invoke_all function call
       $items = webform_validation_prefix_keys($items);
-      $component_definitions = webform_validation_prefix_keys($node->webform['components']);
       $rule['sid'] = $sid;
       // have the submitted values validated
       $errors = module_invoke_all("webform_validation_validate", $rule['validator'], $items, $component_definitions, $rule);
