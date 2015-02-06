@@ -155,10 +155,12 @@ function webform_validation_validate($form, &$form_state) {
   if ($rules) {
     $component_definitions = webform_validation_prefix_keys($node->webform['components']);
     // Remove hidden components.
+    if (!empty($flat_values)) {
     foreach ($component_definitions as $key => $component) {
       if (_webform_client_form_rule_check($node, $component, 0, $form_state['values']['submitted']) !== WEBFORM_CONDITIONAL_INCLUDE) {
         unset($flat_values[$key]);
       }
+    }
     }
     foreach ($rules as $rule) {
       // create a list of components that need validation against this rule (component id => user submitted value)
