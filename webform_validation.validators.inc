@@ -76,7 +76,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Minimum number of words'),
-        'description' => t('Specify the minimum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
+        'description' => t('Specify the minimum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.'),
       ),
       'description' => t('Verifies that a user-entered value contains at least the specified number of words.'),
     ),
@@ -90,7 +90,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Maximum number of words'),
-        'description' => t('Specify the maximum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.')
+        'description' => t('Specify the maximum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.'),
       ),
       'description' => t('Verifies that a user-entered value contains at most the specified number of words.'),
     ),
@@ -206,7 +206,7 @@ function webform_validation_webform_validation_validators() {
         'select',
         'textarea',
         'textfield',
-        'time'
+        'time',
       ),
       'custom_data' => array(
         'label' => t('Number to be completed'),
@@ -373,7 +373,7 @@ function webform_validation_webform_validation_validators() {
       ),
       'description' => t('Validates that user-entered data doesn\'t contain any of the specified illegal words.'),
     ),
-   'username' => array(
+    'username' => array(
       'name' => t('Must match a username'),
       'negatable' => TRUE,
       'component_types' => array(
