@@ -244,7 +244,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action = 'ad
       '#description' => t("Specify an error message that should be displayed when user input doesn't pass validation"),
       '#required' => TRUE,
       '#size' => 60,
-      '#maxlength' => 255,
+      '#maxlength' => 2048,
       '#default_value' => $rule['error_message'],
       '#weight' => 5,
     );
