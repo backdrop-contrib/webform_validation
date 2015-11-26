@@ -330,10 +330,10 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
-        'label' => t('Regex code'),
-        'description' => t('Specify regex code to validate the user input against.'),
+        'label' => t('Regex code (case-sensitive)'),
+        'description' => t('Specify regex code to validate the user input against. Do not include delimiters such as /.'),
       ),
-      'description' => t('Validates user-entered text against a specified case-sensitive regular expression. Note: don\'t include delimiters such as /.'),
+      'description' => t('Validates user-entered text against a case-sensitive regular expression.'),
     ),
     'regexi' => array(
       'name' => t('Regular expression, case-insensitive'),
@@ -347,10 +347,10 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_error' => TRUE,
       'custom_data' => array(
-        'label' => t('Regex code'),
-        'description' => t('Specify regex code to validate the user input against.'),
+        'label' => t('Regex code (case-insensitive)'),
+        'description' => t('Specify regex code to validate the user input against. Do not include delimiters such as /.'),
       ),
-      'description' => t('Validates user-entered text against a specified case-insensitive regular expression. Note: don\'t include delimiters such as /.'),
+      'description' => t('Validates user-entered text against a case-insensitive regular expression.'),
     ),
     'must_be_empty' => array(
       'name' => t('Must be empty'),
