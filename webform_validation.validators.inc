@@ -1033,7 +1033,7 @@ function _webform_validation_i18n_error_message($rule) {
  * Helper function used by array_filter to determine if a value was selected or not
  */
 function _webform_validation_check_false($var) {
-  return $var !== FALSE && $var !== 0;
+  return $var !== FALSE && $var !== 0 && $var !== '';
 }
 
 /**
