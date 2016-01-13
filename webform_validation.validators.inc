@@ -1030,7 +1030,19 @@ function _webform_validation_i18n_error_message($rule) {
 }
 
 /**
- * Helper function used by array_filter to determine if a value was selected or not
+ * Helper function used by array_filter() to determine if a value is empty.
+ *
+ * This is used in place of empty() because string '0' needs to be considered
+ * not empty and return FALSE.
+ *
+ * @param mixed $var
+ *   The value to check.
+ *
+ * @return bool
+ *   TRUE if $var is not one of FALSE, int 0, or empty string; FALSE otherwise.
+ *
+ * @see https://www.drupal.org/node/886458
+ * @see https://www.drupal.org/node/2638172
  */
 function _webform_validation_check_false($var) {
   return $var !== FALSE && $var !== 0 && $var !== '';
