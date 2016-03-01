@@ -601,7 +601,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $entry[$count]['key'] = key($items);
         $value = array_shift($items);
         if ($components[$entry[$count]['key']]['type'] === 'date') {
-          if (checkdate((int) $value['month'], (int) $value['day'], (int) $value['year'])) {
+          if (!empty($value) && checkdate((int) $value['month'], (int) $value['day'], (int) $value['year'])) {
             $entry[$count]['value'] = date('Y-m-d', mktime(0, 0, 0, (int) $value['month'], (int) $value['day'], (int) $value['year']));
           }
           else {
