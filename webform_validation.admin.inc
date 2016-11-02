@@ -309,9 +309,10 @@ function webform_validation_get_webform_components($node, $validator) {
   $components = $node->webform['components'];
   if ($components) {
     $valid_components = webform_validation_valid_component_types($validator);
+    $component_names = webform_component_list($node, NULL, 'path');
     foreach ($components as $cid => $component) {
       if (in_array($component['type'], $valid_components)) {
-        $ret[$cid] = $component['name'];
+        $ret[$cid] = $component_names[$cid];
       }
     }
   }
