@@ -1,10 +1,11 @@
-Description
------------
+#Webform Validation
+
 This module adds an extra tab to each webform node, allowing you to specify validation rules for your webform components.
 You can create one or more of the predefined validation rules, and select which webform component(s) should be validated against those.
 By using the hooks provided by this module, you can also define your own validation rules in your own modules.
 
 The following validation rules are currently included:
+
 - Numeric values (optionally specify min and / or max value)
 - Minimum length
 - Maximum length
@@ -24,36 +25,39 @@ The following validation rules are currently included:
 - Words blacklist
 - Must match a username
 
-Installation
-------------
-1) Place the module folder in your sites/all/modules folder
-2) Make sure you have the webform module enabled
-3) Activate the module via admin/build/modules
+##Installation
 
-Usage
------
-Once you have installed the module, an extra tab will appear on the node's webform management pages (tab "Edit" in Webform 2.x, tab "Webform" in Webform 3.x).
-This extra tab is labeled "Webform validation".
+ - Make sure you have the Webform module enabled
+ - Install this module using the official 
+  [Backdrop CMS instructions](https://backdropcms.org/guide/modules)
+
+##Usage
+
+Once you have installed the module, an extra tab will appear on the node's webform management pages. This extra tab is labeled "Form validation".
 Upon selecting this tab, you can choose to add one of the available validation rules to your webform.
 Make sure you have added the webform components you wish to validate before adding the validation rule.
 
 After clicking the link to add the desired validation rule, you can specify the following details for your rule:
+
 - an administrative name to describe the validation rule
 - one or more webform components that should be validated against this rule
 (depending on the chosen rule, you will have to select a specific number of components for the validation rule to work properly).
 
 Depending on the chosen rule, more form fields will be available on the rules form:
+
 - optionally an extra setting to further configure the rule
 - optionally a custom error message textfield
 
 Once you have configured your desired validation rules for the selected webform components, every time a user fills in the webform,
 the validation will be triggered for the selected components, and show the user a standard form error message when entered data doesn't pass the validation rule you have set up.
 
-Adding custom validation rules
--------------------------------
+##Developers
+
+###Adding custom validation rules
+
 The following steps will let you add custom validators through your module:
 
-1/ Implement hook hook_webform_validation_validators().
+1. Implement hook hook_webform_validation_validators().
    This hook implementation should return an array of validator key => options array entries.
    The options array can contain the following configuration keys:
    * name (required): name of the validator
@@ -64,9 +68,9 @@ The following steps will let you add custom validators through your module:
    * max_components (optional): define the maximum number of components to be selected for creating a validation rule
    * description (optional): provide a descriptive explanation about the validator
 
-   See function webform_validation_webform_validation_validators() in webform_validation.validators.inc for a live example
+   See function `webform_validation_webform_validation_validators()` in webform_validation.validators.inc for a live example
 
- 2/ Implement hook hook_webform_validation_validate($validator_name, $items, $components, $rule).
+2. Implement hook hook_webform_validation_validate($validator_name, $items, $components, $rule).
     This hook gets passed 4 parameters, which will allow you to react to your custom validator (or any other validator for that matter).
     Explanation about these parameters:
     * $validator_name: this is the validator name (i.e. array key as entered in hook_webform_validation_validators)
@@ -74,19 +78,36 @@ The following steps will let you add custom validators through your module:
     * $components: this array contains the definitions of the webform components in your form
     * $rule: this array contains the details of your validation rule
 
-    See function webform_validation_webform_validation_validate() in webform_validation.validators.inc for a live example
+    See function `webform_validation_webform_validation_validate()` in webform_validation.validators.inc for a live example
 
-Additional hooks
------------------
-The hook hook_webform_validation($type, $op, $data) can be used to react on various webform_validation based actions.
+###Additional hooks
+
+The hook `hook_webform_validation($type, $op, $data)` can be used to react on various webform_validation based actions.
+
 * $type - possible values: 'rule'
 * $op - possible values: 'add', 'edit', 'delete'
 * $data - array with rule data in case of $op add/edit, rule id in case of $op delete.
 
-The hook hook_webform_validator_alter(&$validators) can be used to alter the array of validators that is being generated by hook_webform_validation_validators().
-* $validators - array of validators as supplied by modules implementing hook_webform_validation_validators().
+The hook `hook_webform_validator_alter(&$validators)` can be used to alter the array of validators that is being generated by `hook_webform_validation_validators()`.
 
-Author
-------
-Sven Decabooter (http://drupal.org/user/35369)
-The author can be contacted for paid customizations of this module as well as Drupal consulting and development.
+* $validators - array of validators as supplied by modules implementing `hook_webform_validation_validators()`.
+
+##Issues
+
+Bugs and Feature requests should be reported in the 
+[Issue Queue](https://github.com/backdrop-contrib/webform_validation/issues)
+
+##Current Maintainers
+
+- [Laryn Kragt Bakker](https://github.com/laryn) - [CEDC.org](https://cedc.org)
+
+##Credits
+
+- Ported to Backdrop CMS by [Laryn Kragt Bakker](https://github.com/laryn) - [CEDC.org](https://cedc.org).
+- Current maintainer for the Drupal module: [Liam Morland](https://github.com/lkmorlan)
+- Original author of the Drupal module: [Sven Decabooter](https://github.com/svendecabooter)
+
+##License
+
+This project is GPL v2 software. See the [LICENSE.txt](https://github.com/backdrop-contrib/webform_validation/blob/1.x-1.x/LICENSE.txt) 
+file in this directory for complete text.

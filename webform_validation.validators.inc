@@ -498,7 +498,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       $min_length = $rule['data'];
       foreach ($items as $key => $val) {
         foreach ($val as $subval) {
-          if (drupal_strlen($subval) < $min_length) {
+          if (backdrop_strlen($subval) < $min_length) {
             $errors[$key] = t('%item should be at least %num characters long.', array('%item' => $components[$key]['name'], '%num' => $min_length));
           }
         }
@@ -508,7 +508,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       $max_length = $rule['data'];
       foreach ($items as $key => $val) {
         foreach ($val as $subval) {
-          if (drupal_strlen($subval) > $max_length) {
+          if (backdrop_strlen($subval) > $max_length) {
             $errors[$key] = t('%item should be at most %num characters long.', array('%item' => $components[$key]['name'], '%num' => $max_length));
           }
         }
@@ -664,10 +664,10 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         $items[$key] = _webform_validation_flatten_array($val);
       }
       // now we count how many times each value appears, and find out which values appear more than once
-      $items_count = array_count_values(array_map('drupal_strtolower', array_map('trim', $items)));
+      $items_count = array_count_values(array_map('backdrop_strtolower', array_map('trim', $items)));
       $doubles = array_filter($items_count, create_function('$x', 'return $x > 1;'));
       foreach ($items as $key => $val) {
-        if (in_array(drupal_strtolower($val), array_keys($doubles))) {
+        if (in_array(backdrop_strtolower($val), array_keys($doubles))) {
           $errors[$key] = t('The value of %item is not unique.', array('%item' => $components[$key]['name']));
         }
       }
@@ -967,7 +967,7 @@ function _webform_validation_flatten_array($val) {
 function webform_validation_get_validators() {
   $validators = module_invoke_all('webform_validation_validators');
   // Let modules use hook_webform_validator_alter($validators) to change validator settings.
-  drupal_alter('webform_validator', $validators);
+  backdrop_alter('webform_validator', $validators);
 
   // Remove entries for which only partial information exists.
   foreach ($validators as $validator_key => $validator_info) {

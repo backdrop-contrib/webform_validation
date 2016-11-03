@@ -11,7 +11,7 @@
 function webform_validation_manage($node) {
   $rules = webform_validation_get_webform_rules($node);
   $output = array();
-  $output['webform_validation_manage_overview_form'] = drupal_get_form('webform_validation_manage_overview_form', $rules, $node);
+  $output['webform_validation_manage_overview_form'] = backdrop_get_form('webform_validation_manage_overview_form', $rules, $node);
   $output['webform_validation_manage_add_rule'] = array(
     '#theme' => 'webform_validation_manage_add_rule',
     '#nid' => $node->nid,
@@ -50,7 +50,7 @@ function theme_webform_validation_manage_overview_form($variables) {
       //add a class to the weight field
       $form[$rule]['weight']['#attributes']['class'] = array('ruleid-weight');
       $row[] = array(
-        'data' => drupal_render($form[$rule][$item]),
+        'data' => backdrop_render($form[$rule][$item]),
       );
     }
     if (count($row) > 1) {
@@ -73,9 +73,9 @@ function theme_webform_validation_manage_overview_form($variables) {
     );
   }
   $output = theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'webform-validation-overview-form')));
-  $output .= drupal_render_children($form);
+  $output .= backdrop_render_children($form);
   if ($drag) {
-    drupal_add_tabledrag('webform-validation-overview-form', 'order', 'sibling', 'ruleid-weight');
+    backdrop_add_tabledrag('webform-validation-overview-form', 'order', 'sibling', 'ruleid-weight');
   }
   return $output;
 }
@@ -117,11 +117,11 @@ function webform_validation_manage_overview_form($form, &$form_state, $rules, $n
     $form[$rule['ruleid']]['actions'] = array('#type' => 'actions');
     $form[$rule['ruleid']]['actions']['edit'] = array(
       '#type' => 'item',
-      '#markup' => l(t('Edit'), 'node/' . $node->nid . '/webform/validation/edit/' . $rule['validator'] . '/' . $rule['ruleid'], array("query" => drupal_get_destination())),
+      '#markup' => l(t('Edit'), 'node/' . $node->nid . '/webform/validation/edit/' . $rule['validator'] . '/' . $rule['ruleid'], array("query" => backdrop_get_destination())),
     );
     $form[$rule['ruleid']]['actions']['delete'] = array(
       '#type' => 'item',
-      '#markup' => l(t('Delete'), 'node/' . $node->nid . '/webform/validation/delete/' . $rule['ruleid'], array("query" => drupal_get_destination())),
+      '#markup' => l(t('Delete'), 'node/' . $node->nid . '/webform/validation/delete/' . $rule['ruleid'], array("query" => backdrop_get_destination())),
     );
   }
   if (count($rules) > 1) {
@@ -149,7 +149,7 @@ function webform_validation_manage_overview_form_submit($form, $form_state) {
         ->execute();
     }
   }
-  drupal_set_message(t('The order of the validation rules has been saved.'));
+  backdrop_set_message(t('The order of the validation rules has been saved.'));
 }
 
 /**
@@ -256,7 +256,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action = 'ad
     '#weight' => 25,
   );
 
-  $destination = drupal_get_destination();
+  $destination = backdrop_get_destination();
   $form['rule']['cancel'] = array(
     '#markup' => l(t('Cancel'), $destination['destination']),
     '#weight' => 26,

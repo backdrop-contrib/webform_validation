@@ -1,6 +1,7 @@
 name = Webform Validation
 description = Add validation rules to Webforms.
-core = 7.x
+backdrop = 1.x
+type = module
 package = Webform
 dependencies[] = webform
 php = 5.3

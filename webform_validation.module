@@ -27,7 +27,7 @@ function webform_validation_menu() {
 
   $items['node/%webform_menu/webform/validation/add/%'] = array(
     'title' => 'Add validation',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('webform_validation_manage_rule', 1, 'add', 5),
     'access callback' => 'node_access',
     'access arguments' => array('update', 1),
@@ -37,7 +37,7 @@ function webform_validation_menu() {
 
   $items['node/%webform_menu/webform/validation/edit/%/%webform_validation_rule'] = array(
     'title' => 'Edit rule',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('webform_validation_manage_rule', 1, 'edit', 5, 6),
     'access callback' => 'node_access',
     'access arguments' => array('update', 1),
@@ -47,7 +47,7 @@ function webform_validation_menu() {
 
   $items['node/%webform_menu/webform/validation/delete/%webform_validation_rule'] = array(
     'title' => 'Delete rule',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('webform_validation_delete_rule', 5),
     'access callback' => 'node_access',
     'access arguments' => array('update', 1),
@@ -110,7 +110,7 @@ function webform_validation_i18n_string_info() {
  * Webform validation handler to validate against the given rules
  */
 function webform_validation_validate($form, &$form_state) {
-  $static_error_messages = &drupal_static(__FUNCTION__, array());
+  $static_error_messages = &backdrop_static(__FUNCTION__, array());
   $page_count = 1;
   $nid = $form_state['values']['details']['nid'];
   $node = node_load($nid);
@@ -313,7 +313,7 @@ function theme_webform_validation_manage_add_rule($variables) {
     foreach ($validators as $validator_key => $validator_info) {
       $url = 'node/' . $nid . '/webform/validation/add/' . $validator_key;
       if (array_intersect($types, $validator_info['component_types'])) {
-        $title = l($validator_info['name'], $url, array('query' => drupal_get_destination()));
+        $title = l($validator_info['name'], $url, array('query' => backdrop_get_destination()));
         $component_list_postfix = '';
       }
       else {
@@ -414,7 +414,7 @@ function webform_validation_rule_save($values) {
     return FALSE;
   }
 
-  drupal_write_record('webform_validation_rule', $values, $primary_keys);
+  backdrop_write_record('webform_validation_rule', $values, $primary_keys);
 
   // Delete existing component records for this ruleid.
   if ($values['action'] === 'edit') {
