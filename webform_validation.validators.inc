@@ -182,7 +182,6 @@ function webform_validation_webform_validation_validators() {
         'label' => t('(Key) value'),
         'description' => t('Specify the specific value(s) you want the component to contain. Separate multiple options by a comma. For components that have keys, use the key value instead.'),
       ),
-      'max_components' => 1,
       'description' => t('Verifies that the value of the specified component is from a list of allowed values.'),
     ),
     'default_value' => array(
