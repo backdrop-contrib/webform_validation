@@ -130,9 +130,21 @@ function webform_validation_validate($form, &$form_state) {
 
   // Filter out rules that don't apply to this step in the multistep form.
   if ($values && $page_count && $page_count > 1) {
+    $validators = webform_validation_get_validators();
     foreach ($rules as $ruleid => $rule) {
+      // Skip the rule if it does not have any components on the current page.
       if (!array_intersect_key($flat_values, $rule['components'])) {
         unset($rules[$ruleid]);
+      }
+      // For validators that require at least 2 components, skip the rule if any
+      // of the components are on a page past the current page.
+      elseif (isset($validators[$rule['validator']]['min_components']) && $validators[$rule['validator']]['min_components'] > 1) {
+        foreach (array_keys($rule['components']) as $cid) {
+          if ($node->webform['components'][$cid]['page_num'] > $form_state['webform']['page_num']) {
+            unset($rules[$ruleid]);
+            break;
+          }
+        }
       }
     }
   }
