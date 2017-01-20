@@ -130,26 +130,9 @@ function webform_validation_validate($form, &$form_state) {
 
   // Filter out rules that don't apply to this step in the multistep form.
   if ($values && $page_count && $page_count > 1) {
-    $current_page_components = webform_validation_get_field_keys($form_state['values']['submitted'], $node);
-    if ($rules) {
-      // Filter out rules that don't belong in the current step.
-      foreach ($rules as $ruleid => $rule) {
-        // Get all the component formkeys for this specific validation rule.
-        $rule_formkeys = webform_validation_rule_get_formkeys($rule);
-        $rule_applies_to_current_page = FALSE;
-        if (!empty($rule_formkeys)) {
-          foreach ($rule_formkeys as $formkey) {
-            if (in_array($formkey, $current_page_components)) {
-              // This rule applies to the current page,
-              // because one of the rule components is on the page.
-              $rule_applies_to_current_page = TRUE;
-            }
-          }
-        }
-
-        if (!$rule_applies_to_current_page) {
-          unset($rules[$ruleid]);
-        }
+    foreach ($rules as $ruleid => $rule) {
+      if (!array_intersect_key($flat_values, $rule['components'])) {
+        unset($rules[$ruleid]);
       }
     }
   }
@@ -237,6 +220,8 @@ function webform_validation_validate($form, &$form_state) {
 /**
  * Recursive helper function.
  * To get all field keys (including fields in fieldsets).
+ *
+ * @deprecated No longer used and will be removed in 7.x-2.x.
  */
 function webform_validation_get_field_keys($submitted, $node) {
   static $fields = array();
@@ -274,6 +259,8 @@ function webform_validation_parent_tree($cid, $components) {
 /**
  * Get an array of formkeys for all components that have been assigned to a
  * rule.
+ *
+ * @deprecated No longer used and will be removed in 7.x-2.x.
  */
 function webform_validation_rule_get_formkeys($rule) {
   $formkeys = array();
