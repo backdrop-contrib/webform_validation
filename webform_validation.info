@@ -3,4 +3,5 @@ description = Add validation rules to Webforms.
 core = 7.x
 package = Webform
 dependencies[] = webform
+files[] = tests/WebformValidationTestCase.test
 php = 5.3
