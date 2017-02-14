@@ -49,6 +49,6 @@ class WebformValidationTestCase extends WebformTestCase {
       'data' => 2,
     );
     $this->drupalPost(NULL, $values, t('Add rule'));
-    $this->assertText($values['rulename'], 'Rule name appears on page.');
+    $this->assertText(htmlspecialchars($values['rulename'], ENT_QUOTES), 'Rule name appears on page.');
   }
 }
