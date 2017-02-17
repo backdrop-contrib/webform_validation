@@ -19,12 +19,15 @@ class WebformValidationTestCase extends WebformTestCase {
   /**
    * {@inheritdoc}
    */
-  function setUp($added_modules = array()) {
+  public function setUp($added_modules = array()) {
     $modules = array('webform_validation');
     parent::setUp(array_merge($modules, $added_modules));
   }
 
-  function test() {
+  /**
+   * The tests.
+   */
+  public function test() {
     // Create test Webform.
     $node = $this->webformForm();
 
@@ -51,4 +54,5 @@ class WebformValidationTestCase extends WebformTestCase {
     $this->drupalPost(NULL, $values, t('Add rule'));
     $this->assertText(htmlspecialchars($values['rulename'], ENT_QUOTES), 'Rule name appears on page.');
   }
+
 }

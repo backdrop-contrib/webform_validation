@@ -81,7 +81,8 @@ function theme_webform_validation_manage_overview_form($variables) {
     'header' => $header,
     'rows' => $rows,
     'attributes' => array(
-      'id' => 'webform-validation-overview-form'),
+      'id' => 'webform-validation-overview-form',
+    ),
   ));
   $output .= drupal_render_children($form);
   if ($drag) {
