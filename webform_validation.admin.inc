@@ -315,6 +315,8 @@ function webform_validation_manage_rule_submit($form, &$form_state) {
  * Get a list of components for a specific webform, filtered by the validator settings.
  */
 function webform_validation_get_webform_components($node, $validator) {
+  form_load_include($form_state, 'inc', 'webform', 'includes/webform.components');
+
   $ret = array();
   $components = $node->webform['components'];
   if ($components) {
