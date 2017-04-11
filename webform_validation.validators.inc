@@ -269,7 +269,7 @@ function webform_validation_webform_validation_validators() {
         'textarea',
         'textfield',
       ),
-      'description' => t('Verifies that user-entered data doesn\'t contain HTML tags.'),
+      'description' => t("Verifies that user-entered data doesn't contain HTML tags."),
     ),
     'starts_with' => array(
       'name' => t('Starts with'),
@@ -375,7 +375,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Blacklisted words'),
         'description' => t('Specify illegal words, seperated by commas.'),
       ),
-      'description' => t('Validates that user-entered data doesn\'t contain any of the specified illegal words.'),
+      'description' => t("Validates that user-entered data doesn't contain any of the specified illegal words."),
     ),
     'username' => array(
       'name' => t('Must match a username'),
@@ -915,7 +915,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
 /**
  * Return an array of the names of the components in a validation rule.
  *
- * @param $rule array
+ * @param array $rule
  *   Array of information about a validation rule.
  *
  * @return array
@@ -972,8 +972,10 @@ function _webform_validation_count_words($val) {
 }
 
 /**
- * Helper function to deal with submitted values that are arrays (for example, multiple select component).
- * We flatten the array as a comma-separated list to do the comparison.
+ * Helper function to deal with submitted values that are arrays.
+ *
+ * For example, multiple select component. We flatten the array as a
+ * comma-separated list to do the comparison.
  */
 function _webform_validation_flatten_array($val) {
   if (is_array($val)) {
@@ -984,10 +986,10 @@ function _webform_validation_flatten_array($val) {
 }
 
 /**
- * Get a list of validator definitions.
+ * Get a array of validator definitions.
  *
- * @return
- *   Array of information about validators.
+ * @return array
+ *   Information about validators.
  */
 function webform_validation_get_validators() {
   static $validators;
@@ -1027,8 +1029,10 @@ function webform_validation_get_validators_selection() {
 }
 
 /**
- * Get a list of valid component types per validator, as defined via hook_webform_validation_validators().
- * If 'all' is specified, all available component types will be returned.
+ * Get a list of valid component types per validator.
+ *
+ * These are defined via hook_webform_validation_validators(). If "all" is
+ * specified, all available component types will be returned.
  */
 function webform_validation_valid_component_types($validator) {
   $validators = webform_validation_get_validators();
@@ -1044,7 +1048,7 @@ function webform_validation_valid_component_types($validator) {
 /**
  * Return information about a specified validator.
  *
- * @param $validator_key string
+ * @param string $validator_key
  *   The key of the validator to return information about.
  *
  * @return array

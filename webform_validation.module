@@ -230,8 +230,7 @@ function webform_validation_validate($form, &$form_state) {
 }
 
 /**
- * Recursive helper function.
- * To get all field keys (including fields in fieldsets).
+ * Helper function to get all field keys (including fields in fieldsets).
  *
  * @deprecated No longer used and will be removed in 7.x-2.x.
  */
@@ -269,8 +268,7 @@ function webform_validation_parent_tree($cid, $components) {
 }
 
 /**
- * Get an array of formkeys for all components that have been assigned to a
- * rule.
+ * Get array of formkeys for all components that have been assigned to a rule.
  *
  * @deprecated No longer used and will be removed in 7.x-2.x.
  */
@@ -296,8 +294,7 @@ function webform_validation_prefix_keys($arr) {
 }
 
 /**
- * Undo prefixing numeric array keys to avoid them being reindexed by
- * module_invoke_all.
+ * Undo prefixing numeric array keys to avoid them being reindexed by module_invoke_all.
  */
 function webform_validation_unprefix_keys($arr) {
   $ret = array();
@@ -403,8 +400,9 @@ function webform_validation_node_clone($node) {
 }
 
 /**
- * Save a validation rule. Data comes from the admin form or nodeapi function in
- * case of node clone.
+ * Save a validation rule.
+ *
+ * Data comes from the admin form or nodeapi function in case of node clone.
  *
  * @param array $values
  *   An associative array containing:
