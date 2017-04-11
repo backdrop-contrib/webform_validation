@@ -166,7 +166,7 @@ function webform_validation_manage_overview_form_submit($form, $form_state) {
 /**
  * Callback function to add or edit a validation rule.
  */
-function webform_validation_manage_rule($form, $form_state, $node, $action = 'add', $validator, $rule = NULL) {
+function webform_validation_manage_rule($form, $form_state, $node, $action, $validator, $rule = NULL) {
   $form = array();
   $rule_validator = webform_validation_get_validator_info($validator);
 
