@@ -4,4 +4,5 @@ backdrop = 1.x
 type = module
 package = Webform
 dependencies[] = webform
+files[] = tests/WebformValidationTestCase.test
 php = 5.3
