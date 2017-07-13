@@ -97,6 +97,6 @@ function webform_validation_schema() {
 /**
  * Implements hook_update_last_removed().
  */
-function modulename_update_last_removed() {
+function webform_validation_update_last_removed() {
   return 7106;
 }
