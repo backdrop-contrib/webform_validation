@@ -153,11 +153,11 @@ function webform_validation_manage_overview_form_submit($form, $form_state) {
   foreach ($form_state['values'] as $ruleid => $value) {
     if (is_numeric($ruleid)) {
       $update = db_update('webform_validation_rule')
-          ->fields(array(
-            'weight' => $value['weight'],
-          ))
-          ->condition('ruleid', $ruleid)
-          ->execute();
+        ->fields(array(
+          'weight' => $value['weight'],
+        ))
+        ->condition('ruleid', $ruleid)
+        ->execute();
     }
   }
   drupal_set_message(t('The order of the validation rules has been saved.'));

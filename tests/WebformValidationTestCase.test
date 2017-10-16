@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @file
  * Test Webform Validation module.
  */
 class WebformValidationTestCase extends WebformTestCase {
+
   /**
    * {@inheritdoc}
    */
