@@ -200,6 +200,16 @@ function webform_validation_validate($form, &$form_state) {
       // Have the submitted values validated.
       $errors = module_invoke_all("webform_validation_validate", $rule['validator'], $items, $component_definitions, $rule);
       if ($errors) {
+        // Create hook_webform_validation_validate_alter(). Allow other modules
+        // to alter error messages.
+        $context = array(
+          'validator_name' => $rule['validator'],
+          'items' => $items,
+          'components' => $component_definitions,
+          'rule' => $rule,
+        );
+        drupal_alter('webform_validation_validate', $errors, $context);
+
         $errors = webform_validation_unprefix_keys($errors);
         $components = webform_validation_unprefix_keys($component_definitions);
         foreach ($errors as $item_key => $error) {
