@@ -150,8 +150,6 @@ function webform_validation_validate($form, &$form_state) {
   }
 
   if ($rules) {
-    $component_definitions = webform_validation_prefix_keys($node->webform['components']);
-
     // Remove hidden components.
     if (defined('WebformConditionals::componentShown')) {
       // New conditionals system.
@@ -161,7 +159,7 @@ function webform_validation_validate($form, &$form_state) {
       if (!$sorter->isExecuted()) {
         $sorter->executeConditionals(array(), 0);
       }
-      foreach ($component_definitions as $key => $component) {
+      foreach ($node->webform['components'] as $key => $component) {
         if ($sorter->componentVisibility($component['cid'], $component['page_num']) !== WebformConditionals::componentShown) {
           unset($flat_values[$key]);
         }
@@ -174,7 +172,7 @@ function webform_validation_validate($form, &$form_state) {
       if (!defined('WEBFORM_CONDITIONAL_INCLUDE')) {
         define('WEBFORM_CONDITIONAL_INCLUDE', 1);
       }
-      foreach ($component_definitions as $key => $component) {
+      foreach ($node->webform['components'] as $key => $component) {
         // In Webform 7.x-3.x, _webform_client_form_rule_check() returns
         // boolean.
         // Cast to int so that the function behaves as it does in 7.x-4.x.
@@ -193,25 +191,21 @@ function webform_validation_validate($form, &$form_state) {
           $items[$cid] = $flat_values[$cid];
         }
       }
-      // Prefix array keys to avoid reindexing by the module_invoke_all function
-      // call.
-      $items = webform_validation_prefix_keys($items);
       $rule['sid'] = $sid;
       // Have the submitted values validated.
-      $errors = module_invoke_all("webform_validation_validate", $rule['validator'], $items, $component_definitions, $rule);
+      $errors = module_invoke_all("webform_validation_validate", $rule['validator'], webform_validation_prefix_keys($items), webform_validation_prefix_keys($node->webform['components']), $rule);
       if ($errors) {
+        $errors = webform_validation_unprefix_keys($errors);
         // Create hook_webform_validation_validate_alter(). Allow other modules
         // to alter error messages.
         $context = array(
           'validator_name' => $rule['validator'],
           'items' => $items,
-          'components' => $component_definitions,
+          'components' => $node->webform['components'],
           'rule' => $rule,
         );
         drupal_alter('webform_validation_validate', $errors, $context);
 
-        $errors = webform_validation_unprefix_keys($errors);
-        $components = webform_validation_unprefix_keys($component_definitions);
         foreach ($errors as $item_key => $error) {
           // Do not set error message if an identical message has already been
           // set.
@@ -222,7 +216,7 @@ function webform_validation_validate($form, &$form_state) {
 
           // Build the proper form element error key, taking into account
           // hierarchy.
-          $error_key = 'submitted][' . webform_validation_parent_tree($item_key, $components) . $components[$item_key]['form_key'];
+          $error_key = 'submitted][' . webform_validation_parent_tree($item_key, $node->webform['components']) . $node->webform['components'][$item_key]['form_key'];
           if (is_array($error)) {
             foreach ($error as $sub_item_key => $sub_error) {
               form_set_error($error_key . '][' . $sub_item_key, $sub_error);
