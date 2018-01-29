@@ -1,0 +1,9 @@
+name = Webform Validation Testing
+description = Helps with testing Webform Validation module.
+core = 7.x
+package = Testing
+dependencies[] = features
+dependencies[] = node
+dependencies[] = uuid_features
+dependencies[] = webform_validation
+hidden = TRUE
