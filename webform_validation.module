@@ -260,7 +260,9 @@ function webform_validation_get_field_keys($submitted, $node) {
 }
 
 /**
- * Recursively add the parents for the element, to be used as first argument to form_set_error.
+ * Recursively add the parents for the element.
+ *
+ * These are used as the first argument to form_set_error().
  */
 function webform_validation_parent_tree($cid, $components) {
   $output = '';
@@ -287,7 +289,11 @@ function webform_validation_rule_get_formkeys($rule) {
 }
 
 /**
- * Prefix numeric array keys to avoid them being reindexed by module_invoke_all.
+ * Prefix numeric array keys to avoid them being reindexed.
+ *
+ * Reindexing done in module_invoke_all().
+ *
+ * Opposite of webform_validation_unprefix_keys().
  */
 function webform_validation_prefix_keys($arr) {
   $ret = array();
@@ -298,7 +304,9 @@ function webform_validation_prefix_keys($arr) {
 }
 
 /**
- * Undo prefixing numeric array keys to avoid them being reindexed by module_invoke_all.
+ * Undo prefixing numeric array keys.
+ *
+ * Opposite of webform_validation_prefix_keys().
  */
 function webform_validation_unprefix_keys($arr) {
   $ret = array();

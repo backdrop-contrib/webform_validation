@@ -126,7 +126,8 @@ function webform_validation_update_1() {
  * Helper function: update numeric validator range to new syntax.
  */
 function _webform_validation_update_range_syntax($range) {
-  // No longer use "0" as indicator for no validation. This should be an empty string.
+  // No longer use "0" as indicator for no validation. This should be an empty
+  // string.
   if ($range === "0") {
     return "";
   }
