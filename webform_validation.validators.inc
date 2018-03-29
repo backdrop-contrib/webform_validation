@@ -11,7 +11,7 @@
  * This function returns an array of validators, in the validator key => options
  * array form. Possible options:
  * - name (required): name of the validator.
- * - component types (required): defines which component types can be validated
+ * - component_types (required): defines which component types can be validated
  *   by this validator. Specify 'all' to allow all types.
  * - negatable (optional): define whether the rule can be negated, meaning it
  *   will validate the inverse of the rule.
