@@ -335,7 +335,7 @@ function theme_webform_validation_manage_add_rule($variables) {
     $output = '<h3>' . t('Add a validation rule') . '</h3>';
     $output .= '<dl>';
     foreach ($validators as $validator_key => $validator_info) {
-      $validator_types = $validator_info['component_types'];
+      $validator_types = webform_validation_valid_component_types($validator_key);
       $title = $validator_info['name'];
       if (array_intersect($types, $validator_types)) {
         $url = 'node/' . $nid . '/webform/validation/add/' . $validator_key;
