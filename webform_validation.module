@@ -335,13 +335,13 @@ function theme_webform_validation_manage_add_rule($variables) {
     $output = '<h3>' . t('Add a validation rule') . '</h3>';
     $output .= '<dl>';
     foreach ($validators as $validator_key => $validator_info) {
-      $url = 'node/' . $nid . '/webform/validation/add/' . $validator_key;
+      $title = $validator_info['name'];
       if (array_intersect($types, $validator_info['component_types'])) {
-        $title = l($validator_info['name'], $url, array('query' => drupal_get_destination()));
+        $url = 'node/' . $nid . '/webform/validation/add/' . $validator_key;
+        $title = l($title, $url, array('query' => drupal_get_destination()));
         $component_list_postfix = '';
       }
       else {
-        $title = $validator_info['name'];
         $component_list_postfix = '; ' . t('none present in this form');
       }
       $item = '<dt>' . $title . '</dt>';
