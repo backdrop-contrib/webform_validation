@@ -228,9 +228,15 @@ function webform_validation_manage_rule($form, $form_state, $node, $action, $val
   );
 
   if (!empty($rule_validator['custom_data']) && is_array($rule_validator['custom_data'])) {
+    $valid_types = array('textfield', 'textarea');
+    $type = isset($rule_validator['custom_data']['type']) ? $rule_validator['custom_data']['type'] : 'textfield';
+    if (!in_array($type, $valid_types)) {
+      $type = 'textfield';
+    }
+
     $required = isset($rule_validator['custom_data']['required']) ? $rule_validator['custom_data']['required'] : TRUE;
     $form['rule']['data'] = array(
-      '#type' => 'textfield',
+      '#type' => $type,
       '#title' => $rule_validator['custom_data']['label'],
       '#description' => $rule_validator['custom_data']['description'],
       '#required' => (bool) $required,
