@@ -20,7 +20,7 @@ class WebformValidationTestCase extends WebformTestCase {
    * {@inheritdoc}
    */
   public function setUp($added_modules = array()) {
-    $modules = array('webform_validation');
+    $modules = array('webform_validation', 'webform_validation_testing');
     parent::setUp(array_merge($modules, $added_modules));
   }
 
@@ -47,6 +47,8 @@ class WebformValidationTestCase extends WebformTestCase {
     // Rule creation page.
     $this->clickLink('Minimum length');
     $this->assertTitle('Add validation | Drupal');
+    $element = $this->xpath("//input[@id='edit-data'][@name='data'][@type='text']");
+    $this->assertTrue($element, 'Page contains "edit-data" input.');
 
     // Rule created.
     $values = array(
@@ -56,6 +58,10 @@ class WebformValidationTestCase extends WebformTestCase {
     );
     $this->drupalPost(NULL, $values, t('Add rule'));
     $this->assertText(htmlspecialchars($values['rulename'], ENT_QUOTES), 'Rule name appears on page.');
+
+    $this->clickLink('Webform Validation Testing 1');
+    $element = $this->xpath("//textarea[@id='edit-data'][@name='data']");
+    $this->assertTrue($element, 'Page contains "edit-data" textarea.');
   }
 
 }
