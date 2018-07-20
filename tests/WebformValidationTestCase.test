@@ -31,11 +31,12 @@ class WebformValidationTestCase extends WebformTestCase {
     // Create test Webform.
     $node = $this->webformForm();
 
-    // Test access to "Form validation" tab.
+    // Access to "Form validation" tab.
     $this->drupalLogin($this->webform_users['userAccess']);
     $this->drupalGet('node/' . $node->nid . '/webform/validation');
     $this->assertResponse(403, 'Authenticated user does not have access to "Form validation" tab');
 
+    // Empty validation rules list.
     $this->drupalLogin($this->webform_users['admin']);
     $this->drupalGet('node/' . $node->nid . '/webform/validation');
     $this->assertResponse(200, 'Webform admin user has access to "Form validation" tab');
@@ -43,9 +44,11 @@ class WebformValidationTestCase extends WebformTestCase {
     $this->assertText('Add a validation rule');
     $this->assertText('No validation rules available.');
 
-    // Test rule creation.
+    // Rule creation page.
     $this->clickLink('Minimum length');
     $this->assertTitle('Add validation | Drupal');
+
+    // Rule created.
     $values = array(
       'rulename' => $this->randomString(),
       'rule_components[21]' => TRUE,
