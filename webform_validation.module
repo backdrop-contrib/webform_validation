@@ -82,12 +82,10 @@ function webform_validation_theme() {
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_BASE_FORM_ID_alter().
  */
-function webform_validation_form_alter(&$form, &$form_state, $form_id) {
-  if (strpos($form_id, 'webform_client_form_') !== FALSE) {
-    $form['#validate'][] = 'webform_validation_validate';
-  }
+function webform_validation_form_webform_client_form_alter(&$form, &$form_state, $form_id) {
+  $form['#validate'][] = 'webform_validation_validate';
 }
 
 /**
