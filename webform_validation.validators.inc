@@ -431,6 +431,19 @@ function webform_validation_webform_validation_validate($validator_name, $items,
     return NULL;
   }
 
+  // Allow translation for all components item names if available.
+  if (module_exists('webform_localization')) {
+    foreach ($components as &$component) {
+      $dummy_element = array(
+        '#title' => '',
+      );
+      _webform_localization_translate_component($dummy_element, $component);
+      if (isset($dummy_element['#title']) && (string) $dummy_element['#title']) {
+        $component['name'] = $dummy_element['#title'];
+      }
+    }
+  }
+
   // For certain validators, if all components to be compared are email
   // components, make the values lower-case to avoid case-sensitive comparison.
   if (in_array($validator_name, array('equal', 'comparison', 'unique'))) {
