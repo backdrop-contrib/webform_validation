@@ -638,7 +638,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
         }
         elseif ($components[$entry[$count]['key']]['type'] === 'time') {
           if (isset($value['hour']) && isset($value['minute'])) {
-            $time = $value['hour'] . ':' . $value['minute'];
+            $time = $value['hour'] . ':' . str_pad($value['minute'], 2, '0', STR_PAD_LEFT);
             if (!empty($value['ampm'])) {
               $time .= ' ' . $value['ampm'];
             }
