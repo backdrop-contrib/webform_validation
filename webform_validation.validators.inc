@@ -637,11 +637,16 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           }
         }
         elseif ($components[$entry[$count]['key']]['type'] === 'time') {
-          $time = $value['hour'] . ':' . $value['minute'];
-          if (!empty($value['ampm'])) {
-            $time .= ' ' . $value['ampm'];
+          if (isset($value['hour']) && isset($value['minute'])) {
+            $time = $value['hour'] . ':' . $value['minute'];
+            if (!empty($value['ampm'])) {
+              $time .= ' ' . $value['ampm'];
+            }
+            $time = strtotime($time);
           }
-          $time = strtotime($time);
+          else {
+            $time = NULL;
+          }
           if ($time) {
             $entry[$count]['value'] = date('H:i', $time);
           }
