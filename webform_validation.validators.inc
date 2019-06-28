@@ -36,7 +36,7 @@ function webform_validation_webform_validation_validators() {
         'textfield',
       ),
       'custom_data' => array(
-        'label' => t('Specify numeric validation range'),
+        'label' => t('Numeric validation range'),
         'description' => t('Optionally specify the minimum-maximum range to validate the user-entered numeric value against. Usage:') . theme('table', array(
           'header' => array(t('Value'), t('Meaning')),
           'rows' => array(
@@ -48,6 +48,7 @@ function webform_validation_webform_validation_validators() {
             array('-100|-10', t('Greater than or equal to -100 &amp; less than or equal to -10')),
           ),
         )),
+        'validate_regex' => '/^((-?[\d.]+)?\|)?(-?[\d.]+)$/',
         'required' => FALSE,
       ),
       'description' => t('Verifies that user-entered values are numeric, with the option to specify min and / or max values.'),
@@ -64,6 +65,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Minimum number of characters'),
         'description' => t('Specify the minimum number of characters that have to be entered to pass validation.'),
+        'validate_regex' => '/^\d+$/',
       ),
       'description' => t('Verifies that a user-entered value contains at least the specified number of characters.'),
     ),
@@ -79,6 +81,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Maximum number of characters'),
         'description' => t('Specify the maximum number of characters that can be entered to pass validation.'),
+        'validate_regex' => '/^\d+$/',
       ),
       'description' => t('Verifies that a user-entered value contains at most the specified number of characters.'),
     ),
@@ -93,6 +96,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Minimum number of words'),
         'description' => t('Specify the minimum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.'),
+        'validate_regex' => '/^\d+$/',
       ),
       'description' => t('Verifies that a user-entered value contains at least the specified number of words.'),
     ),
@@ -107,6 +111,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Maximum number of words'),
         'description' => t('Specify the maximum number of words that have to be entered to pass validation. Words are defined as strings of letters separated by spaces.'),
+        'validate_regex' => '/^\d+$/',
       ),
       'description' => t('Verifies that a user-entered value contains at most the specified number of words.'),
     ),
@@ -127,6 +132,7 @@ function webform_validation_webform_validation_validators() {
             t('Enter "<=20" if the components must add up to less than or equal to 20.'),
           ),
         )),
+        'validate_regex' => '/^(=|>|>=|<|<=)(-?[\d.]+)$/',
       ),
       'description' => t('Require the values of the selected fields to add up to exactly, greater than or equal to, or less than or equal to a specified number.'),
     ),
@@ -162,6 +168,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Comparison operator'),
         'description' => t('Specify the comparison operator you want to use. Must be one of: >, >=, <, <=. The validator will compare the first component with the second using this operator. If the components are of type email, they will get case-insensitive comparison.'),
+        'validate_regex' => '/^(>|>=|<|<=)$/',
       ),
       'min_components' => 2,
       'max_components' => 2,
@@ -239,6 +246,7 @@ function webform_validation_webform_validation_validators() {
             t('Enter "<=2" if the user must complete <b>at most</b> 2 of the selected components.'),
           ),
         )),
+        'validate_regex' => '/^[><]?=\d+$/',
       ),
       'min_components' => 2,
       'description' => t('Requires the user to complete some number of components out of a group of components. For example, complete at least 2 out of 3, complete at most 4 out of 6, or complete exactly 3 our of 4.'),
@@ -251,6 +259,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Minimum number of selections'),
         'description' => t('Specify the minimum number of options a user should select.'),
+        'validate_regex' => '/^\d+$/',
       ),
       'description' => t('Forces the user to select at least a defined number of options from the specified webform components.'),
     ),
@@ -262,6 +271,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Maximum number of selections'),
         'description' => t('Specify the maximum number of options a user can select.'),
+        'validate_regex' => '/^\d+$/',
       ),
       'description' => t('Forces the user to select at most a defined number of options from the specified webform components.'),
     ),
@@ -274,6 +284,7 @@ function webform_validation_webform_validation_validators() {
       'custom_data' => array(
         'label' => t('Number of selections'),
         'description' => t('Specify how many options a user can select.'),
+        'validate_regex' => '/^\d+$/',
       ),
       'description' => t('Forces the user to select exactly the defined number of options from the specified webform components.'),
     ),

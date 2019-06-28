@@ -66,8 +66,10 @@ class WebformValidationTestCase extends WebformTestCase {
     $this->assertText('Compare two values');
     $values = array(
       'rulename' => $this->randomString(),
+      'data' => 'invalid',
     );
     $this->drupalPost(NULL, $values, t('Add rule'));
+    $this->assertText('Comparison operator is invalid.', 'Custom data validation fails.');
     $this->assertText('You need to select exactly 2 components.', 'Custom data validation fails.');
     $this->assertText('Custom error message field is required.', 'Custom data validation fails.');
 
