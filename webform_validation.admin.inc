@@ -209,6 +209,12 @@ function webform_validation_manage_rule($form, $form_state, $node, $action, $val
     );
   }
 
+  $form['rule']['type'] = array(
+    '#type' => 'item',
+    '#title' => t('Rule type'),
+    '#markup' => $rule_validator['name'],
+  );
+
   $form['rule']['rulename'] = array(
     '#type' => 'textfield',
     '#title' => t('Rule name'),

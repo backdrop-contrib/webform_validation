@@ -47,6 +47,7 @@ class WebformValidationTestCase extends WebformTestCase {
     // Rule creation page.
     $this->clickLink('Minimum length');
     $this->assertTitle('Add validation rule | Drupal');
+    $this->assertText('Minimum length');
     $element = $this->xpath("//input[@id='edit-data'][@name='data'][@type='text']");
     $this->assertTrue($element, 'Page contains "edit-data" input.');
 
