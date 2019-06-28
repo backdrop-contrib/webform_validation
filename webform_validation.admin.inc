@@ -173,12 +173,13 @@ function webform_validation_manage_rule($form, $form_state, $node, $action, $val
   $form = array();
   $rule_validator = webform_validation_get_validator_info($validator);
 
-  $form['rule'] = array(
-    '#type' => 'fieldset',
-    '#title' => ($action == 'edit') ? t('Edit rule') : t('Add rule'),
-    '#collapsible' => FALSE,
-    '#collapsed' => FALSE,
-  );
+  if ($action === 'edit') {
+    $title = t('Edit validation rule %title', array('%title' => $rule['rulename']));
+  }
+  else {
+    $title = t('Add validation rule');
+  }
+  drupal_set_title($title, PASS_THROUGH);
 
   $form['rule']['validator'] = array(
     '#type' => 'hidden',
