@@ -211,7 +211,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action, $val
   $form['rule']['rulename'] = array(
     '#type' => 'textfield',
     '#title' => t('Rule name'),
-    '#default_value' => (isset($rule['rulename'])) ? $rule['rulename'] : '',
+    '#default_value' => isset($rule['rulename']) ? $rule['rulename'] : NULL,
     '#required' => TRUE,
     '#size' => 60,
     '#maxlength' => 255,
@@ -224,7 +224,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action, $val
     '#weight' => 3,
     '#description' => t('Select the components to be validated by this validation rule'),
     '#options' => webform_validation_get_webform_components($node, $validator),
-    '#default_value' => (isset($rule['components'])) ? array_keys($rule['components']) : array(),
+    '#default_value' => isset($rule['components']) ? array_keys($rule['components']) : array(),
   );
 
   if (!empty($rule_validator['custom_data']) && is_array($rule_validator['custom_data'])) {
@@ -272,7 +272,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action, $val
 
   $form['rule']['submit'] = array(
     '#type' => 'submit',
-    '#value' => (isset($rule['ruleid'])) ? t('Save rule') : t('Add rule'),
+    '#value' => isset($rule['ruleid']) ? t('Save rule') : t('Add rule'),
     '#weight' => 25,
   );
 

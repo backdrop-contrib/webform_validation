@@ -234,7 +234,9 @@ function webform_validation_validate($form, &$form_state) {
 /**
  * Helper function to get all field keys (including fields in fieldsets).
  *
- * @deprecated No longer used and will be removed in 7.x-2.x.
+ * @deprecated in webform_validation:7.x-1.14 and is removed from
+ * webform_validation:7.x-2.0. No longer used.
+ * @see https://www.drupal.org/project/webform_validation/issues/2841817
  */
 function webform_validation_get_field_keys($submitted, $node) {
   static $fields = array();
@@ -274,7 +276,9 @@ function webform_validation_parent_tree($cid, $components) {
 /**
  * Get array of formkeys for all components that have been assigned to a rule.
  *
- * @deprecated No longer used and will be removed in 7.x-2.x.
+ * @deprecated in webform_validation:7.x-1.14 and is removed from
+ * webform_validation:7.x-2.0. No longer used.
+ * @see https://www.drupal.org/project/webform_validation/issues/2841817
  */
 function webform_validation_rule_get_formkeys($rule) {
   $formkeys = array();
