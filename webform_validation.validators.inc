@@ -37,7 +37,17 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Specify numeric validation range'),
-        'description' => t('Optionally specify the minimum-maximum range to validate the user-entered numeric value against. Usage:') . theme('item_list', array('items' => array(t('empty: no value validation'), t('"100": greater than or equal to 100'), t('"|100": less than or equal to 100 (including negative numbers)'), t('"0|100": greater than or equal to 0 &amp; less than or equal to 100'), t('"10|100": greater than or equal to 10 &amp; less than or equal to 100'), t('"-100|-10": greater than or equal to -100 &amp; less than or equal to -10')))),
+        'description' => t('Optionally specify the minimum-maximum range to validate the user-entered numeric value against. Usage:') . theme('table', array(
+          'header' => array(t('Value'), t('Meaning')),
+          'rows' => array(
+            array(t('(empty)'), t('No value validation')),
+            array('100', t('Greater than or equal to 100')),
+            array('|100', t('Less than or equal to 100 (including negative numbers)')),
+            array('0|100', t('Greater than or equal to 0 &amp; less than or equal to 100')),
+            array('10|100', t('Greater than or equal to 10 &amp; less than or equal to 100')),
+            array('-100|-10', t('Greater than or equal to -100 &amp; less than or equal to -10')),
+          ),
+        )),
         'required' => FALSE,
       ),
       'description' => t('Verifies that user-entered values are numeric, with the option to specify min and / or max values.'),
