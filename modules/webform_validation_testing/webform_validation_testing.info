@@ -7,3 +7,6 @@ dependencies[] = node
 dependencies[] = uuid_features
 dependencies[] = webform_validation
 hidden = TRUE
+features[features_api][] = api:2
+features[node][] = webform
+features[uuid_node][] = 4ca52408-9bbd-49fa-baae-698c37dc5f42
