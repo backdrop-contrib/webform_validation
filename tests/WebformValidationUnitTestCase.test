@@ -33,10 +33,12 @@ class WebformValidationUnitTestCase extends DrupalUnitTestCase {
       'one' => array(
         'hour' => 12,
         'minute' => 1,
+        'ampm' => 'AM',
       ),
       'two' => array(
         'hour' => 12,
         'minute' => 4,
+        'ampm' => 'AM',
       ),
     );
     $components = array(
