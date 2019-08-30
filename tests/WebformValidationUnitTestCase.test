@@ -17,13 +17,6 @@ class WebformValidationUnitTestCase extends DrupalUnitTestCase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function setUp() {
-    parent::setUp();
-  }
-
-  /**
    * The tests.
    */
   public function test() {
