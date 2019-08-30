@@ -909,7 +909,8 @@ function webform_validation_webform_validation_validate($validator_name, $items,
       return $errors;
 
     case 'blacklist':
-      $blacklist = preg_quote($rule['data'], '/');
+      $blacklist = $rule['data'];
+      $blacklist = preg_quote($blacklist, '/');
       $blacklist = explode(',', $blacklist);
       $blacklist = array_map('trim', $blacklist);
       $blacklist = '/\b(' . implode('|', $blacklist) . ')\b/i';
