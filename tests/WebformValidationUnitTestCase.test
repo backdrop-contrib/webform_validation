@@ -20,6 +20,7 @@ class WebformValidationUnitTestCase extends DrupalUnitTestCase {
    * The tests.
    */
   public function test() {
+    require_once __DIR__ . '/../webform_validation.validators.inc';
 
     $validator_name = 'comparison';
     $items = array(
