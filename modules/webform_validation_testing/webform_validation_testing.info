@@ -4,6 +4,8 @@ core = 7.x
 package = Testing
 dependencies[] = features
 dependencies[] = node
+# Needed until #3078443 is fixed.
+dependencies[] = services
 dependencies[] = uuid_features
 dependencies[] = webform_validation
 hidden = TRUE
