@@ -123,13 +123,14 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Number the fields add up to'),
-        'description' => t('Specify the number and the type of comparison. For example:') . theme('item_list', array(
-          'items' => array(
-            t('Enter "=3" if the components must add up to exactly 3.'),
-            t('Enter ">10" if the components must add up to greater than 10.'),
-            t('Enter ">=10" if the components must add up to greater than or equal to 10.'),
-            t('Enter "<20" if the components must add up to less than 20.'),
-            t('Enter "<=20" if the components must add up to less than or equal to 20.'),
+        'description' => t('Specify the number and the type of comparison. For example:') . theme('table', array(
+          'header' => array(t('Value'), t('Meaning')),
+          'rows' => array(
+            array('=3', t('The components must add up to exactly 3.')),
+            array('>10', t('The components must add up to greater than 10.')),
+            array('>=10', t('The components must add up to greater than or equal to 10.')),
+            array('<20', t('The components must add up to less than 20.')),
+            array('<=20', t('The components must add up to less than or equal to 20.')),
           ),
         )),
         'validate_regex' => '/^(=|>|>=|<|<=)(-?[\d.]+)$/',
@@ -239,11 +240,12 @@ function webform_validation_webform_validation_validators() {
       ),
       'custom_data' => array(
         'label' => t('Number to be completed'),
-        'description' => t('Specify the number that must be completed and the type of comparison. For example:') . theme('item_list', array(
-          'items' => array(
-            t('Enter ">=1" if the user must complete <b>at least</b> 1 of the selected components.'),
-            t('Enter "=3" if the user must complete <b>exactly</b> 3 of the selected components.'),
-            t('Enter "<=2" if the user must complete <b>at most</b> 2 of the selected components.'),
+        'description' => t('Specify the number that must be completed and the type of comparison. For example:') . theme('table', array(
+          'header' => array(t('Value'), t('Meaning')),
+          'rows' => array(
+            array('>=1', t('The user must complete <b>at least</b> 1 of the selected components.')),
+            array('=3', t('The user must complete <b>exactly</b> 3 of the selected components.')),
+            array('<=2', t('The user must complete <b>at most</b> 2 of the selected components.')),
           ),
         )),
         'validate_regex' => '/^[><]?=\d+$/',
@@ -341,7 +343,22 @@ function webform_validation_webform_validation_validators() {
       'custom_error' => TRUE,
       'custom_data' => array(
         'label' => t('Pattern'),
-        'description' => t('Specify a pattern where:') . theme('item_list', array('items' => array(t('@ = any letter A-Z'), t('# = any numeral 0-9'), t('| = separates two or more acceptable patterns'), t('Any other character must appear in its exact position')))) . t('Examples') . theme('item_list', array('items' => array(t('North American phone number: (###) ###-####'), t('D-2500 series model numbers: D-25##'), t('UK Postal Code: @# #@@|@## #@@|@@# #@@|@@## #@@|@#@ #@@|@@#@ #@@|GIR0AA')))),
+        'description' => t('Specify a pattern where:') . theme('table', array(
+          'header' => array(t('Value'), t('Meaning')),
+          'rows' => array(
+            array('@', t('Any letter A-Z.')),
+            array('#', t('Any numeral 0-9.')),
+            array('|', t('Separates two or more acceptable patterns.')),
+            array('', t('Any other character must appear in its exact position.')),
+          ),
+        )) . t('Examples:') . theme('table', array(
+          'header' => array(t('Value'), t('Meaning')),
+          'rows' => array(
+            array('(###) ###-####', t('North American phone number.')),
+            array('D-25##', t('D-2500 series model numbers.')),
+            array('@# #@@|@## #@@|@@# #@@|@@## #@@|@#@ #@@|@@#@ #@@|GIR0AA', t('UK Postal Code.')),
+          ),
+        )),
       ),
       'description' => t('Verifies that a user-entered value follows to a specified pattern.'),
     ),
