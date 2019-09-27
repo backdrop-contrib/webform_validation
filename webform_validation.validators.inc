@@ -1139,6 +1139,7 @@ function webform_validation_get_validator_info($validator_key) {
 function _webform_validation_i18n_error_message($rule) {
   $rule['error_message'] = filter_xss($rule['error_message']);
   if (module_exists('i18n')) {
+    $rule['ruleid'] = isset($rule['ruleid']) ? $rule['ruleid'] : NULL;
     return i18n_string('webform_validation:error_message:' . $rule['ruleid'] . ':message', $rule['error_message']);
   }
   return $rule['error_message'];
