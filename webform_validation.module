@@ -540,7 +540,8 @@ function webform_validation_webform_validator_alter(&$validators) {
  * Implements hook_uuid_node_features_export_alter().
  */
 function webform_validation_uuid_node_features_export_alter(&$data, $node, $module) {
-  $nid = reset(entity_get_id_by_uuid('node', array($node->uuid)));
+  $nid = entity_get_id_by_uuid('node', array($node->uuid));
+  $nid = reset($nid);
   if (webform_validation_get_node_rules($nid)) {
     $data['dependencies']['webform_validation'] = 'webform_validation';
   }
