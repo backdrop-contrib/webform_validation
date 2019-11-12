@@ -1,15 +1,17 @@
 # Webform Validation
 
-This module adds an extra tab to each webform node, allowing you to specify validation rules for your webform components.
-You can create one or more of the predefined validation rules, and select which webform component(s) should be validated against those.
-By using the hooks provided by this module, you can also define your own validation rules in your own modules.
+This module adds an extra tab to each webform node, allowing you to specify 
+validation rules for your webform components. You can create one or more of the 
+predefined validation rules, and select which webform component(s) should be 
+validated against those. By using the hooks provided by this module, you can 
+also define your own validation rules in your own modules.
 
 The following validation rules are currently included:
 
 - Numeric values (optionally specify min and / or max value)
 - Minimum length
-- Maximum length (automatically integrates a Javascript counter if the MaxLength module is 
-  installed – optional)
+- Maximum length (automatically integrates a Javascript counter if the 
+  MaxLength module is installed – optional)
 - Minimum number of words
 - Maximum number of words
 - Equal values on multiple fields
@@ -34,7 +36,8 @@ The following validation rules are currently included:
 
 ## Usage
 
-Instructions can be viewed and edited in the [Wiki](https://github.com/backdrop-contrib/webform_validation/wiki).
+Instructions can be viewed and edited in the 
+[Wiki](https://github.com/backdrop-contrib/webform_validation/wiki).
 
 ## Issues
 
@@ -56,5 +59,5 @@ Bugs and Feature requests should be reported in the
 
 ## License
 
-This project is GPL v2 software. See the [LICENSE.txt](https://github.com/backdrop-contrib/webform_validation/blob/1.x-1.x/LICENSE.txt) 
-file in this directory for complete text.
+This project is GPL v2 software. See the LICENSE.txt file in this directory for 
+complete text.

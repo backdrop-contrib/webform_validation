@@ -4,5 +4,7 @@ backdrop = 1.x
 type = module
 package = Webform
 dependencies[] = webform
+test_dependencies[] = token
 files[] = tests/WebformValidationTestCase.test
+files[] = tests/WebformValidationUnitTestCase.test
 php = 5.3
