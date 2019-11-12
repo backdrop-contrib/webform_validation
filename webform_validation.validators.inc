@@ -20,6 +20,12 @@
  * - description (optional): provide a descriptive explanation about the validator.
  */
 function webform_validation_webform_validation_validators() {
+  if (module_exists('maxlength')) {
+    $maxlength_desc = t('A javascript counter will show the number of characters remaining as the user types.');
+  }
+  else {
+    $maxlength_desc = t('Optionally install the MaxLength module to add a javascript countdown of characters remaining as the user types.');
+  }
   $validators = array(
     'numeric' => array(
       'name' => t('Numeric values'),
@@ -63,7 +69,7 @@ function webform_validation_webform_validation_validators() {
         'label' => t('Maximum number of characters'),
         'description' => t('Specify the maximum number of characters that can be entered to pass validation.'),
       ),
-      'description' => t('Verifies that a user-entered value contains at most the specified number of characters.'),
+      'description' => t('Verifies that a user-entered value contains at most the specified number of characters. ' . $maxlength_desc),
     ),
     'min_words' => array(
       'name' => t('Minimum number of words'),

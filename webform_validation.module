@@ -87,6 +87,31 @@ function webform_validation_theme() {
 function webform_validation_form_alter(&$form, &$form_state, $form_id) {
   if (strpos($form_id, 'webform_client_form_') !== FALSE) {
     $form['#validate'][] = 'webform_validation_validate';
+    if (module_exists('maxlength')) {
+      $nid = substr($form_id, strlen('webform_client_form') + 1);
+      $rules = webform_validation_get_node_rules($nid);
+      if ($rules) {
+        foreach ($rules as $ruleid => $rule) {
+          if ($rule['validator'] == 'max_length') {
+            $length_limit = $rule['data'];
+            $components = $rule['components'];
+            foreach ($components as $cid => $component) {
+              // Define $form_element as the webform element representing this
+              // component, even if it's nested in multiple arrays, as webform
+              // elemens often are (e.g., fieldsets). Assign by reference here,
+              // since we need to modify the form element itself and don't know
+              // its array depth or keys by which to access it.
+              $form_element = &_webform_validation_get_webform_element($component, $form);
+              // Append to this form element the relevant properties which are
+              // supported by maxlength module.
+              $form_element['#pre_render'][] = 'maxlength_pre_render';
+              $form_element['#maxlength'] = $length_limit;
+              $form_element['#maxlength_js'] = TRUE;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -519,4 +544,41 @@ function webform_validation_webform_validator_alter(&$validators) {
       }
     }
   }
+}
+
+/**
+ * For a given webform_validation rule component, and a given Backdrop webform
+ * form, get a reference to the webform element represented by the rule
+ * component; return the correct element regardless of how deeply it's nested
+ * in webform fieldsets or other wrappers.
+ *
+ * @param Array $component
+ * @param Array $form
+ * @return Array
+ */
+function &_webform_validation_get_webform_element($component, &$form) {
+  // Define an array of ancestors, beginning with the component itself.
+  $component_ancestors = array($component['form_key']);
+  // Define the parent-id, starting with the parent-id of the component itself,
+  // if any.
+  $pid = $component['pid'];
+  // Look into $form['#node']->webform['components'][$pid] to get any parent
+  // of the component, and continue working up the family tree until there is
+  // no more parent-id.
+  while ($pid) {
+    $parent = $form['#node']->webform['components'][$pid];
+    // Prepend the parent form_key to the array of ancestors. This causes the
+    // array of ancestors to be ordered from ancestor to descendant.
+    array_unshift($component_ancestors, $parent['form_key']);
+    // Note this parent's parent-id, if any.
+    $pid = $parent['pid'];
+  }
+  // $component_ancestors now contains the ordered ancestry. Cycle through it to
+  // get the correct member of $form['submitted']. Assign by reference so that
+  // we have a good reference to $webform_element to return.
+  $webform_element = &$form['submitted'];
+  foreach ($component_ancestors as $ancestor) {
+    $webform_element = &$webform_element[$ancestor];
+  }
+  return $webform_element;
 }

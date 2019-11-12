@@ -8,7 +8,8 @@ The following validation rules are currently included:
 
 - Numeric values (optionally specify min and / or max value)
 - Minimum length
-- Maximum length
+- Maximum length (automatically integrates a Javascript counter if the MaxLength module is 
+  installed – optional)
 - Minimum number of words
 - Maximum number of words
 - Equal values on multiple fields
@@ -49,6 +50,9 @@ Bugs and Feature requests should be reported in the
 - Ported to Backdrop CMS by [Laryn Kragt Bakker](https://github.com/laryn) - [CEDC.org](https://cedc.org).
 - Current maintainer for the Drupal module: [Liam Morland](https://github.com/lkmorlan)
 - Original author of the Drupal module: [Sven Decabooter](https://github.com/svendecabooter)
+- The MaxLength integration is based on work by 
+  [Hal Eagar](https://www.drupal.org/node/1459650#comment-9011799), 
+  with enhancements from [Allen Shaw](https://github.com/twomice).
 
 ## License
 
