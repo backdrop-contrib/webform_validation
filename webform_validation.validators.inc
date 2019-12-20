@@ -887,7 +887,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
     case 'pattern':
       $pattern = preg_quote($rule['data'], '/');
       $pattern = str_replace('@', '[a-zA-Z]', $pattern);
-      $pattern = str_replace('#', '[0-9]', $pattern);
+      // Since PHP 7.3, the # character is quoted by preg_quote().
+      $quoted_hash = version_compare(PHP_VERSION, '7.3.0', '>=') ? '\\#' : '#';
+      $pattern = str_replace($quoted_hash, '[0-9]', $pattern);
       $pattern = '(' . $pattern . ')';
       // Un-escape "|" operator.
       $pattern = preg_replace('/(\\s*)(\\\\)(\\|)(\\s*)/', ')|(', $pattern);
