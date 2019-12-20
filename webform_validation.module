@@ -194,6 +194,7 @@ function webform_validation_validate($form, &$form_state) {
       $components = webform_validation_prefix_keys($node->webform['components']);
       // Allow translation for all components item names if available.
       if (module_exists('webform_localization')) {
+        module_load_include('inc', 'webform_localization', 'includes/webform_localization.i18n');
         foreach ($components as &$component) {
           $dummy_element = array(
             '#title' => '',
