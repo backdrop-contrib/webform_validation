@@ -192,6 +192,19 @@ function webform_validation_validate($form, &$form_state) {
       $rule['sid'] = $sid;
       // Have the submitted values validated.
       $components = webform_validation_prefix_keys($node->webform['components']);
+      // Allow translation for all components item names if available.
+      if (module_exists('webform_localization')) {
+        foreach ($components as &$component) {
+          $dummy_element = array(
+            '#title' => '',
+          );
+          _webform_localization_translate_component($dummy_element, $component);
+          if (isset($dummy_element['#title']) && (string) $dummy_element['#title']) {
+            $component['name'] = $dummy_element['#title'];
+          }
+        }
+      }
+
       $errors = module_invoke_all("webform_validation_validate", $rule['validator'], webform_validation_prefix_keys($items), $components, $rule);
       if ($errors) {
         $errors = webform_validation_unprefix_keys($errors);
