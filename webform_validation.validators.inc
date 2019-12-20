@@ -520,7 +520,11 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           if (isset($num_range['min']) && isset($num_range['max'])) {
             // Validate the min - max range.
             if ($subval < $num_range['min'] || $subval > $num_range['max']) {
-              $errors[$key] = t('%item is not within the allowed range %range.', array('%item' => $components[$key]['name'], '%range' => str_replace('|', ' - ', $rule['data'])));
+              $options = array(
+                '%item' => $components[$key]['name'],
+                '%range' => str_replace('|', ' - ', $rule['data']),
+              );
+              $errors[$key] = t('%item is not within the allowed range %range.', $options);
             }
           }
           else {
@@ -863,7 +867,11 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           'regular' => '%item must %verb with "%string".',
           'negated' => '%item must not %verb with "%string".',
         );
-        $error_vars = array('%item' => $components[$key]['name'], '%verb' => $verb, '%string' => $rule['data']);
+        $error_vars = array(
+          '%item' => $components[$key]['name'],
+          '%verb' => $verb,
+          '%string' => $rule['data'],
+        );
         foreach ($val as $subval) {
           $test = !preg_match($pattern, $subval);
           _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
