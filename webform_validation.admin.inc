@@ -368,8 +368,12 @@ function webform_validation_delete_rule($form, &$form_state, $rule) {
     );
   }
 
-  return confirm_form($form, t('Are you sure you want to delete the rule %name?', array('%name' => $rule['rulename'])), isset($_GET['destination']) ? $_GET['destination'] : $_GET['q'], t('This action cannot be undone.'), t('Delete'), t('Cancel')
-  );
+  return confirm_form(
+    $form,
+    t('Are you sure you want to delete the rule %name?', array('%name' => $rule['rulename'])),
+    'node/' . $rule['nid'] . '/webform/validation',
+    NULL,
+    t('Delete'));
 }
 
 /**
