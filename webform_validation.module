@@ -412,6 +412,7 @@ function webform_validation_node_insert($node) {
 function webform_validation_node_delete($node) {
   $rules = webform_validation_get_node_rules($node->nid);
   if ($rules) {
+    $transaction = db_transaction();
     foreach (array_keys($rules) as $ruleid) {
       webform_dynamic_delete_rule($ruleid);
     }
@@ -470,6 +471,8 @@ function webform_validation_rule_save(array $values) {
   else {
     return FALSE;
   }
+
+  $transaction = db_transaction();
 
   drupal_write_record('webform_validation_rule', $values, $primary_keys);
 
@@ -597,6 +600,7 @@ function webform_validation_entity_uuid_save($node, $entity_type) {
     if (isset($node->webform['validation'])) {
       $rules = $node->webform['validation'];
       $orig_rules = webform_validation_get_node_rules_assoc($node->nid);
+      $transaction = db_transaction();
       // Delete obsolete rules.
       $delete = array_diff_key($orig_rules, $rules);
       foreach ($delete as $rule) {

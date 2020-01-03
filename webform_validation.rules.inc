@@ -123,6 +123,7 @@ function webform_validation_rule_components_basic($components) {
  *   The ruleid of the rule to delete.
  */
 function webform_dynamic_delete_rule($ruleid) {
+  $transaction = db_transaction();
   // Delete rule.
   db_delete('webform_validation_rule')
     ->condition('ruleid', $ruleid)
