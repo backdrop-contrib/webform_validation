@@ -27,10 +27,8 @@ function webform_validation_manage($node) {
  */
 function webform_validation_get_webform_rules($node) {
   if (in_array($node->type, webform_variable_get('webform_node_types'))) {
-    $webform_nid = $node->nid;
-    $rules = webform_validation_get_node_rules($node->nid);
+    return webform_validation_get_node_rules($node->nid);
   }
-  return $rules;
 }
 
 /**

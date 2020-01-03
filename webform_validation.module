@@ -577,7 +577,7 @@ function webform_validation_uuid_node_features_export_render_alter(&$export, $no
 }
 
 /**
- * Implements hook_uuid_entity_uuid_save().
+ * Implements hook_entity_uuid_save().
  */
 function webform_validation_entity_uuid_save($node, $entity_type) {
   if ($entity_type == 'node') {
@@ -611,5 +611,4 @@ function webform_validation_entity_uuid_save($node, $entity_type) {
       }
     }
   }
-
 }
