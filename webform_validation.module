@@ -59,10 +59,20 @@ function webform_validation_menu() {
 }
 
 /**
- * Loads validation rule from menu parameter.
+ * Load a validation rule.
+ *
+ * @param int $ruleid
+ *   The rule ID.
+ *
+ * @return array|false
+ *   The rule or FALSE if no rule exists.
  */
 function webform_validation_rule_load($ruleid) {
-  return webform_validation_get_rule($ruleid);
+  $result = db_query("SELECT ruleid, rulename, nid, validator, data, error_message, negate, weight FROM {webform_validation_rule} WHERE ruleid = :ruleid", array(':ruleid' => $ruleid), array('fetch' => PDO::FETCH_ASSOC));
+  $rule = $result->fetchAssoc();
+  $rule['components'] = webform_validation_get_rule_components($ruleid, $rule['nid']);
+  $rule['negate'] = (bool) $rule['negate'];
+  return $rule;
 }
 
 /**
