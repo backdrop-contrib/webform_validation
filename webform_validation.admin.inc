@@ -250,7 +250,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action, $val
       '#required' => (bool) $required,
       '#size' => 60,
       '#maxlength' => NULL,
-      '#default_value' => $rule['data'],
+      '#default_value' => isset($rule['data']) ? $rule['data'] : NULL,
       '#weight' => 4,
     );
   }
@@ -260,7 +260,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action, $val
       '#type' => 'checkbox',
       '#title' => t('Negate rule'),
       '#description' => t('Validate the inverse of the rule.'),
-      '#default_value' => $rule['negate'],
+      '#default_value' => isset($rule['negate']) ? $rule['negate'] : NULL,
       '#weight' => 5,
     );
   }
@@ -273,7 +273,7 @@ function webform_validation_manage_rule($form, $form_state, $node, $action, $val
       '#required' => TRUE,
       '#size' => 60,
       '#maxlength' => 2048,
-      '#default_value' => $rule['error_message'],
+      '#default_value' => isset($rule['error_message']) ? $rule['error_message'] : NULL,
       '#weight' => 5,
     );
   }
