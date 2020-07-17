@@ -307,7 +307,7 @@ function webform_validation_manage_rule_validate($form, &$form_state) {
   $rule_validator = webform_validation_get_validator_info($values['validator']);
 
   // Validate custom data.
-  if (!empty($rule_validator['custom_data']['validate_regex']) && $values['data'] && !preg_match($rule_validator['custom_data']['validate_regex'], $values['data'])) {
+  if (!empty($values['data']) && !empty($rule_validator['custom_data']['validate_regex']) && !preg_match($rule_validator['custom_data']['validate_regex'], $values['data'])) {
     form_set_error('data', $rule_validator['custom_data']['label'] . ' ' . t('is invalid.'));
   }
 
