@@ -464,6 +464,10 @@ function webform_validation_webform_validation_validators() {
     );
   }
 
+  if (module_exists('maxlength')) {
+    $validators['max_length']['description'] .= ' ' . t('A JavaScript counter will show the number of characters remaining as the user types.');
+  }
+
   return $validators;
 }
 
@@ -473,19 +477,6 @@ function webform_validation_webform_validation_validators() {
 function webform_validation_webform_validation_validate($validator_name, $items, $components, $rule) {
   if (!$items) {
     return NULL;
-  }
-
-  // Allow translation for all components item names if available.
-  if (module_exists('webform_localization')) {
-    foreach ($components as &$component) {
-      $dummy_element = array(
-        '#title' => '',
-      );
-      _webform_localization_translate_component($dummy_element, $component);
-      if (isset($dummy_element['#title']) && (string) $dummy_element['#title']) {
-        $component['name'] = $dummy_element['#title'];
-      }
-    }
   }
 
   // For certain validators, if all components to be compared are email
@@ -539,7 +530,11 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           if (isset($num_range['min']) && isset($num_range['max'])) {
             // Validate the min - max range.
             if ($subval < $num_range['min'] || $subval > $num_range['max']) {
-              $errors[$key] = t('%item is not within the allowed range %range.', array('%item' => $components[$key]['name'], '%range' => str_replace('|', ' - ', $rule['data'])));
+              $options = array(
+                '%item' => $components[$key]['name'],
+                '%range' => str_replace('|', ' - ', $rule['data']),
+              );
+              $errors[$key] = t('%item is not within the allowed range %range.', $options);
             }
           }
           else {
@@ -882,7 +877,11 @@ function webform_validation_webform_validation_validate($validator_name, $items,
           'regular' => '%item must %verb with "%string".',
           'negated' => '%item must not %verb with "%string".',
         );
-        $error_vars = array('%item' => $components[$key]['name'], '%verb' => $verb, '%string' => $rule['data']);
+        $error_vars = array(
+          '%item' => $components[$key]['name'],
+          '%verb' => $verb,
+          '%string' => $rule['data'],
+        );
         foreach ($val as $subval) {
           $test = !preg_match($pattern, $subval);
           _webform_validation_test($errors, $key, $rule, $test, $error_strings, $error_vars);
@@ -893,7 +892,9 @@ function webform_validation_webform_validation_validate($validator_name, $items,
     case 'pattern':
       $pattern = preg_quote($rule['data'], '/');
       $pattern = str_replace('@', '[a-zA-Z]', $pattern);
-      $pattern = str_replace('#', '[0-9]', $pattern);
+      // Since PHP 7.3, the # character is quoted by preg_quote().
+      $quoted_hash = version_compare(PHP_VERSION, '7.3.0', '>=') ? '\\#' : '#';
+      $pattern = str_replace($quoted_hash, '[0-9]', $pattern);
       $pattern = '(' . $pattern . ')';
       // Un-escape "|" operator.
       $pattern = preg_replace('/(\\s*)(\\\\)(\\|)(\\s*)/', ')|(', $pattern);
