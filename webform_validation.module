@@ -633,7 +633,7 @@ function webform_validation_entity_uuid_save($node, $entity_type) {
 /**
  * Get a reference to a specific webform element.
  *
- * (For a given webform_validation rule component, and a given Drupal webform
+ * (For a given webform_validation rule component, and a given Backdrop webform
  * form, get a reference to the webform element represented by the rule
  * component; return the correct element regardless of how deeply it's nested
  * in webform fieldsets or other wrappers.)
@@ -641,7 +641,7 @@ function webform_validation_entity_uuid_save($node, $entity_type) {
  * @param array $component
  *   Webform validation rule component.
  * @param array $form
- *   Drupal webform form.
+ *   Backdrop webform form.
  *
  * @return array
  *   Reference to the webform element represented by the rule component.
