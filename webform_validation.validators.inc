@@ -1012,7 +1012,7 @@ function _webform_validation_get_names_of_rule_components(array $rule) {
  *
  * Creates the correct error message.
  */
-function _webform_validation_test(&$errors, $key, $rule, $test, array $error_strings = NULL, array $error_vars = NULL) {
+function _webform_validation_test(&$errors, $key, $rule, $test, ?array $error_strings = NULL, ?array $error_vars = NULL) {
   $rule['negate'] = !empty($rule['negate']);
   if ($rule['negate']) {
     $test = !$test;
