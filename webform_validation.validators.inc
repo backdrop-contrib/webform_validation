@@ -1002,7 +1002,7 @@ function webform_validation_webform_validation_validate($validator_name, $items,
 function _webform_validation_get_names_of_rule_components(array $rule) {
   $names = array();
   foreach ($rule['components'] as $component) {
-    $names[] = _webform_filter_xss($component['name']);
+    $names[] = webform_filter_xss($component['name']);
   }
   return $names;
 }
