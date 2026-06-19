@@ -110,7 +110,7 @@ function webform_validation_rule_components_basic($components) {
   $ret = array();
   if ($components) {
     foreach ($components as $cid => $component) {
-      $ret[$cid] = _webform_filter_xss($component['name']);
+      $ret[$cid] = webform_filter_xss($component['name']);
     }
   }
   return $ret;

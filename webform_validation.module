@@ -201,22 +201,6 @@ function webform_validation_validate($form, &$form_state) {
         }
       }
     }
-    else {
-      // Old conditionals system removed in Webform 7.x-4.8.
-      // Webform 7.x-3.x does not define WEBFORM_CONDITIONAL_INCLUDE.
-      // Define if needed.
-      if (!defined('WEBFORM_CONDITIONAL_INCLUDE')) {
-        define('WEBFORM_CONDITIONAL_INCLUDE', 1);
-      }
-      foreach ($node->webform['components'] as $key => $component) {
-        // In Webform 7.x-3.x, _webform_client_form_rule_check() returns
-        // boolean.
-        // Cast to int so that the function behaves as it does in 7.x-4.x.
-        if (isset($flat_values[$key]) && (int) _webform_client_form_rule_check($node, $component, 0, $form_state['values']['submitted']) !== WEBFORM_CONDITIONAL_INCLUDE) {
-          unset($flat_values[$key]);
-        }
-      }
-    }
 
     foreach ($rules as $rule) {
       // Create a list of components that need validation against this rule
